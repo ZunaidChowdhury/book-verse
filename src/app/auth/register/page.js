@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import { Button, TextField, Label, Input } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
@@ -13,10 +13,13 @@ import {
   Envelope,
   Lock,
   Picture,
+  ArrowUpFromLine,
+  CircleCheck,
 } from "@gravity-ui/icons";
 
 import { authClient, googleSignIn } from '@/lib/auth-client';
 import { useRouter } from "next/navigation";
+import { useUploadThing } from "@/lib/uploadthing";
 
 
 // Password rule validation hook
@@ -52,12 +55,113 @@ function RuleRow({ label, passed }) {
   );
 }
 
+function ProfileImageUploader({ onUploadComplete, onUploadError, onUploadBegin }) {
+  const fileInputRef = useRef(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const { startUpload, isUploading } = useUploadThing("profileImage", {
+    onClientUploadComplete: (res) => {
+      if (res && res.length > 0) onUploadComplete(res);
+    },
+    onUploadError: (error) => {
+      onUploadError(error);
+    },
+    onUploadBegin: () => {
+      onUploadBegin();
+    },
+  });
+
+  function handleFileChange(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    startUpload([file]);
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    setIsDragOver(false);
+    if (isUploading) return;
+    const file = e.dataTransfer.files?.[0];
+    if (!file || !file.type.startsWith("image/")) return;
+    startUpload([file]);
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    setIsDragOver(true);
+  }
+
+  function handleDragLeave(e) {
+    // Only clear when leaving the drop zone entirely (not child elements)
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setIsDragOver(false);
+    }
+  }
+
+  return (
+    <div
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onClick={() => !isUploading && fileInputRef.current?.click()}
+      className={`border-2 border-dashed rounded-md p-6 transition-all duration-200 flex flex-col items-center justify-center gap-2 cursor-pointer select-none
+        ${isDragOver
+          ? "border-[var(--theme-primary)] bg-[var(--theme-primary)]/10 scale-[1.01]"
+          : "border-foreground/10 hover:border-foreground/30 bg-foreground/5 hover:bg-foreground/[0.07]"
+        }
+        ${isUploading ? "pointer-events-none opacity-70" : ""}
+      `}
+    >
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileChange}
+        onClick={(e) => e.stopPropagation()}
+      />
+
+      {/* Icon */}
+      <div className={`transition-transform duration-200 ${isDragOver ? "scale-110" : ""}`}>
+        <ArrowUpFromLine
+          className={`w-5 h-5 transition-colors duration-200 ${isDragOver ? "text-[var(--theme-primary)]" : "text-foreground/40"
+            }`}
+        />
+      </div>
+
+      {/* Text */}
+      <p className={`text-xs font-medium transition-colors duration-200 ${isDragOver ? "text-[var(--theme-primary)]" : "text-foreground/40"
+        }`}>
+        {isUploading
+          ? "Uploading..."
+          : isDragOver
+            ? "Drop to upload"
+            : "Drag & drop or click to choose"}
+      </p>
+
+      {/* Button */}
+      {!isDragOver && !isUploading && (
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+          className="mt-1 bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold text-xs shadow-md shadow-[var(--theme-primary)]/20 transition-all rounded-md px-3 h-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--theme-primary)]"
+        >
+          Choose File
+        </button>
+      )}
+
+      <span className="text-xs text-foreground/30 mt-0.5">Image (4MB max)</span>
+    </div>
+  );
+}
+
 export default function RegisterPage() {
 
   const router = useRouter();
 
   const [form, setForm] = useState({
     fullName: "",
+    profileImage: null,
     profileImageUrl: "",
     email: "",
     password: "",
@@ -67,6 +171,7 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isUploading, setIsUploading] = useState(false);
 
   const rules = usePasswordRules(form.password);
   const allRulesPassed = rules.minLength && rules.hasUppercase && rules.hasLowercase;
@@ -166,7 +271,7 @@ export default function RegisterPage() {
           variant="bordered"
           fullWidth
           className="border border-foreground/15 dark:border-white/15 bg-transparent hover:bg-foreground/5 text-foreground/80 hover:text-foreground font-semibold h-11 rounded-md transition-all duration-200"
-          onClick={() => {googleSignIn()}}
+          onClick={() => { googleSignIn() }}
         >
           {/* <FcGoogle className="text-lg shrink-0" /> */}
           <FcGoogle size={24} />
@@ -204,28 +309,6 @@ export default function RegisterPage() {
             </div>
             {errors.fullName && (
               <span className="text-rose-500 text-xs mt-0.5">{errors.fullName}</span>
-            )}
-          </TextField>
-
-          {/* Profile Image URL Field */}
-          <TextField
-            isInvalid={!!errors.profileImageUrl}
-            className="flex flex-col gap-1.5"
-          >
-            <Label className="text-foreground/80 text-sm font-medium">
-              Profile Image URL
-            </Label>
-            <div className="relative flex items-center">
-              <Picture className="absolute left-3 text-foreground/40 shrink-0" width={16} height={16} />
-              <Input
-                placeholder="https://example.com/avatar.jpg"
-                value={form.profileImageUrl}
-                onChange={(e) => handleChange("profileImageUrl", e.target.value)}
-                className={inputClass}
-              />
-            </div>
-            {errors.profileImageUrl && (
-              <span className="text-rose-500 text-xs mt-0.5">{errors.profileImageUrl}</span>
             )}
           </TextField>
 
@@ -332,6 +415,68 @@ export default function RegisterPage() {
               <span className="text-rose-500 text-xs mt-0.5">{errors.confirmPassword}</span>
             )}
           </TextField>
+
+          {/* Profile Image Upload Field */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-foreground/80 text-sm font-medium">
+              Profile Image
+            </label>
+            <div className="relative">
+              {!form.profileImageUrl ? (
+                <ProfileImageUploader
+                  onUploadComplete={(res) => {
+                    setForm((prev) => ({
+                      ...prev,
+                      profileImageUrl: res[0].url,
+                      profileImage: res[0],
+                    }));
+                    setIsUploading(false);
+                  }}
+                  onUploadError={(error) => {
+                    setErrors((prev) => ({
+                      ...prev,
+                      profileImage: `Upload failed: ${error.message}`,
+                    }));
+                    setIsUploading(false);
+                  }}
+                  onUploadBegin={() => setIsUploading(true)}
+                />
+              ) : (
+                <div className="border border-emerald-500/20 bg-emerald-500/5 rounded-md p-4 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <CircleCheck className="text-emerald-500 shrink-0 w-5 h-5" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-foreground text-sm font-medium truncate">
+                        {form.profileImage?.name || "Image uploaded"}
+                      </p>
+                      <p className="text-foreground/50 text-xs">
+                        {form.profileImage?.size ? (form.profileImage.size / 1024).toFixed(2) + " KB" : "Successfully uploaded"}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setForm((prev) => ({
+                        ...prev,
+                        profileImageUrl: "",
+                        profileImage: null,
+                      }));
+                      if (errors.profileImage) {
+                        setErrors((prev) => ({ ...prev, profileImage: null }));
+                      }
+                    }}
+                    className="text-[var(--theme-primary)] hover:underline text-sm font-medium transition-colors shrink-0"
+                  >
+                    Clear
+                  </button>
+                </div>
+              )}
+            </div>
+            {errors.profileImage && (
+              <span className="text-rose-500 text-xs mt-0.5 font-medium">{errors.profileImage}</span>
+            )}
+          </div>
 
           {/* Register Action Button */}
           <Button
