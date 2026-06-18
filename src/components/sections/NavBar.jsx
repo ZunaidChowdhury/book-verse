@@ -2,13 +2,15 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button, Avatar, Tooltip } from "@heroui/react";
 import { Gear, ArrowRightFromSquare, Sun, Moon } from "@gravity-ui/icons";
 import Image from "next/image";
+import { authClient } from "@/lib/auth-client";
 
 export default function Navbar() {
+  const router = useRouter()
   const pathname = usePathname();
 
   // State Management
@@ -16,13 +18,6 @@ export default function Navbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
-  // Simulated Authentication State (toggled via Login/Logout buttons for demo purposes)
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const currentUser = {
-    name: "Jane Doe",
-    email: "jane.doe@bookverse.com",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
-  };
 
   // Refs for click-outside detection
   const dropdownRef = useRef(null);
@@ -34,6 +29,10 @@ export default function Navbar() {
     { name: "Browse Ebooks", href: "/browse" },
     { name: "Dashboard", href: "/dashboard" },
   ];
+
+  const { data } = authClient.useSession()
+  const user = data?.user;
+  // console.log('user: ', user)
 
   // Initialize Theme on Mount
   useEffect(() => {
@@ -53,6 +52,17 @@ export default function Navbar() {
       setIsDarkMode(true);
     }
   };
+
+  const handleLogOut = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/auth/log-in");
+        },
+      },
+    });
+  }
+
 
   // Outside click and Escape key listeners
   useEffect(() => {
@@ -141,7 +151,8 @@ export default function Navbar() {
                     width={40}
                     height={40}
                     priority // Ensures high LCP performance for above-the-fold brand images
-                    className=" object-cover"
+                    className="object-cover"
+                    style={{ width: "auto", height: "auto" }}
                   />
                 </div>
                 <span className="bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-xl font-bold tracking-tight text-transparent">
@@ -180,7 +191,7 @@ export default function Navbar() {
               <Tooltip content={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
                 <button
                   onClick={toggleTheme}
-                  className="flex h-10 w-10 items-center justify-center rounded-md border border-foreground/5 bg-foreground/5 text-foreground/70 transition-all hover:bg-foreground/10 hover:text-foreground focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] "
+                  className="flex h-9 w-9 items-center justify-center rounded-md border border-foreground/5 bg-foreground/5 text-foreground/70 transition-all hover:bg-foreground/10 hover:text-foreground focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] "
                   aria-label="Toggle visual theme preference"
                 >
                   <AnimatePresence mode="wait">
@@ -211,42 +222,59 @@ export default function Navbar() {
               </Tooltip>
 
               {/* Guest / Authenticated View */}
-              {!isAuthenticated ? (
+              {!user ? (
                 <div className="flex items-center gap-2">
-                  <Button
-                    variant="light"
-                    className="border border-foreground/10 bg-transparent hover:bg-foreground/5 text-foreground/80 hover:text-foreground font-medium text-sm transition-all rounded-md"
-                    onPress={() => setIsAuthenticated(true)}
-                  >
-                    Log In
-                  </Button>
-                  <Button
-                    className="bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all cursor-pointer rounded-md"
-                    onPress={() => setIsAuthenticated(true)}
-                  >
-                    Register
-                  </Button>
+                  <Link href={`/auth/log-in`}>
+                    <Button
+                      variant="light"
+                      className="border border-foreground/10 bg-transparent hover:bg-foreground/5 text-foreground/80 hover:text-foreground font-medium text-sm transition-all rounded-md"
+                    // onPress={() => setIsAuthenticated(true)}
+                    >
+                      Log In
+                    </Button>
+                  </Link>
+                  <Link href={`/auth/register`}>
+                    <Button
+                      className="bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all cursor-pointer rounded-md"
+                    // onPress={() => setIsAuthenticated(true)}
+                    >
+                      Register
+                    </Button>
+                  </Link>
                 </div>
               ) : (
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                    className="flex items-center gap-2.5 rounded-md border border-foreground/5 bg-foreground/5 p-1.5 pr-3 text-left transition-all hover:bg-foreground/10 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] cursor-pointer"
+                    className="relative flex items-center gap-2.5 rounded-md  p-1.5 pr-3 text-left transition-all focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] cursor-pointer"
                     aria-haspopup="true"
                     aria-expanded={isUserDropdownOpen}
                   >
-                    <Avatar
-                      src={currentUser.avatar}
-                      name={currentUser.name}
+                    {/* <Avatar
+                      src={user.image}
+                      name={user.name}
                       className="h-7 w-7 text-xs"
-                      isBordered
+                      // isBordered
                       color="primary"
-                    />
+                      /> */}
+
                     <span className="hidden text-sm font-medium tracking-wide text-foreground/90 desktop:block">
-                      {currentUser.name}
+                      {`Hi, ${user.name.split(' ')[0]}`}
                     </span>
+                    <Avatar>
+                      <Avatar.Image
+                        src={user?.image || ''}
+                        alt={user?.name}
+                      // refererPolicy='no-referrer'
+                      />
+                      <Avatar.Fallback>
+                        {user?.name.charAt(0)}
+                        {user?.name[0]}
+                      </Avatar.Fallback>
+                    </Avatar>
+
                     <svg
-                      className={`h-4 w-4 text-foreground/40 transition-transform duration-200 ${isUserDropdownOpen ? "rotate-180" : ""
+                      className={`absolute bottom-0 right-0 h-4 w-4 text-foreground/40 transition-transform duration-300 ${isUserDropdownOpen ? "rotate-180" : ""
                         }`}
                       viewBox="0 0 24 24"
                       fill="none"
@@ -271,7 +299,7 @@ export default function Navbar() {
                         {/* Dropdown Header */}
                         <div className="px-3 py-2.5 border-b border-foreground/5 mb-1">
                           <p className="text-xs text-foreground/50">Signed in as</p>
-                          <p className="text-sm font-semibold text-foreground/90 truncate">{currentUser.email}</p>
+                          <p className="text-sm font-semibold text-foreground/90 truncate">{user.email}</p>
                         </div>
 
                         {/* Dropdown Items */}
@@ -287,7 +315,7 @@ export default function Navbar() {
                         <button
                           role="menuitem"
                           onClick={() => {
-                            setIsAuthenticated(false);
+                            handleLogOut();
                             setIsUserDropdownOpen(false);
                           }}
                           className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm text-rose-500 hover:text-rose-600 transition-colors hover:bg-rose-500/10 cursor-pointer"
@@ -345,6 +373,7 @@ export default function Navbar() {
                       height={36}
                       priority
                       className="object-cover"
+                      style={{ width: "auto", height: "auto" }}
                     />
                   </div>
                   <span className="text-lg font-bold text-foreground">BookVerse</span>
@@ -385,46 +414,54 @@ export default function Navbar() {
 
               {/* Drawer Footer Actions */}
               <div className="mt-auto border-t border-foreground/5 pt-6">
-                {!isAuthenticated ? (
+                {!user ? (
                   <div className="flex flex-col gap-3">
-                    <Button
-                      variant="bordered"
-                      fullWidth
-                      className="rounded-md border-foreground/10 bg-transparent hover:bg-foreground/5 text-foreground font-semibold py-6 transition-all"
-                      radius="md"
-                      onPress={() => {
-                        setIsAuthenticated(true);
-                        setIsMobileMenuOpen(false);
-                      }}
-                    >
-                      Log In
-                    </Button>
-                    <Button
-                      fullWidth
-                      className="rounded-md bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold py-6 shadow-lg shadow-[var(--theme-primary)]/20 transition-all"
-                      radius="md"
-                      onPress={() => {
-                        setIsAuthenticated(true);
-                        setIsMobileMenuOpen(false);
-                      }}
-                    >
-                      Register
-                    </Button>
+                    <Link href={`/auth/log-in`}>
+                      <Button
+                        variant="bordered"
+                        fullWidth
+                        className="rounded-md border-foreground/10 bg-transparent hover:bg-foreground/5 text-foreground font-semibold py-6 transition-all"
+                        radius="md"
+                        onPress={() => {
+                          // setIsAuthenticated(true);
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        Log In
+                      </Button>
+                    </Link>
+                    <Link href={`/auth/register`}>
+                      <Button
+                        fullWidth
+                        className="rounded-md bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold py-6 shadow-lg shadow-[var(--theme-primary)]/20 transition-all"
+                        radius="md"
+                        onPress={() => {
+                          // setIsAuthenticated(true);
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        Register
+                      </Button>
+                    </Link>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-4">
                     {/* User profile segment */}
                     <div className="flex items-center gap-3 px-2">
-                      <Avatar
-                        src={currentUser.avatar}
-                        name={currentUser.name}
-                        className="h-10 w-10 text-sm"
-                        isBordered
-                        color="primary"
-                      />
+                      <Avatar>
+                        <Avatar.Image
+                          src={user?.image || ''}
+                          alt={user?.name}
+                        // refererPolicy='no-referrer'
+                        />
+                        <Avatar.Fallback>
+                          {user?.name.charAt(0)}
+                          {user?.name[0]}
+                        </Avatar.Fallback>
+                      </Avatar>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-foreground truncate">{currentUser.name}</p>
-                        <p className="text-xs text-foreground/50 truncate">{currentUser.email}</p>
+                        <p className="text-sm font-bold text-foreground truncate">{user?.name}</p>
+                        <p className="text-xs text-foreground/50 truncate">{user?.email}</p>
                       </div>
                     </div>
 
@@ -441,7 +478,7 @@ export default function Navbar() {
 
                       <button
                         onClick={() => {
-                          setIsAuthenticated(false);
+                          handleLogOut();
                           setIsMobileMenuOpen(false);
                         }}
                         className="flex w-full items-center gap-3 rounded-md px-4 py-3 text-base font-semibold text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 cursor-pointer"
