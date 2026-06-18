@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "@heroui/styles"; 
 
+@source "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
+
 * {
   box-sizing: border-box;
 }
@@ -8,20 +10,27 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
-
 }
 
 :root {
-  --background: #f7f7f7;
-  --foreground: white;
+  --background: #f8fafc;
+  --foreground: #0f172a;
 
   --theme-primary: #4e67fc;
   --theme-secondary-purple: #7565f3;
   --theme-background: #070b1e;
 
-  --text-primary: #000000;
-  --text-secondary: #64748b;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
   --text-white: white;
+}
+
+.dark {
+  --background: #070b1e;
+  --foreground: #f8fafc;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
 }
 
 @theme inline {
@@ -31,6 +40,7 @@ html {
 
   --color-theme-primary: var(--theme-primary);
   --color-theme-background: var(--theme-background);
+  --color-theme-secondary-purple: var(--theme-secondary-purple);
 
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
@@ -47,11 +57,11 @@ html {
   --breakpoint-tablet: 36rem;
   /* 992px */
   --breakpoint-desktop: 62rem;
-
 }
 
 body {
-  /* background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif; */
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+
