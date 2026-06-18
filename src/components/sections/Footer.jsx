@@ -1,0 +1,190 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
+import { FaXTwitter, FaInstagram, FaFacebookF } from "react-icons/fa6";
+import Image from "next/image";
+
+export default function Footer() {
+    const currentYear = new Date().getFullYear();
+
+    const footerLinks = {
+        quickLinks: {
+            title: "Quick Links",
+            items: [
+                { label: "Home", href: "/" },
+                { label: "All Ebooks", href: "/browse" },
+                { label: "About Us", href: "/about" },
+            ],
+        },
+        support: {
+            title: "Support",
+            items: [
+                { label: "Help Center", href: "/help" },
+                { label: "How It Works", href: "/how-it-works" },
+                { label: "FAQs", href: "/faqs" },
+                { label: "Refund Policy", href: "/refund-policy" },
+            ],
+        },
+        legal: {
+            title: "Legal",
+            items: [
+                { label: "Terms & Conditions", href: "/terms" },
+                { label: "Privacy Policy", href: "/privacy" },
+            ],
+        },
+    };
+
+    return (
+        <footer className="w-full bg-[#050811] text-white border-t border-white/5">
+            {/* Top Links Section */}
+            <div className="mx-auto max-w-[1400px] py-16 px-4 tablet:px-6 desktop:px-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-6">
+
+                    {/* COLUMN 1: BRANDING & SOCIAL MEDIA MATRIX */}
+                    <div className="sm:col-span-2 lg:col-span-4 flex flex-col items-start gap-4">
+                        <div className="flex items-center gap-3">
+                            <div className="relative w-8 h-8 flex items-center justify-center">
+                                <Image
+                                    src="/book-verse-logo.png"
+                                    alt="BookVerse Logo"
+                                    width={32}
+                                    height={32}
+                                    className="object-cover"
+                                    priority
+                                />
+                            </div>
+                            <span className="text-xl font-bold tracking-tight">
+                                BookVerse
+                            </span>
+                        </div>
+
+                        <p className="text-sm text-slate-400 font-light leading-relaxed max-w-xs">
+                            A global digital library platform built for sharing, reading, publishing, and securely listing independent eBooks.
+                        </p>
+
+                        <div className="flex items-center gap-3 mt-2">
+                            <a
+                                href="https://x.com"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#050811] hover:bg-slate-200 transition-colors duration-200"
+                                aria-label="Follow us on X Twitter"
+                            >
+                                <FaXTwitter className="w-4 h-4" />
+                            </a>
+                            <a
+                                href="https://instagram.com"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#050811] hover:bg-slate-200 transition-colors duration-200"
+                                aria-label="Follow us on Instagram"
+                            >
+                                <FaInstagram className="w-4 h-4" />
+                            </a>
+                            <a
+                                href="https://facebook.com"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#050811] hover:bg-slate-200 transition-colors duration-200"
+                                aria-label="Follow us on Facebook"
+                            >
+                                <FaFacebookF className="w-3.5 h-3.5" />
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* COLUMN 2: CONTACT INFORMATION */}
+                    <div className="col-span-1 lg:col-span-3 flex flex-col items-start gap-4">
+                        <h4 className="text-sm font-bold text-white tracking-wide">
+                            Contact Info
+                        </h4>
+                        <div className="flex flex-col gap-3.5 text-sm text-slate-400 font-light mt-1 w-full">
+                            <a
+                                href="mailto:support@bookverse.com"
+                                className="flex items-center gap-3 hover:text-white transition-colors duration-200 w-full min-w-0"
+                            >
+                                <FiMail className="w-4 h-4 text-slate-400 shrink-0" />
+                                <span className="truncate">support@bookverse.com</span>
+                            </a>
+                            <a
+                                href="tel:+8801234567890"
+                                className="flex items-center gap-3 hover:text-white transition-colors duration-200"
+                            >
+                                <FiPhone className="w-4 h-4 text-slate-400 shrink-0" />
+                                <span>+880 1234-567890</span>
+                            </a>
+                            <div className="flex items-start gap-3">
+                                <FiMapPin className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
+                                <span className="leading-tight">45 Library Lane, Shahbagh, Dhaka</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* COLUMN 3: QUICK LINKS */}
+                    <div className="col-span-1 lg:col-span-2 flex flex-col items-start gap-4">
+                        <h4 className="text-sm font-bold text-white tracking-wide">
+                            {footerLinks.quickLinks.title}
+                        </h4>
+                        <nav className="flex flex-col gap-3 text-sm text-slate-400 font-light mt-1" aria-label="Quick Links Navigation">
+                            {footerLinks.quickLinks.items.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className="hover:text-white transition-colors duration-200"
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </nav>
+                    </div>
+
+                    {/* COLUMN 4: PLATFORM SUPPORT */}
+                    <div className="col-span-1 lg:col-span-2 flex flex-col items-start gap-4">
+                        <h4 className="text-sm font-bold text-white tracking-wide">
+                            {footerLinks.support.title}
+                        </h4>
+                        <nav className="flex flex-col gap-3 text-sm text-slate-400 font-light mt-1" aria-label="Support Navigation">
+                            {footerLinks.support.items.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className="hover:text-white transition-colors duration-200"
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </nav>
+                    </div>
+
+                    {/* COLUMN 5: LEGAL COMPLIANCE */}
+                    <div className="col-span-1 lg:col-span-1 flex flex-col items-start gap-4 min-w-[140px]">
+                        <h4 className="text-sm font-bold text-white tracking-wide">
+                            {footerLinks.legal.title}
+                        </h4>
+                        <nav className="flex flex-col gap-3 text-sm text-slate-400 font-light mt-1" aria-label="Legal Navigation">
+                            {footerLinks.legal.items.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className="hover:text-white transition-colors duration-200"
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+
+            {/* NEW: Bottom Copyright Sub-bar matching image exactly */}
+            <div className="w-full bg-[#03050a] border-t border-white/[0.03] py-4 text-center">
+                <p className="text-xs text-slate-500 font-light tracking-wide">
+                    © {currentYear} BookVerse. All rights reserved.
+                </p>
+            </div>
+        </footer>
+    );
+}

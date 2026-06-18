@@ -1,9 +1,10 @@
-// import dns from 'node:dns';
-// dns.setServers(['8.8.8.8', '8.8.4.4']);
+import dns from 'node:dns';
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/sections/NavBar";
+import Footer from '@/components/sections/Footer';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
         <main className="flex-1 flex flex-col">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );
