@@ -7,6 +7,15 @@ import { jwt } from "better-auth/plugins";
 const client = new MongoClient(process.env.MONGODB_URI);
 const db = client.db('BookVerse');
 export const auth = betterAuth({
+    user: {
+        additionalFields: {
+            role: {
+                required: true,      // Set to true if field cannot be null
+                default: "reader", // Optional: fallback database state
+                // input: true,          // Allows client-side signUp methods to pass this field
+            },
+        },
+    },
     emailAndPassword: {
         enabled: true,
     },
@@ -33,7 +42,8 @@ export const auth = betterAuth({
 
     plugins: [
         jwt()
-    ]
+    ],
+
 
 
 });
