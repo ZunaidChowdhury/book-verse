@@ -14,6 +14,7 @@ import {
 import { SlPeople } from "react-icons/sl";
 import { LuBookOpen } from "react-icons/lu";
 import { IoPersonOutline } from "react-icons/io5";
+import Image from "next/image";
 
 export default function HeroSection() {
 
@@ -129,7 +130,13 @@ export default function HeroSection() {
                     {/* ==========================================
               RIGHT COLUMN: ISOLATED ARTWORK SCENE
              ========================================== */}
-
+             <div>
+                <Image
+                src='/hero-1.png'
+                alt=''
+                width={800}
+                height={800} />
+             </div>
 
 
                 </div>
