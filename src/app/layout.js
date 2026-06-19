@@ -1,10 +1,14 @@
-import dns from 'node:dns';
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+// import dns from 'node:dns';
+// dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Bounce, ToastContainer } from "react-toastify";
+
+
 import Navbar from "@/components/sections/NavBar";
 import Footer from '@/components/sections/Footer';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +28,8 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default  function RootLayout({ children }) {
+
   return (
     <html
       lang="en"
@@ -36,6 +41,20 @@ export default function RootLayout({ children }) {
           {children}
         </main>
         <Footer />
+        <ToastContainer
+          position="top-center"
+          autoClose={3500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition={Bounce}
+        />
+
       </body>
     </html>
   );
