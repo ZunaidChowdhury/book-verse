@@ -17,6 +17,11 @@ export const { signIn, signUp, signOut, useSession } = createAuthClient()
 export const googleSignIn = async () => {
     await authClient.signIn.social({
         provider: "google",
+        // Where returning users go right after authorization
+        // callbackURL: `/auth/user/preference`,
+
+        // NEW: Where brand new Google accounts are redirected
+        // newUserCallbackURL: `/auth/user/preference`,
     });
 };
 

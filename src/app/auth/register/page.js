@@ -4,7 +4,6 @@ import React, { useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import { Button, TextField, Label, Input } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
-import { FiBook, FiEdit2 } from "react-icons/fi";
 import {
   Eye,
   EyeSlash,
