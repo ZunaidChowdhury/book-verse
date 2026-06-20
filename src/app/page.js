@@ -5,6 +5,7 @@ import { getFeaturedBooks } from "@/lib/api/books";
 import { getProtectedMessage } from "@/lib/data";
 import { Button } from "@heroui/react";
 import Image from "next/image";
+import FeaturedBooks from "../components/sections/FeaturedBooks";
 
 
 export default async function Home() {
@@ -15,7 +16,7 @@ export default async function Home() {
   return (
     <div>
       <Slider slides={[Slide1, Slide2]} />
-
+      <FeaturedBooks featuredBooks={featuredBooks} />
 
       {/* <Image
       src='/design.png'
