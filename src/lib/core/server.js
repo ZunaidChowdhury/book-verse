@@ -13,6 +13,7 @@ export const authHeader = async () => {
 }
 
 export const serverFetch = async (path) => {
+    console.log(`${baseUrl}/api${path}`)
     const res = await fetch(`${baseUrl}/api${path}`);
     
     return handleStatusCode(res);
