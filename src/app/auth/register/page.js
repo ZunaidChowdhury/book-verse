@@ -500,9 +500,7 @@ export default function RegisterPage() {
         <p className="mt-5 text-center text-sm text-foreground/50">
           Have an account?{" "}
           <Link
-            href={`/auth/log-in?redirect=${encodeURIComponent(
-              redirectTo
-            )}`}
+            href={`/auth/log-in`}
             className="text-[var(--theme-primary)] hover:underline font-semibold transition-all duration-150"
           >
             Log in
