@@ -12,11 +12,14 @@ import {
 } from "@gravity-ui/icons";
 
 import { authClient, googleSignIn } from '@/lib/auth-client';
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LogInPage() {
 
   const router = useRouter();
+  const sp = useSearchParams();
+
+  const redirectTo = sp?.get("redirect") || "/";
 
   const [form, setForm] = useState({
     email: "",
@@ -68,7 +71,7 @@ export default function LogInPage() {
     if (data) {
       // toast.success("Login successful!", { autoClose: 3000, });
       // console.log('log in success, user: ', data)
-      router.push('/');
+      router.push(redirectTo);
     }
 
     if (authError) {
@@ -213,7 +216,9 @@ export default function LogInPage() {
         <p className="mt-6 text-center text-sm text-foreground/50">
           Don't have an account?{" "}
           <Link
-            href="/auth/register"
+            href={`/auth/register?redirect=${encodeURIComponent(
+                                redirectTo
+                            )}`}
             className="text-[var(--theme-primary)] hover:underline font-semibold transition-all duration-150"
           >
             Create one
