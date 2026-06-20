@@ -12,9 +12,15 @@ export const authHeader = async () => {
     return header;
 }
 
+export const serverFetch = async (path) => {
+    const res = await fetch(`${baseUrl}/api${path}`);
+    
+    return handleStatusCode(res);
+}
+
 export const serverMutation = async (path, data, method = 'POST') => {
     // console.log('serverMutation 1, data: ', data)
-    const res = await fetch(`${baseUrl}${path}`, {
+    const res = await fetch(`${baseUrl}/api/${path}`, {
         method: method,
         headers: {
             'Content-Type': 'application/json',
