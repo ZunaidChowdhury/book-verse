@@ -10,6 +10,10 @@ import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 
 export default function Navbar() {
+  const { data } = authClient.useSession()
+  const user = data?.user;
+  // console.log('user: ', user)
+
   const router = useRouter()
   const pathname = usePathname();
 
@@ -27,12 +31,25 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Browse Ebooks", href: "/browse" },
-    { name: "Dashboard", href: "/dashboard" },
+    // { name: "Dashboard", href: "/dashboard" },
   ];
 
-  const { data } = authClient.useSession()
-  const user = data?.user;
-  // console.log('user: ', user)
+  const dashboardLinks = {
+    admin: '/dashboard/admin',
+    writer: '/dashboard/writer',
+    reader: '/dashboard/reader',
+  }
+
+  if (user?.email) {
+    navLinks.push(
+      {
+        name: 'Dashboard',
+        href: dashboardLinks[user?.role || 'reader']
+      }
+    )
+  }
+
+
 
   // Initialize Theme on Mount
   useEffect(() => {

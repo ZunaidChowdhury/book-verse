@@ -18,7 +18,7 @@ import {
 } from "@gravity-ui/icons";
 
 import { authClient, googleSignIn } from '@/lib/auth-client';
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useUploadThing } from "@/lib/uploadthing";
 import { BiBookReader } from "react-icons/bi";
 import { FaRegPenToSquare } from "react-icons/fa6";
@@ -171,6 +171,10 @@ export default function RegisterPage() {
 
   const router = useRouter();
 
+  const sp = useSearchParams();
+
+  const redirectTo = sp?.get("redirect") || "/";
+
   const [form, setForm] = useState({
     fullName: "",
     profileImage: null,
@@ -234,7 +238,7 @@ export default function RegisterPage() {
       return;
     }
     console.log("Successfully validated and submitted:", form);
-    
+
     // submit logic here
     const { fullName, email, profileImageUrl, password, role } = form;
 
@@ -251,7 +255,7 @@ export default function RegisterPage() {
       setErrors({});
       await authClient.signOut();
       // console.log('register success, user: ', data)
-      router.push('/auth/log-in');
+      router.push(redirectTo);
     }
 
     if (authError) {
@@ -389,11 +393,10 @@ export default function RegisterPage() {
 
           {/* Password strength checker — full width, below both password fields */}
           {form.password.length > 0 && (
-            <div className={`flex flex-col sm:flex-row sm:items-center sm:gap-6 gap-1.5 rounded-md border px-4 py-3 transition-all duration-300 ${
-              allRulesPassed
-                ? "border-emerald-500/30 bg-emerald-500/5"
-                : "border-foreground/5 bg-foreground/[0.02]"
-            }`}>
+            <div className={`flex flex-col sm:flex-row sm:items-center sm:gap-6 gap-1.5 rounded-md border px-4 py-3 transition-all duration-300 ${allRulesPassed
+              ? "border-emerald-500/30 bg-emerald-500/5"
+              : "border-foreground/5 bg-foreground/[0.02]"
+              }`}>
               {allRulesPassed ? (
                 <div className="flex items-center gap-2">
                   <CircleCheckFill className="text-emerald-500 shrink-0" width={16} height={16} />
@@ -459,8 +462,8 @@ export default function RegisterPage() {
             <span className="text-foreground/80 text-sm font-medium">I&apos;m a</span>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { value: "reader", label: "Reader", Icon: LiaBookReaderSolid   },
-                { value: "writer", label: "Writer", Icon: FaRegPenToSquare  },
+                { value: "reader", label: "Reader", Icon: LiaBookReaderSolid },
+                { value: "writer", label: "Writer", Icon: FaRegPenToSquare },
               ].map(({ value, label, Icon }) => {
                 const isSelected = form.role === value;
                 return (
@@ -469,10 +472,9 @@ export default function RegisterPage() {
                     type="button"
                     onClick={() => handleChange("role", value)}
                     className={`flex flex-col items-center justify-center gap-2.5 h-20 w-full rounded-xl border-2 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-primary)]/50 cursor-pointer
-                      ${
-                        isSelected
-                          ? "border-[var(--theme-primary)] bg-[var(--theme-primary)]/8 text-[var(--theme-primary)] shadow-md shadow-[var(--theme-primary)]/10"
-                          : "border-foreground/10 bg-foreground/[0.03] text-foreground/40 hover:border-[var(--theme-primary)]/40 hover:bg-[var(--theme-primary)]/5 hover:text-[var(--theme-primary)]/60"
+                      ${isSelected
+                        ? "border-[var(--theme-primary)] bg-[var(--theme-primary)]/8 text-[var(--theme-primary)] shadow-md shadow-[var(--theme-primary)]/10"
+                        : "border-foreground/10 bg-foreground/[0.03] text-foreground/40 hover:border-[var(--theme-primary)]/40 hover:bg-[var(--theme-primary)]/5 hover:text-[var(--theme-primary)]/60"
                       }`}
                   >
                     <Icon size={22} strokeWidth={isSelected ? 2.5 : 1.8} />
@@ -498,7 +500,9 @@ export default function RegisterPage() {
         <p className="mt-5 text-center text-sm text-foreground/50">
           Have an account?{" "}
           <Link
-            href="/auth/log-in"
+            href={`/auth/log-in?redirect=${encodeURIComponent(
+              redirectTo
+            )}`}
             className="text-[var(--theme-primary)] hover:underline font-semibold transition-all duration-150"
           >
             Log in
