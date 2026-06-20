@@ -5,12 +5,12 @@ import { serverMutation } from "../core/server";
 import { redirect } from "next/navigation";
 import { getUser } from "../core/session";
 
-export const updateUserRole = async (data) => {
+export const updateUserRole = async (updateData) => {
     const user = await getUser();
     if (!user) {
         redirect('/unauthorized');
     }
-    const result = serverMutation(`/user/preference`, data, 'PATCH');
+    const result = serverMutation(`/user/preference`, updateData, 'PATCH');
 
     await result;
     if (result.modifiedCount > 0) {

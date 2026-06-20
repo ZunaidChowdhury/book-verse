@@ -16,4 +16,18 @@ export const ourFileRouter = {
       console.log("file url", file.url);
       return { uploadedBy: "Server", url: file.url };
     }),
+
+  bookCover: f({
+    image: { maxFileSize: "5MB", maxFileCount: 1 },
+  })
+    .middleware(async () => {
+      // This code runs on your server before upload
+      return {};
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      // This code RUNS ON YOUR SERVER after upload
+      console.log("Book cover upload complete:", metadata);
+      console.log("file url", file.url);
+      return { uploadedBy: "Server", url: file.url };
+    }),
 };
