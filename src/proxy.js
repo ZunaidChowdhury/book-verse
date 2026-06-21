@@ -22,8 +22,8 @@ export async function proxy(request) {
     // --- STRATEGY A: THE GUEST ROUTING GUARD ---
     // Target your protected routes (e.g., /all-facilities or deep nested panels)
     // private routes [only authenticated users]
-    const isProtectedRoute = pathname.startsWith("/browse") ||
-                             pathname.startsWith("/user/preference");
+    const isProtectedRoute = pathname.startsWith("/dashboard") ||
+                             pathname.startsWith("/user");
     // pathname.startsWith("/auth/register") ||
 
     if (isProtectedRoute && !session) {

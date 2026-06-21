@@ -4,8 +4,9 @@ import React, { useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SearchBar from './SearchBar';
 import FiltersSidebar from './FiltersSidebar';
+import Pagination from './Pagination';
 
-export default function BooksFilterLayout({ children }) {
+export default function BooksFilterLayout({ children, pagination }) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
@@ -21,45 +22,68 @@ export default function BooksFilterLayout({ children }) {
     const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '0');
     const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '1000');
     const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'newest');
+    const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 1);
 
     // Handle search
     const handleSearch = () => {
-        applyFilters();
+        setCurrentPage(1);
+        applyFilters(1);
+    };
+
+    // Build URL with all params including pagination
+    const buildUrl = (page = 1) => {
+        const params = new URLSearchParams();
+
+        // Add search param
+        if (searchQuery.trim()) {
+            params.set('search', searchQuery.trim());
+        }
+
+        // Add genres param
+        if (selectedGenres.size > 0) {
+            params.set('genres', Array.from(selectedGenres).join(','));
+        }
+
+        // Add availability param
+        if (selectedAvailability && selectedAvailability !== 'all') {
+            params.set('availability', selectedAvailability);
+        }
+
+        // Add price range params
+        const min = parseInt(minPrice) || 0;
+        const max = parseInt(maxPrice) || 1000;
+        if (min > 0) params.set('minPrice', min.toString());
+        if (max < 1000) params.set('maxPrice', max.toString());
+
+        // Add sort param
+        if (sortBy && sortBy !== 'newest') {
+            params.set('sort', sortBy);
+        }
+
+        // Add pagination
+        if (page > 1) {
+            params.set('page', page.toString());
+        }
+        params.set('limit', '9');
+
+        return `/books?${params.toString()}`;
     };
 
     // Build and apply filters
-    const applyFilters = () => {
+    const applyFilters = (pageNum = 1) => {
         startTransition(() => {
-            const params = new URLSearchParams();
-
-            // Add search param
-            if (searchQuery.trim()) {
-                params.set('search', searchQuery.trim());
-            }
-
-            // Add genres param
-            if (selectedGenres.size > 0) {
-                params.set('genres', Array.from(selectedGenres).join(','));
-            }
-
-            // Add availability param
-            if (selectedAvailability && selectedAvailability !== 'all') {
-                params.set('availability', selectedAvailability);
-            }
-
-            // Add price range params
-            const min = parseInt(minPrice) || 0;
-            const max = parseInt(maxPrice) || 1000;
-            if (min > 0) params.set('minPrice', min.toString());
-            if (max < 1000) params.set('maxPrice', max.toString());
-
-            // Add sort param
-            if (sortBy && sortBy !== 'newest') {
-                params.set('sort', sortBy);
-            }
-
-            router.push(`/books?${params.toString()}`);
+            router.push(buildUrl(pageNum));
         });
+    };
+
+    // Handle page change
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= (pagination?.totalPages || 1)) {
+            setCurrentPage(newPage);
+            startTransition(() => {
+                router.push(buildUrl(newPage));
+            });
+        }
     };
 
     // Clear all filters
@@ -71,6 +95,7 @@ export default function BooksFilterLayout({ children }) {
             setMinPrice('0');
             setMaxPrice('1000');
             setSortBy('newest');
+            setCurrentPage(1);
             router.push('/books');
         });
     };
@@ -109,15 +134,27 @@ export default function BooksFilterLayout({ children }) {
                     onMaxPriceChange={setMaxPrice}
                     sortBy={sortBy}
                     onSortChange={setSortBy}
-                    onApplyFilters={applyFilters}
+                    onApplyFilters={() => applyFilters(1)}
                     onClearFilters={clearFilters}
                     hasActiveFilters={hasActiveFilters}
                     isPending={isPending}
                 />
 
                 {/* Books Grid */}
-                <div className="lg:col-span-3">
+                <div className="lg:col-span-3 space-y-8">
                     {children}
+
+                    {/* Pagination */}
+                    {pagination && (
+                        <Pagination
+                            currentPage={pagination.currentPage}
+                            totalPages={pagination.totalPages}
+                            totalBooks={pagination.totalBooks}
+                            limit={pagination.limit}
+                            onPageChange={handlePageChange}
+                            isPending={isPending}
+                        />
+                    )}
                 </div>
             </div>
         </div>
