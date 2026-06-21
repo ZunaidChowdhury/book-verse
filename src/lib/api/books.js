@@ -54,3 +54,7 @@ export const getBooks = async (params = {}) => {
         }
     };
 }
+
+export const getBookById = async (bookId) => {
+    return serverFetch(`/books/${bookId}`);
+}
