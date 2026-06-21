@@ -15,9 +15,11 @@ const BooksPage = async ({ searchParams }) => {
         minPrice: sp.minPrice || '0',
         maxPrice: sp.maxPrice || '1000',
         sort: sp.sort || 'newest',
+        page: sp.page || '1',
+        limit: '9',
     };
 
-    const books = await getBooks(apiParams);
+    const { books, pagination } = await getBooks(apiParams);
 
     return (
         <div className='py-12 tablet:py-20'>
@@ -28,7 +30,7 @@ const BooksPage = async ({ searchParams }) => {
                     classNames='pb-10' />
 
                 {/* Books Filter Layout */}
-                <BooksFilterLayout>
+                <BooksFilterLayout pagination={pagination}>
                     {/* Book Grid */}
                     {
                         books && (

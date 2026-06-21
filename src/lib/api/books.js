@@ -28,9 +28,29 @@ export const getBooks = async (params = {}) => {
     if (params.sort) {
         queryParams.set('sort', params.sort);
     }
+    // Add pagination params
+    if (params.page) {
+        queryParams.set('page', params.page);
+    }
+    if (params.limit) {
+        queryParams.set('limit', params.limit);
+    }
 
     const queryString = queryParams.toString();
     const path = queryString ? `/books?${queryString}` : '/books';
 
-    return serverFetch(path);
+    const response = await serverFetch(path);
+    
+    // Return both books and pagination metadata
+    return {
+        books: response.books || response,
+        pagination: response.pagination || {
+            currentPage: 1,
+            totalPages: 1,
+            totalBooks: (response.books || response).length,
+            limit: params.limit || 9,
+            hasNextPage: false,
+            hasPrevPage: false
+        }
+    };
 }
