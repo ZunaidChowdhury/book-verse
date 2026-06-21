@@ -11,6 +11,7 @@ import {
     FaHistory
 } from 'react-icons/fa';
 import { getBookById } from '@/lib/api/books';
+import PurchaseButton from '@/components/PurchaseButton';
 
 
 const BookDetailsPage = async ({ params }) => {
@@ -110,12 +111,14 @@ const BookDetailsPage = async ({ params }) => {
                                 </div>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-3">
-                                <Button
-                                    className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-8 py-6 rounded-xl shadow-lg shadow-purple-900/30 border border-purple-500/30 transition-all transform active:scale-98"
-                                    startContent={<FaShoppingBag className="text-lg" />}
-                                >
-                                    Purchase for ${book.price}
-                                </Button>
+                                {/* <form action="/api/checkout_sessions" method="POST">
+                                    <section>
+                                        <button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-8 py-6 rounded-xl shadow-lg shadow-purple-900/30 border border-purple-500/30 transition-all transform active:scale-98" type="submit" role="link">
+                                            <FaShoppingBag className="text-lg" /> Purchase for ${book.price}
+                                        </button>
+                                    </section>
+                                </form>  */}
+                                <PurchaseButton book={book} />
                             </div>
                         </div>
 
