@@ -30,7 +30,7 @@ export default function Navbar() {
   // Navigation Links config
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Browse Ebooks", href: "/browse" },
+    { name: "Browse Ebooks", href: "/books" },
     // { name: "Dashboard", href: "/dashboard" },
   ];
 
