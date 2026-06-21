@@ -149,9 +149,8 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
         visibility: 'visible',
         genres: [],
         totalPages: '',
-        publisher: '',
         yearOfPublishing: '',
-        author: user?.email,
+        author: user?.name || '',
     })
 
     const [error, setError] = useState(null)
@@ -175,9 +174,8 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                 visibility: book.visibility || 'visible',
                 genres: book.genres || [],
                 totalPages: book.totalPages || '',
-                publisher: book.publisher || '',
                 yearOfPublishing: book.yearOfPublishing || '',
-                author: user?.email,
+                author: book.author || '',
             })
             if (book.image) {
                 setImagePreview(book.image)
@@ -308,9 +306,8 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                     visibility: 'visible',
                     genres: [],
                     totalPages: '',
-                    publisher: '',
                     yearOfPublishing: '',
-                    author: user?.email,
+                    author: user?.author,
                 })
                 setImagePreview(null)
             }
@@ -392,17 +389,17 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                                 />
                             </div>
 
-                            {/* Publisher */}
+                            {/* Author */}
                             <div>
                                 <label className={`block text-sm font-semibold mb-2 ${labelTextClass}`}>
-                                    Publisher
+                                    Author
                                 </label>
                                 <input
                                     type="text"
-                                    name="publisher"
-                                    value={formData.publisher}
+                                    name="author"
+                                    value={formData.author}
                                     onChange={handleChange}
-                                    placeholder="Publisher name"
+                                    placeholder="Author name"
                                     className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
                                 />
                             </div>
