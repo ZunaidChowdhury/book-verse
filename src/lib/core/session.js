@@ -14,11 +14,15 @@ export const getUser = async () => {
 }
 
 export const getUserToken = async () => {
-    const { token } = await auth.api.getToken({
-        headers: await headers()
-    })
-
-    return token || null;
+    try {
+        const { token } = await auth.api.getToken({
+            headers: await headers()
+        })
+        return token || null;
+    } catch (error) {
+        // User not authenticated, return null
+        return null;
+    }
 }
 
 export const requireRole = async (role) => {
