@@ -14,7 +14,7 @@ html {
 
 :root[data-theme="light"] {
   --background: #f8fafc;
-  --foreground: #0f172a;
+  --foreground: #3b3b3b;
 
   --theme-primary: #4e67fc;
   --theme-secondary-purple: #7565f3;
@@ -22,19 +22,19 @@ html {
 
   --text-primary: #0f172a;
   --text-secondary: #475569;
-  --text-white: white;
+  --text-white: rgb(206, 0, 0);
 }
 
 :root[data-theme="dark"] {
   --background: #121212;
-  --foreground: #0f172a;
+  --foreground: #e0e0e0;
 
   --theme-primary: #4e67fc;
   --theme-secondary-purple: #7565f3;
   --theme-background: #070b1e;
 
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
+  --text-primary: #f7f7f7;
+  --text-secondary: #64748b;
   --text-white: white;
 }
 

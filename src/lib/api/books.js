@@ -1,4 +1,4 @@
-import { serverFetch } from "../core/server";
+import { serverFetch, serverMutation, authHeader } from "../core/server";
 
 const baseUrl = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
@@ -57,4 +57,17 @@ export const getBooks = async (params = {}) => {
 
 export const getBookById = async (bookId) => {
     return serverFetch(`/books/${bookId}`);
+}
+
+// Writer Dashboard API Functions
+export const getWriterBooks = async () => {
+    return serverFetch(`/writer/my-books`);
+}
+
+export const getWishlist = async () => {
+    return serverFetch(`/wishlist`);
+}
+
+export const getSalesHistory = async () => {
+    return serverFetch(`/writer/sales-history`);
 }

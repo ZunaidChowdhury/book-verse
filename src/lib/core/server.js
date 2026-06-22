@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { getUserToken } from "./session";
 
 const baseUrl = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
@@ -13,14 +14,18 @@ export const authHeader = async () => {
 }
 
 export const serverFetch = async (path) => {
-    console.log(`${baseUrl}/api${path}`)
-    const res = await fetch(`${baseUrl}/api${path}`);
+    console.log('client/serverFetch/ path: ', path)
+    const res = await fetch(`${baseUrl}/api${path}`, {
+        headers: {
+            ... await authHeader()
+        },
+    });
     
     return handleStatusCode(res);
 }
 
 export const serverMutation = async (path, data, method = 'POST') => {
-    console.log(`serverMutation 1, path: ${path}, data: `, data)
+    console.log(`client/serverMutation/path: ${path}, data: ${data}, method: ${method}`)
     const res = await fetch(`${baseUrl}/api${path}`, {
         method: method,
         headers: {

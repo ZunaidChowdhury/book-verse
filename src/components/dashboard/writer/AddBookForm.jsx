@@ -150,7 +150,7 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
         genres: [],
         totalPages: '',
         yearOfPublishing: '',
-        author: user?.name || '',
+        writerName: user?.name || '',
     })
 
     const [error, setError] = useState(null)
@@ -175,7 +175,7 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                 genres: book.genres || [],
                 totalPages: book.totalPages || '',
                 yearOfPublishing: book.yearOfPublishing || '',
-                author: book.author || '',
+                writerName: book.writerName || '',
             })
             if (book.image) {
                 setImagePreview(book.image)
@@ -307,7 +307,7 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                     genres: [],
                     totalPages: '',
                     yearOfPublishing: '',
-                    author: user?.author,
+                    writerName: user?.name || '',
                 })
                 setImagePreview(null)
             }
@@ -389,17 +389,17 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                                 />
                             </div>
 
-                            {/* Author */}
+                            {/* Writer Name */}
                             <div>
                                 <label className={`block text-sm font-semibold mb-2 ${labelTextClass}`}>
-                                    Author
+                                    Writer Name
                                 </label>
                                 <input
                                     type="text"
-                                    name="author"
-                                    value={formData.author}
+                                    name="writerName"
+                                    value={formData.writerName}
                                     onChange={handleChange}
-                                    placeholder="Author name"
+                                    placeholder="Writer name"
                                     className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
                                 />
                             </div>

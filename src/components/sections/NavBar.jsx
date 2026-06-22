@@ -17,7 +17,7 @@ import { toggleTheme } from "@/redux/slices/themeSlice";
 export default function Navbar() {
   const { mode } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
-  console.log('redux theme state: ', mode)
+  // console.log('redux theme state: ', mode)
 
   const { data } = authClient.useSession()
   const user = data?.user;
@@ -174,7 +174,7 @@ export default function Navbar() {
                     style={{ width: "auto", height: "auto" }}
                   />
                 </div>
-                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-xl font-bold tracking-tight text-transparent">
+                <span className="bg-gradient-to-r from-text-primary via-text-primary/90 to-text-primary/70 bg-clip-text text-xl font-bold tracking-tight text-transparent">
                   BookVerse
                 </span>
               </Link>
@@ -188,7 +188,7 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 rounded-md focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] ${isActive ? "text-[var(--theme-primary)] font-semibold" : "text-foreground/60 hover:text-foreground"
+                    className={`relative px-4 py-2 text-base font-medium tracking-wide transition-colors duration-200 rounded-md focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] ${isActive ? "text-[var(--theme-primary)] font-semibold" : "text-text-primary/60 hover:text-theme-primary"
                       }`}
                   >
                     {link.name}
@@ -210,7 +210,7 @@ export default function Navbar() {
               <Tooltip content={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
                 <button
                   onClick={() => dispatch(toggleTheme())}
-                  className="flex h-9 w-9 items-center justify-center rounded-md border border-foreground/5 bg-foreground/5 text-foreground/70 transition-all hover:bg-foreground/10 hover:text-foreground focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] "
+                  className="flex h-9 w-9 items-center justify-center rounded-md border border-text-primary/5 bg-text-primary/5 text-text-primary/70 transition-all hover:bg-text-primary/10 hover:text-text-primary focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] "
                   aria-label="Toggle visual theme preference"
                 >
                   <AnimatePresence mode="wait">
@@ -246,7 +246,7 @@ export default function Navbar() {
                   <Link href={`/auth/log-in`}>
                     <Button
                       variant="light"
-                      className="border border-foreground/10 bg-transparent hover:bg-foreground/5 text-foreground/80 hover:text-foreground font-medium text-sm transition-all rounded-md"
+                      className="border border-text-primary/10 bg-transparent hover:bg-text-primary/5 text-text-primary/80 hover:text-text-primary font-medium text-sm transition-all rounded-md"
                     // onPress={() => setIsAuthenticated(true)}
                     >
                       Log In
@@ -395,7 +395,7 @@ export default function Navbar() {
                       style={{ width: "auto", height: "auto" }}
                     />
                   </div>
-                  <span className="text-lg font-bold text-foreground">BookVerse</span>
+                  <span className="text-lg font-bold bg-gradient-to-r from-text-primary via-text-primary/90 to-text-primary/70 bg-clip-text text-transparent">BookVerse</span>
                 </Link>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}

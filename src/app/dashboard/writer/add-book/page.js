@@ -13,7 +13,7 @@ const AddBookPage = () => {
             // TODO: Implement API call to save book
             const res = await createBook(bookData)
             toast.success('Book added successfully');
-            router.push('/dashboard/writer')
+            router.push('/dashboard/writer/manage-books')
 
         } catch (error) {
             console.error('Error adding book:', error)
