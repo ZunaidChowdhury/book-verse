@@ -9,7 +9,16 @@ import { Gear, ArrowRightFromSquare, Sun, Moon } from "@gravity-ui/icons";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "@/redux/slices/themeSlice";
+
+
 export default function Navbar() {
+  const { mode } = useSelector((state) => state.theme);
+  const dispatch = useDispatch();
+  console.log('redux theme state: ', mode)
+
   const { data } = authClient.useSession()
   const user = data?.user;
   // console.log('user: ', user)
@@ -53,22 +62,15 @@ export default function Navbar() {
 
   // Initialize Theme on Mount
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark");
-    setIsDarkMode(isDark);
-  }, []);
-
-  // Theme Toggler
-  const toggleTheme = () => {
-    if (document.documentElement.classList.contains("dark")) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setIsDarkMode(false);
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
+    // const isDark = document.documentElement.classList.contains("dark");
+    if(mode === 'dark') {
       setIsDarkMode(true);
+    } else {
+      setIsDarkMode(false);
     }
-  };
+  }, [mode]);
+
+
 
   const handleLogOut = async () => {
     await authClient.signOut({
@@ -207,7 +209,7 @@ export default function Navbar() {
               {/* Theme Switcher */}
               <Tooltip content={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
                 <button
-                  onClick={toggleTheme}
+                  onClick={() => dispatch(toggleTheme())}
                   className="flex h-9 w-9 items-center justify-center rounded-md border border-foreground/5 bg-foreground/5 text-foreground/70 transition-all hover:bg-foreground/10 hover:text-foreground focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] "
                   aria-label="Toggle visual theme preference"
                 >

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "@heroui/styles"; 
+@import "@heroui/styles";
 
 @source "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
 
@@ -12,7 +12,7 @@ html {
   scroll-behavior: smooth;
 }
 
-:root {
+:root[data-theme="light"] {
   --background: #f8fafc;
   --foreground: #0f172a;
 
@@ -25,13 +25,19 @@ html {
   --text-white: white;
 }
 
-.dark {
-  --background: #070b1e;
-  --foreground: #f8fafc;
+:root[data-theme="dark"] {
+  --background: #121212;
+  --foreground: #0f172a;
 
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
+  --theme-primary: #4e67fc;
+  --theme-secondary-purple: #7565f3;
+  --theme-background: #070b1e;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-white: white;
 }
+
 
 @theme inline {
   /* colors */
@@ -62,6 +68,5 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.3s ease;
 }
-
