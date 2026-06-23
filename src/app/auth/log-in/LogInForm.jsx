@@ -51,6 +51,17 @@ export default function LogInForm() {
         return newErrors;
     }
 
+    async function handleGoogleSignIn() {
+        try {
+            await googleSignIn();
+            // AuthInitializer will automatically sync the session to Redux
+            // No need to manually fetch and dispatch user data
+        } catch (error) {
+            console.error('Google sign-in failed:', error);
+            setErrors({ form: error?.message || "Google sign-in failed" });
+        }
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
         const validationErrors = validate();
@@ -69,8 +80,8 @@ export default function LogInForm() {
         });
 
         if (data) {
-            // toast.success("Login successful!", { autoClose: 3000, });
-            // console.log('log in success, user: ', data)
+            // AuthInitializer will automatically sync the session to Redux
+            // Just redirect to the intended page
             router.push(redirectTo);
         }
 
@@ -110,7 +121,7 @@ export default function LogInForm() {
                     variant="bordered"
                     fullWidth
                     className="border border-foreground/15 dark:border-white/15 bg-transparent hover:bg-foreground/5 text-foreground/80 hover:text-foreground font-semibold h-11 rounded-md transition-all duration-200"
-                    onClick={() => { googleSignIn() }}
+                    onClick={handleGoogleSignIn}
                 >
                     <FcGoogle size={24} />
                     Continue with Google

@@ -12,6 +12,7 @@ import {
 } from 'react-icons/fa';
 import { getBookById } from '@/lib/api/books';
 import PurchaseButton from '@/components/PurchaseButton';
+import BookDetailsActions from '@/components/BookDetailsActions';
 
 
 const BookDetailsPage = async ({ params }) => {
@@ -119,6 +120,7 @@ const BookDetailsPage = async ({ params }) => {
                                     </section>
                                 </form>  */}
                                 <PurchaseButton book={book} />
+                                <BookDetailsActions bookId={book._id} />
                             </div>
                         </div>
 

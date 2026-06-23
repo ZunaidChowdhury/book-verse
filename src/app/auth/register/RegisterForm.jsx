@@ -230,6 +230,17 @@ export default function RegisterForm() {
     return newErrors;
   }
 
+  async function handleGoogleSignUp() {
+    try {
+      await googleSignIn();
+      // AuthInitializer will automatically sync the session to Redux
+      // No need to manually handle redirect - better-auth handles it
+    } catch (error) {
+      console.error('Google sign-up failed:', error);
+      setErrors({ form: error?.message || "Google sign-up failed" });
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     const validationErrors = validate();
@@ -292,7 +303,7 @@ export default function RegisterForm() {
           variant="bordered"
           fullWidth
           className="border border-foreground/15 dark:border-white/15 bg-transparent hover:bg-foreground/5 text-foreground/80 hover:text-foreground font-semibold h-11 rounded-md transition-all duration-200 mb-6"
-          onClick={() => { googleSignIn() }}
+          onClick={handleGoogleSignUp}
         >
           <FcGoogle size={22} />
           Continue with Google

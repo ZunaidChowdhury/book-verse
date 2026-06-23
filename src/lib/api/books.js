@@ -68,6 +68,21 @@ export const getWishlist = async () => {
     return serverFetch(`/wishlist`);
 }
 
+// Check if book is in user's wishlist
+export const checkIfWishlisted = async (bookId) => {
+    return serverFetch(`/wishlist/check/${bookId}`);
+}
+
+// Add book to wishlist
+export const addToWishlist = async (bookId) => {
+    return serverMutation(`/wishlist`, { bookId }, 'POST');
+}
+
+// Remove book from wishlist
+export const removeFromWishlist = async (bookId) => {
+    return serverMutation(`/wishlist/${bookId}`, {}, 'DELETE');
+}
+
 export const getSalesHistory = async () => {
     return serverFetch(`/writer/sales-history`);
 }

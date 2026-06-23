@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSelector } from 'react-redux'
 import { Button } from '@heroui/react'
 import { Trash2, Plus, Upload, ArrowUpFromLine } from 'lucide-react'
 import { authClient } from '@/lib/auth-client'
@@ -19,7 +20,7 @@ const availabilityStatuses = [
 ]
 
 // Book Image Uploader Component
-function BookImageUploader({ onUploadComplete, onUploadError, onUploadBegin, imagePreview }) {
+function BookImageUploader({ onUploadComplete, onUploadError, onUploadBegin, imagePreview, mode }) {
     const fileInputRef = useRef(null)
     const [isDragOver, setIsDragOver] = useState(false)
 
@@ -71,8 +72,8 @@ function BookImageUploader({ onUploadComplete, onUploadError, onUploadBegin, ima
             onClick={() => !isUploading && fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-lg p-8 transition-all duration-200 flex flex-col items-center justify-center gap-2 cursor-pointer select-none
                 ${isDragOver
-                    ? 'border-blue-500 bg-blue-50 scale-[1.01]'
-                    : 'border-gray-300 hover:border-gray-400 bg-white hover:bg-gray-50'
+                    ? mode === 'dark' ? 'border-theme-primary bg-theme-primary/10 scale-[1.01]' : 'border-theme-primary bg-theme-primary/10 scale-[1.01]'
+                    : mode === 'dark' ? 'border-border-dark hover:border-theme-primary bg-foreground hover:bg-foreground/80' : 'border-border-light hover:border-theme-primary bg-background hover:bg-background/80'
                 }
                 ${isUploading ? 'pointer-events-none opacity-70' : ''}
             `}
@@ -89,7 +90,7 @@ function BookImageUploader({ onUploadComplete, onUploadError, onUploadBegin, ima
             {imagePreview ? (
                 <div className="flex flex-col items-center gap-4">
                     <img src={imagePreview} alt="Book preview" className="w-32 h-48 object-cover rounded-lg" />
-                    <p className="text-sm text-gray-600">
+                    <p className={`text-sm ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
                         {isUploading ? 'Uploading...' : 'Click to change image'}
                     </p>
                 </div>
@@ -97,10 +98,10 @@ function BookImageUploader({ onUploadComplete, onUploadError, onUploadBegin, ima
                 <>
                     <div className={`transition-transform duration-200 ${isDragOver ? 'scale-110' : ''}`}>
                         <ArrowUpFromLine
-                            className={`w-8 h-8 transition-colors duration-200 ${isDragOver ? 'text-blue-500' : 'text-gray-400'}`}
+                            className={`w-8 h-8 transition-colors duration-200 ${isDragOver ? 'text-theme-primary' : mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}
                         />
                     </div>
-                    <p className={`text-sm font-medium transition-colors duration-200 ${isDragOver ? 'text-blue-500' : 'text-gray-600'}`}>
+                    <p className={`text-sm font-medium transition-colors duration-200 ${isDragOver ? 'text-theme-primary' : mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
                         {isUploading
                             ? 'Uploading...'
                             : isDragOver
@@ -119,7 +120,7 @@ function BookImageUploader({ onUploadComplete, onUploadError, onUploadBegin, ima
                             Choose File
                         </button>
                     )}
-                    <span className="text-xs text-gray-400 mt-2">Image (5MB max)</span>
+                    <span className={`text-xs ${mode === 'dark' ? 'text-text-secondary/50' : 'text-text-secondary/50'} mt-2`}>Image (5MB max)</span>
                 </>
             )}
         </div>
@@ -129,14 +130,17 @@ function BookImageUploader({ onUploadComplete, onUploadError, onUploadBegin, ima
 const AddBookForm = ({ addBook, updateBook, book }) => {
     const { data } = authClient.useSession()
     const user = data?.user;
+    const { mode } = useSelector((state) => state.theme)
 
     const router = useRouter()
     const isUpdateMode = !!book
-    const inputStyle = 'focus:outline-none focus:ring-2 focus:ring-theme-primary focus:border-transparent bg-white border-gray-300 text-gray-900 placeholder:text-gray-500'
-    const cardBorderClass = 'border-gray-300'
-    const sectionTextClass = 'text-gray-600'
-    const labelTextClass = 'text-gray-900'
-    const pageBgClass = 'bg-gray-50 text-gray-900'
+    const inputStyle = mode === 'dark' 
+        ? 'focus:outline-none focus:ring-2 focus:ring-theme-primary focus:border-transparent bg-black border-border-dark text-text-primary placeholder:text-text-secondary'
+        : 'focus:outline-none focus:ring-2 focus:ring-theme-primary focus:border-transparent bg-white border-border-light text-text-primary placeholder:text-text-secondary'
+    const cardBorderClass = mode === 'dark' ? 'border-border-dark bg-foreground' : 'border-border-light bg-background'
+    const sectionTextClass = mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'
+    const labelTextClass = mode === 'dark' ? 'text-text-primary' : 'text-text-primary'
+    const pageBgClass = mode === 'dark' ? 'bg-black text-text-primary' : 'bg-white text-text-primary'
 
     const [formData, setFormData] = useState({
         title: '',
@@ -347,7 +351,7 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
 
                 {/* Error Message */}
                 {error && (
-                    <div className="mb-6 p-4 rounded-lg border-l-4 bg-red-100 border-red-500 text-red-700">
+                    <div className={`mb-6 p-4 rounded-lg border-l-4 ${mode === 'dark' ? 'bg-red-500/20 border-red-500 text-red-400' : 'bg-red-100 border-red-500 text-red-700'}`}>
                         {error}
                     </div>
                 )}
@@ -361,10 +365,11 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                         onUploadError={handleImageUploadError}
                         onUploadBegin={handleImageUploadBegin}
                         imagePreview={imagePreview}
+                        mode={mode}
                     />
 
                     {imageUploadError && (
-                        <div className="p-4 rounded-lg bg-red-100 border-l-4 border-red-500 text-red-700">
+                        <div className={`p-4 rounded-lg border-l-4 ${mode === 'dark' ? 'bg-red-500/20 border-red-500 text-red-400' : 'bg-red-100 border-red-500 text-red-700'}`}>
                             {imageUploadError}
                         </div>
                     )}
@@ -508,13 +513,13 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                                 {formData.genres.map((genre, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-200"
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-full ${mode === 'dark' ? 'bg-theme-primary/20 text-text-primary' : 'bg-theme-primary/20 text-text-primary'}`}
                                     >
                                         <span className="text-sm font-semibold">{genre}</span>
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveGenre(index)}
-                                            className="hover:bg-gray-300 p-1 rounded-full transition"
+                                            className={`hover:opacity-70 p-1 rounded-full transition`}
                                         >
                                             <Trash2 className="w-4 h-4" />
                                         </button>
@@ -609,7 +614,7 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                         <button
                             type="button"
                             onClick={() => router.back()}
-                            className="px-8 py-3 rounded-lg font-semibold transition bg-gray-200 hover:bg-gray-300"
+                            className={`px-8 py-3 rounded-lg font-semibold transition ${mode === 'dark' ? 'bg-foreground border border-border-dark text-text-primary hover:bg-foreground/80' : 'bg-background border border-border-light text-text-primary hover:bg-background/80'}`}
                         >
                             Cancel
                         </button>

@@ -13,15 +13,13 @@ import { authClient } from "@/lib/auth-client";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "@/redux/slices/themeSlice";
 
-
 export default function Navbar() {
   const { mode } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
-  // console.log('redux theme state: ', mode)
 
-  const { data } = authClient.useSession()
-  const user = data?.user;
-  // console.log('user: ', user)
+  // Get session from better-auth
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
 
   const router = useRouter()
   const pathname = usePathname();
@@ -276,21 +274,24 @@ export default function Navbar() {
                       // isBordered
                       color="primary"
                       /> */}
+{user && (
+  <> 
+    <span className="hidden text-sm font-medium tracking-wide text-foreground/90 desktop:block">
+      {`Hi, ${user.name ? user.name.split(' ')[0] : ''}`}
+    </span>
+    <Avatar>
+      <Avatar.Image
+        src={user.image || ''}
+        alt={user.name || 'User avatar'}
+      />
+      <Avatar.Fallback>
+        {user.name?.charAt(0) || '?'}
+      </Avatar.Fallback>
+    </Avatar>
+  </>
+)}
 
-                    <span className="hidden text-sm font-medium tracking-wide text-foreground/90 desktop:block">
-                      {`Hi, ${user.name.split(' ')[0]}`}
-                    </span>
-                    <Avatar>
-                      <Avatar.Image
-                        src={user?.image || ''}
-                        alt={user?.name}
-                      // refererPolicy='no-referrer'
-                      />
-                      <Avatar.Fallback>
-                        {user?.name.charAt(0)}
-                        {user?.name[0]}
-                      </Avatar.Fallback>
-                    </Avatar>
+                    
 
                     <svg
                       className={`absolute bottom-0 right-0 h-4 w-4 text-foreground/40 transition-transform duration-300 ${isUserDropdownOpen ? "rotate-180" : ""

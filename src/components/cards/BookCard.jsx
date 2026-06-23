@@ -1,14 +1,19 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Button } from '@heroui/react';
-import { FiStar, FiArrowRight } from 'react-icons/fi';
+import { FiStar, FiArrowRight, FiHeart } from 'react-icons/fi';
+import { addToWishlist, removeFromWishlist, checkIfWishlisted } from '@/lib/api/books';
 
 const BookCard = ({ book }) => {
     if (!book) return null;
+
+    const [isWishlisted, setIsWishlisted] = useState(false);
+    const [isLoadingWishlist, setIsLoadingWishlist] = useState(false);
+    const [isCheckingWishlist, setIsCheckingWishlist] = useState(true);
 
     const {
         _id,
@@ -22,10 +27,49 @@ const BookCard = ({ book }) => {
         genres = [],
     } = book;
 
+    // Check if book is wishlisted on mount
+    useEffect(() => {
+        const checkWishlist = async () => {
+            try {
+                setIsCheckingWishlist(true);
+                const response = await checkIfWishlisted(_id);
+                setIsWishlisted(response?.isWishlisted || false);
+            } catch (error) {
+                console.error('Error checking wishlist:', error);
+            } finally {
+                setIsCheckingWishlist(false);
+            }
+        };
+
+        checkWishlist();
+    }, [_id]);
+
     // Safe pricing handling
     const displayPrice = typeof price === 'number'
         ? (price === 0 ? 'Free' : `$${price.toFixed(2)}`)
         : (price ? (price.toString().startsWith('$') ? price : `$${price}`) : 'Free');
+
+    const handleWishlistToggle = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        try {
+            setIsLoadingWishlist(true);
+            
+            if (isWishlisted) {
+                await removeFromWishlist(_id);
+                setIsWishlisted(false);
+            } else {
+                await addToWishlist(_id);
+                setIsWishlisted(true);
+            }
+        } catch (error) {
+            console.error('Error toggling wishlist:', error);
+            // Show error toast or notification here if needed
+        } finally {
+            setIsLoadingWishlist(false);
+        }
+    };
 
     return (
         <motion.div
@@ -71,9 +115,27 @@ const BookCard = ({ book }) => {
                     </span>
                 </div>
 
+                {/* Wishlist Button */}
+                <div className="absolute top-2.5 right-2.5 z-10">
+                    <button
+                        onClick={handleWishlistToggle}
+                        disabled={isLoadingWishlist || isCheckingWishlist}
+                        className={`flex items-center justify-center w-9 h-9 rounded-full backdrop-blur-md border transition-all duration-300 ${
+                            isWishlisted
+                                ? 'bg-rose-500/20 border-rose-500/40 text-rose-400 hover:bg-rose-500/30'
+                                : 'bg-black/40 border-white/10 text-white/70 hover:bg-black/60 hover:text-white'
+                        } ${isLoadingWishlist ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                        title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+                    >
+                        <FiHeart
+                            className={`w-4 h-4 transition-all duration-300 ${isWishlisted ? 'fill-rose-400 stroke-rose-400' : ''}`}
+                        />
+                    </button>
+                </div>
+
                 {/* Rating Badge */}
                 {rating > 0 && (
-                    <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-black/60 text-amber-400 border border-amber-500/20 backdrop-blur-md">
+                    <div className="absolute bottom-12 right-2.5 z-10 flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-black/60 text-amber-400 border border-amber-500/20 backdrop-blur-md">
                         <FiStar className="fill-amber-400 stroke-amber-400 w-3 h-3" />
                         <span>{rating.toFixed(1)}</span>
                     </div>

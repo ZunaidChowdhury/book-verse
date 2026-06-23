@@ -7,7 +7,7 @@ import { getWishlist } from '@/lib/api/books'
 import BookCard from '@/components/cards/BookCard'
 import Link from 'next/link'
 
-export default function BookmarksPage() {
+export default function WishlistPage() {
     const { mode } = useSelector((state) => state.theme)
     const [wishlistBooks, setWishlistBooks] = useState([])
     const [loading, setLoading] = useState(true)
@@ -38,7 +38,6 @@ export default function BookmarksPage() {
 
     const bgClass = mode === 'dark' ? 'bg-background' : 'bg-background'
     const cardBg = mode === 'dark' ? 'bg-foreground' : 'bg-white'
-    const borderClass = mode === 'dark' ? 'border-gray-700' : 'border-gray-200'
     const textPrimary = 'text-text-primary'
     const textSecondary = 'text-text-secondary'
     const inputBg = mode === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'
@@ -50,10 +49,10 @@ export default function BookmarksPage() {
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
                         <Bookmark size={32} className="text-theme-primary" />
-                        <h1 className={`text-3xl sm:text-4xl font-bold ${textPrimary}`}>My Bookmarks</h1>
+                        <h1 className={`text-3xl sm:text-4xl font-bold ${textPrimary}`}>My Wishlist</h1>
                     </div>
                     <p className={`${textSecondary}`}>
-                        {filteredBooks.length} book{filteredBooks.length !== 1 ? 's' : ''} in your wishlist
+                        {filteredBooks.length} book{filteredBooks.length !== 1 ? 's' : ''} saved for later
                     </p>
                 </div>
 
@@ -81,12 +80,12 @@ export default function BookmarksPage() {
                 {/* Loading State */}
                 {loading ? (
                     <div className={`${cardBg} rounded-lg p-8 text-center`}>
-                        <p className={textSecondary}>Loading your bookmarks...</p>
+                        <p className={textSecondary}>Loading your wishlist...</p>
                     </div>
                 ) : wishlistBooks.length === 0 ? (
                     <div className={`${cardBg} rounded-lg p-12 text-center`}>
                         <Bookmark size={48} className={`${textSecondary} mx-auto mb-4`} />
-                        <p className={`${textSecondary} mb-4 text-lg`}>You haven't bookmarked any books yet.</p>
+                        <p className={`${textSecondary} mb-4 text-lg`}>You haven't added any books to your wishlist yet.</p>
                         <Link href="/books">
                             <button className="bg-theme-primary hover:bg-theme-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition-colors inline-block">
                                 Explore Books

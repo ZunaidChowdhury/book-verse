@@ -5,6 +5,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, Provider } from "react-redux";
 import globalReducer from "@/redux/slices/globalSlice";
 import themeReducer from "@/redux/slices/themeSlice";
+import userReducer from "@/redux/slices/userSlice";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 import {
@@ -43,12 +44,13 @@ const storage =
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["global", "theme"],
+    whitelist: ["global", "theme", "user"],
 };
 
 const rootReducer = combineReducers({
     global: globalReducer,
     theme: themeReducer,
+    user: userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -61,6 +63,8 @@ export const makeStore = () => {
             getDefaultMiddleware({
                 serializableCheck: {
                     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+                    ignoredActionPaths: ['payload'],
+                    ignoredPaths: ['user.user.createdAt', 'user.user.updatedAt'],
                 },
             }),
     });
