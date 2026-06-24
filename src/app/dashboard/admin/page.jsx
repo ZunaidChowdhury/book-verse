@@ -6,6 +6,30 @@ import { toast } from 'react-toastify';
 import { getDashboardAnalytics, getMonthlySalesData, getBooksByGenre } from '@/lib/api/admin';
 import { Users, BookOpen, TrendingUp, DollarSign } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
+import {
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    PieChart,
+    Pie,
+    Cell,
+    Legend
+} from 'recharts';
+
+const chartColors = [
+    '#4F46E5',
+    '#16A34A',
+    '#9333EA',
+    '#EC4899',
+    '#F59E0B',
+    '#EF4444',
+    '#0284C7',
+    '#14B8A6'
+];
 
 export default function AdminDashboardPage() {
     const { mode } = useSelector((state) => state.theme);
@@ -27,6 +51,8 @@ export default function AdminDashboardPage() {
                     getMonthlySalesData(),
                     getBooksByGenre()
                 ]);
+
+                console.log('genreData: ', genreData);
 
                 setAnalytics(analyticsData);
                 setMonthlySales(Array.isArray(salesData) ? salesData : []);
@@ -92,7 +118,7 @@ export default function AdminDashboardPage() {
     ];
 
     const maxSalesValue = Math.max(...monthlySales.map(m => m.sales || 0), 1);
-    const maxGenreValue = Math.max(...booksByGenre.map(g => g.count || 0), 1);
+    const genreTotal = booksByGenre.reduce((sum, item) => sum + (item.count || 0), 0);
 
     return (
         <div className={`${mode === 'dark' ? 'bg-black' : 'bg-white'}`}>
@@ -158,35 +184,21 @@ export default function AdminDashboardPage() {
                                     </p>
                                 </div>
                             ) : (
-                                <div className="space-y-4">
-                                    {monthlySales.slice(0, 6).map((item, idx) => {
-                                        const percentage = (item.sales / maxSalesValue) * 100;
-                                        return (
-                                            <div key={idx}>
-                                                <div className="flex justify-between items-center mb-1">
-                                                    <span className={`text-xs sm:text-sm font-medium ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
-                                                        {item.month}
-                                                    </span>
-                                                    <span className={`text-xs sm:text-sm font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
-                                                        ${item.sales?.toFixed(2) || '0.00'}
-                                                    </span>
-                                                </div>
-                                                <div className={`w-full h-2 rounded-full overflow-hidden ${
-                                                    mode === 'dark' ? 'bg-black/50' : 'bg-gray-200'
-                                                }`}>
-                                                    <div
-                                                        className="h-full bg-gradient-to-r from-theme-primary to-theme-secondary-purple rounded-full transition-all"
-                                                        style={{ width: `${percentage}%` }}
-                                                    ></div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                <div className="h-[320px]">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={monthlySales} margin={{ top: 20, right: 20, left: -12, bottom: 20 }}>
+                                            <CartesianGrid stroke={mode === 'dark' ? '#1f2937' : '#e5e7eb'} strokeDasharray="3 3" />
+                                            <XAxis dataKey="month" tick={{ fill: mode === 'dark' ? '#f8fafc' : '#0f172a', fontSize: 12 }} />
+                                            <YAxis tick={{ fill: mode === 'dark' ? '#f8fafc' : '#0f172a', fontSize: 12 }} />
+                                            <Tooltip wrapperStyle={{ borderRadius: 12, fontSize: 13 }} />
+                                            <Bar dataKey="sales" fill="#4F46E5" radius={[8, 8, 0, 0]} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
                                 </div>
                             )}
                         </div>
 
-                        {/* Books by Genre */}
+                        {/* Books by Genre Pie Chart */}
                         <div className={`p-6 rounded-lg border ${
                             mode === 'dark' 
                                 ? 'bg-foreground border-border-dark' 
@@ -203,38 +215,27 @@ export default function AdminDashboardPage() {
                                     </p>
                                 </div>
                             ) : (
-                                <div className="space-y-4">
-                                    {booksByGenre.slice(0, 6).map((item, idx) => {
-                                        const percentage = (item.count / maxGenreValue) * 100;
-                                        const colors = [
-                                            'from-blue-500 to-blue-600',
-                                            'from-green-500 to-green-600',
-                                            'from-purple-500 to-purple-600',
-                                            'from-pink-500 to-pink-600',
-                                            'from-yellow-500 to-yellow-600',
-                                            'from-red-500 to-red-600'
-                                        ];
-                                        return (
-                                            <div key={idx}>
-                                                <div className="flex justify-between items-center mb-1">
-                                                    <span className={`text-xs sm:text-sm font-medium ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
-                                                        {item.genre}
-                                                    </span>
-                                                    <span className={`text-xs sm:text-sm font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
-                                                        {item.count} books
-                                                    </span>
-                                                </div>
-                                                <div className={`w-full h-2 rounded-full overflow-hidden ${
-                                                    mode === 'dark' ? 'bg-black/50' : 'bg-gray-200'
-                                                }`}>
-                                                    <div
-                                                        className={`h-full bg-gradient-to-r ${colors[idx % colors.length]} rounded-full transition-all`}
-                                                        style={{ width: `${percentage}%` }}
-                                                    ></div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                <div className="h-[320px]">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <PieChart>
+                                            <Pie
+                                                data={booksByGenre}
+                                                dataKey="count"
+                                                nameKey="genre"
+                                                cx="50%"
+                                                cy="45%"
+                                                innerRadius={60}
+                                                outerRadius={100}
+                                                paddingAngle={2}
+                                            >
+                                                {booksByGenre.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip formatter={(value) => [`${value} books`, 'Books']} />
+                                            <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: 12, color: mode === 'dark' ? '#f8fafc' : '#0f172a' }} />
+                                        </PieChart>
+                                    </ResponsiveContainer>
                                 </div>
                             )}
                         </div>
