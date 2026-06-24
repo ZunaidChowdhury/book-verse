@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
 import AddBookForm from '@/components/dashboard/writer/AddBookForm'
-import { getBookById } from '@/lib/api/books'
+import { getBookById, getBookContent } from '@/lib/api/books'
 import { updateBook } from '@/lib/actions/books'
 import { toast } from 'react-toastify'
 
@@ -15,6 +15,7 @@ export default function EditBookPage() {
     const bookId = params.id
 
     const [book, setBook] = useState(null)
+    const [bookContent, setBookContent] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
@@ -24,6 +25,16 @@ export default function EditBookPage() {
                 setLoading(true)
                 const data = await getBookById(bookId)
                 setBook(data)
+
+                try {
+                    const contentData = await getBookContent(bookId)
+                    // getBookContent may return an object like { content: '...' }
+                    setBookContent(contentData?.content ?? null)
+                } catch (contentErr) {
+                    // If content isn't available or user isn't authorized, just log and continue
+                    console.warn('Could not fetch book content:', contentErr)
+                    setBookContent(null)
+                }
             } catch (err) {
                 setError(err.message || 'Failed to fetch book')
                 console.error('Error fetching book:', err)
@@ -87,6 +98,7 @@ export default function EditBookPage() {
         <div className={`${mode === 'dark' ? 'bg-black' : 'bg-white'}`}>
             <AddBookForm
                 book={book}
+                bookContent={bookContent}
                 updateBook={handleUpdateBook}
             />
         </div>

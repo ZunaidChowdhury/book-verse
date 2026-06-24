@@ -10,14 +10,35 @@ import {
     FaCalendarAlt,
     FaHistory
 } from 'react-icons/fa';
-import { getBookById } from '@/lib/api/books';
+import { getBookById, getBookContent, checkIfPurchased } from '@/lib/api/books';
 import PurchaseButton from '@/components/PurchaseButton';
 import BookDetailsActions from '@/components/BookDetailsActions';
+import { getUser } from '@/lib/core/session';
 
 
 const BookDetailsPage = async ({ params }) => {
     const { id } = await params;
     const book = await getBookById(id);
+    const user = await getUser();
+    
+    let bookContent = null;
+    let isPurchased = false;
+
+    // Try to fetch content if user is logged in and purchased the book
+    if (user && user.role === 'reader') {
+        try {
+            const purchaseCheck = await checkIfPurchased(id);
+            isPurchased = !!purchaseCheck?.isPurchased;
+            if (isPurchased) {
+                const contentData = await getBookContent(id);
+                bookContent = contentData?.content;
+                console.log('bookContent: ', bookContent)
+            }
+        } catch (error) {
+            isPurchased = false;
+        }
+    }
+
     console.log('Book Details Page: ', book)
 
     const formatDate = (dateStr) => {
@@ -133,14 +154,22 @@ const BookDetailsPage = async ({ params }) => {
                         </div>
 
                         {/* Detailed Content Segment */}
-                        <div className="bg-[#0c1426] border border-slate-800/80 rounded-2xl p-6 space-y-3">
-                            <h3 className="text-xs uppercase tracking-widest text-slate-400 font-bold flex items-center gap-2">
-                                <FaBookOpen className="text-purple-400" /> Premium Content Overview
-                            </h3>
-                            <p className="text-slate-400 text-sm leading-relaxed font-normal">
-                                {book.content}
-                            </p>
-                        </div>
+                        {isPurchased && (
+                            <div className="bg-[#0c1426] border border-slate-800/80 rounded-2xl p-6 space-y-3">
+                                <h3 className="text-xs uppercase tracking-widest text-emerald-400 font-bold flex items-center gap-2">
+                                    <FaBookOpen className="text-emerald-400" /> Book Content
+                                </h3>
+                                {bookContent ? (
+                                    <div className="text-slate-300 text-sm leading-relaxed font-normal prose prose-invert max-w-none">
+                                        <p className="whitespace-pre-wrap">{bookContent}</p>
+                                    </div>
+                                ) : (
+                                    <div className="text-slate-400 text-sm">
+                                        <p>No content available</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                         {/* Detailed Metadata Grid */}
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-900/40 border border-slate-800/50 p-4 rounded-xl text-center">

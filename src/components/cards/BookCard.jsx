@@ -25,6 +25,8 @@ const BookCard = ({ book }) => {
         availabilityStatus = 'Available',
         rating = 0,
         genres = [],
+        soldQuantity = 0,
+        createdAt = new Date().toISOString(),
     } = book;
 
     // Check if book is wishlisted on mount
@@ -49,13 +51,19 @@ const BookCard = ({ book }) => {
         ? (price === 0 ? 'Free' : `$${price.toFixed(2)}`)
         : (price ? (price.toString().startsWith('$') ? price : `$${price}`) : 'Free');
 
+    // Format date
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    };
+
     const handleWishlistToggle = async (e) => {
         e.preventDefault();
         e.stopPropagation();
 
         try {
             setIsLoadingWishlist(true);
-            
+
             if (isWishlisted) {
                 await removeFromWishlist(_id);
                 setIsWishlisted(false);
@@ -75,7 +83,7 @@ const BookCard = ({ book }) => {
         <motion.div
             whileHover={{ y: -8 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="group relative flex flex-col justify-between w-full h-[500px] rounded-2xl bg-gradient-to-b from-[#111836] to-[#0b0f24] border border-white/5 hover:border-theme-primary/45 shadow-lg hover:shadow-[0_12px_30px_rgba(78,103,252,0.15)] overflow-hidden transition-all duration-300"
+            className="group relative flex flex-col justify-between w-full min-h-[460px] rounded-2xl bg-gradient-to-b from-[#111836] to-[#0b0f24] border border-white/5 hover:border-theme-primary/45 shadow-lg hover:shadow-[0_12px_30px_rgba(78,103,252,0.15)] overflow-hidden transition-all duration-300"
         >
             {/* Subtle Glow Effect on Hover */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-[radial-gradient(circle_at_center,var(--theme-primary)_0%,transparent_70%)] pointer-events-none" />
@@ -120,11 +128,10 @@ const BookCard = ({ book }) => {
                     <button
                         onClick={handleWishlistToggle}
                         disabled={isLoadingWishlist || isCheckingWishlist}
-                        className={`flex items-center justify-center w-9 h-9 rounded-full backdrop-blur-md border transition-all duration-300 ${
-                            isWishlisted
+                        className={`flex items-center justify-center w-9 h-9 rounded-full backdrop-blur-md border transition-all duration-300 ${isWishlisted
                                 ? 'bg-rose-500/20 border-rose-500/40 text-rose-400 hover:bg-rose-500/30'
                                 : 'bg-black/40 border-white/10 text-white/70 hover:bg-black/60 hover:text-white'
-                        } ${isLoadingWishlist ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                            } ${isLoadingWishlist ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                         title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
                     >
                         <FiHeart
@@ -132,14 +139,6 @@ const BookCard = ({ book }) => {
                         />
                     </button>
                 </div>
-
-                {/* Rating Badge */}
-                {rating > 0 && (
-                    <div className="absolute bottom-12 right-2.5 z-10 flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-black/60 text-amber-400 border border-amber-500/20 backdrop-blur-md">
-                        <FiStar className="fill-amber-400 stroke-amber-400 w-3 h-3" />
-                        <span>{rating.toFixed(1)}</span>
-                    </div>
-                )}
 
                 {/* Genre Overlay on Bottom of Image */}
                 <div className="absolute bottom-2.5 left-2.5 z-10 flex flex-wrap gap-1 max-w-[90%]">
@@ -162,11 +161,20 @@ const BookCard = ({ book }) => {
                         {writerName}
                     </span>
                     {/* Title */}
-                    <Link href={`/books/${book._id}`}>
-                    <h4 className="text-lg font-bold text-white group-hover:text-theme-primary transition-colors duration-200 line-clamp-1 mb-1.5">
-                        {title}
-                    </h4>
-                    </Link>
+                    <div className="flex items-start justify-between gap-3">
+                        <Link href={`/books/${book._id}`} className="flex-1">
+                            <h4 className="text-lg font-bold text-white group-hover:text-theme-primary transition-colors duration-200 line-clamp-1 mb-1.5">
+                                {title}
+                            </h4>
+                        </Link>
+
+                        {rating > 0 && (
+                            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-sm font-semibold bg-black/50 text-amber-400 border border-amber-500/20">
+                                <FiStar className="fill-amber-400 stroke-amber-400 w-3.5 h-3.5" />
+                                <span className="text-sm">{rating.toFixed(1)}</span>
+                            </div>
+                        )}
+                    </div>
                     {/* Description */}
                     <p className="text-sm text-slate-400 leading-relaxed line-clamp-2">
                         {description}
@@ -174,25 +182,34 @@ const BookCard = ({ book }) => {
                 </div>
 
                 {/* Card Footer Actions */}
-                <div className="flex items-center justify-between gap-3 pt-3 border-t border-white/5 mt-4">
-                    {/* Price Info */}
-                    <div className="flex flex-col">
-                        <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Price</span>
-                        <span className="text-lg font-extrabold text-white tracking-tight">
-                            {displayPrice}
-                        </span>
+                <div className="flex flex-col gap-2 pt-3 border-t border-white/5 mt-4">
+                    {/* Stats Row */}
+                    <div className="flex items-center justify-between text-xs text-slate-400">
+                        <span>📊 Sold: {soldQuantity}</span>
+                        <span>📅 {formatDate(createdAt)}</span>
                     </div>
 
-                    {/* Action Button */}
-                    <Link href={`/books/${book._id}`} className="shrink-0">
-                        <Button
-                            size="sm"
-                            className="bg-gradient-to-r from-theme-secondary-purple to-theme-primary hover:opacity-90 text-white text-sm font-bold rounded-lg px-4 h-9 shadow-md shadow-theme-primary/10 transition-all duration-300 group/btn cursor-pointer"
-                        >
-                            <span>Details</span>
-                            <FiArrowRight className="w-3.5 h-3.5 ml-1 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
-                        </Button>
-                    </Link>
+                    {/* Price and Details Button Row */}
+                    <div className="flex items-center justify-between gap-3">
+                        {/* Price Info */}
+                        <div className="flex flex-col">
+                            <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Price</span>
+                            <span className="text-lg font-extrabold text-white tracking-tight">
+                                {displayPrice}
+                            </span>
+                        </div>
+
+                        {/* Action Button */}
+                        <Link href={`/books/${book._id}`} className="shrink-0">
+                            <Button
+                                size="sm"
+                                className="bg-gradient-to-r from-theme-secondary-purple to-theme-primary hover:opacity-90 text-white text-sm font-bold rounded-lg px-4 h-9 shadow-md shadow-theme-primary/10 transition-all duration-300 group/btn cursor-pointer"
+                            >
+                                <span>Details</span>
+                                <FiArrowRight className="w-3.5 h-3.5 ml-1 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </motion.div>

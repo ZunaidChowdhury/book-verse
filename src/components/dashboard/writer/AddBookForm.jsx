@@ -127,7 +127,7 @@ function BookImageUploader({ onUploadComplete, onUploadError, onUploadBegin, ima
     )
 }
 
-const AddBookForm = ({ addBook, updateBook, book }) => {
+const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
     const { data } = authClient.useSession()
     const user = data?.user;
     const { mode } = useSelector((state) => state.theme)
@@ -170,7 +170,8 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
             setFormData({
                 title: book.title || '',
                 description: book.description || '',
-                content: book.content || '',
+                // prefer explicit bookContent prop when provided (separated collection)
+                content: (bookContent ?? book.content) || '',
                 image: book.image || '',
                 price: book.price || '',
                 availabilityStatus: book.availabilityStatus || 'available',
@@ -318,6 +319,17 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
         } catch (err) {
             setError(err.message || 'Failed to save book. Please try again.')
         } finally {
+                if (!formData.yearOfPublishing || isNaN(formData.yearOfPublishing)) {
+                    setError('Valid Year of Publishing is required')
+                    setLoading(false)
+                    return
+                }
+                if (!formData.content || !formData.content.trim()) {
+                    setError('Content is required')
+                    setLoading(false)
+                    return
+                }
+
             setLoading(false)
         }
     }
@@ -412,7 +424,7 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                             {/* Year of Publishing */}
                             <div>
                                 <label className={`block text-sm font-semibold mb-2 ${labelTextClass}`}>
-                                    Year of Publishing
+                                    Year of Publishing <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="number"
@@ -421,6 +433,7 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                                     onChange={handleChange}
                                     placeholder={new Date().getFullYear()}
                                     className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
+                                    required
                                 />
                             </div>
 
@@ -465,7 +478,7 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                             {/* Content */}
                             <div>
                                 <label className={`block text-sm font-semibold mb-2 ${labelTextClass}`}>
-                                    Content
+                                    Content <span className="text-red-500">*</span>
                                 </label>
                                 <textarea
                                     name="content"
@@ -474,6 +487,7 @@ const AddBookForm = ({ addBook, updateBook, book }) => {
                                     placeholder="Full content or excerpt of the book"
                                     rows="6"
                                     className={`w-full px-4 py-2 rounded-lg border resize-none ${inputStyle}`}
+                                    required
                                 />
                             </div>
                         </div>
