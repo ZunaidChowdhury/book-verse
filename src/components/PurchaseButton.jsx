@@ -51,8 +51,8 @@ const PurchaseButton = ({book}) => {
 
     if (!user) {
         return (
-            <button onClick={() => { window.location.href = '/api/auth/signin' }} className="flex gap-2 cursor-pointer bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-8 py-6 rounded-xl shadow-lg shadow-purple-900/30 border border-purple-500/30 transition-all transform active:scale-98" type="submit">
-                <FaShoppingBag className="text-lg" /> Sign in to Purchase
+            <button onClick={() => { window.location.href = '/auth/log-in' }} className="flex gap-2 cursor-pointer bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-8 py-6 rounded-xl shadow-lg shadow-purple-900/30 border border-purple-500/30 transition-all transform active:scale-98" type="submit">
+                <FaShoppingBag className="text-lg" /> Log in to Purchase
             </button>
         )
     }
@@ -60,7 +60,7 @@ const PurchaseButton = ({book}) => {
     if (isOwnBook) {
         return (
             <button disabled className="flex gap-2 cursor-not-allowed bg-gray-600 text-white font-bold px-8 py-6 rounded-xl opacity-50 border border-gray-500/30" type="submit">
-                <FaShoppingBag className="text-lg" /> Your Book
+                <FaShoppingBag className="text-lg" /> Purchase for ${book.price}    
             </button>
         )
     }

@@ -39,6 +39,7 @@ export default function ManageBooksPage() {
         try {
             setTogglingId(book._id);
             const newStatus = book.visibility === 'visible' ? 'private' : 'visible';
+            console.log('Toggling visibility for book:', book.title, 'to:', newStatus);
             await updateBook(book._id, { visibility: newStatus });
 
             // Update local state
