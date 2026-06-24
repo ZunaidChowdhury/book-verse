@@ -63,7 +63,7 @@ const BookCard = ({ book }) => {
 
         try {
             setIsLoadingWishlist(true);
-            
+
             if (isWishlisted) {
                 await removeFromWishlist(_id);
                 setIsWishlisted(false);
@@ -83,7 +83,7 @@ const BookCard = ({ book }) => {
         <motion.div
             whileHover={{ y: -8 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="group relative flex flex-col justify-between w-full h-[500px] rounded-2xl bg-gradient-to-b from-[#111836] to-[#0b0f24] border border-white/5 hover:border-theme-primary/45 shadow-lg hover:shadow-[0_12px_30px_rgba(78,103,252,0.15)] overflow-hidden transition-all duration-300"
+            className="group relative flex flex-col justify-between w-full min-h-[460px] rounded-2xl bg-gradient-to-b from-[#111836] to-[#0b0f24] border border-white/5 hover:border-theme-primary/45 shadow-lg hover:shadow-[0_12px_30px_rgba(78,103,252,0.15)] overflow-hidden transition-all duration-300"
         >
             {/* Subtle Glow Effect on Hover */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-[radial-gradient(circle_at_center,var(--theme-primary)_0%,transparent_70%)] pointer-events-none" />
@@ -128,11 +128,10 @@ const BookCard = ({ book }) => {
                     <button
                         onClick={handleWishlistToggle}
                         disabled={isLoadingWishlist || isCheckingWishlist}
-                        className={`flex items-center justify-center w-9 h-9 rounded-full backdrop-blur-md border transition-all duration-300 ${
-                            isWishlisted
+                        className={`flex items-center justify-center w-9 h-9 rounded-full backdrop-blur-md border transition-all duration-300 ${isWishlisted
                                 ? 'bg-rose-500/20 border-rose-500/40 text-rose-400 hover:bg-rose-500/30'
                                 : 'bg-black/40 border-white/10 text-white/70 hover:bg-black/60 hover:text-white'
-                        } ${isLoadingWishlist ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                            } ${isLoadingWishlist ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                         title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
                     >
                         <FiHeart
@@ -140,14 +139,6 @@ const BookCard = ({ book }) => {
                         />
                     </button>
                 </div>
-
-                {/* Rating Badge */}
-                {rating > 0 && (
-                    <div className="absolute bottom-12 right-2.5 z-10 flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-black/60 text-amber-400 border border-amber-500/20 backdrop-blur-md">
-                        <FiStar className="fill-amber-400 stroke-amber-400 w-3 h-3" />
-                        <span>{rating.toFixed(1)}</span>
-                    </div>
-                )}
 
                 {/* Genre Overlay on Bottom of Image */}
                 <div className="absolute bottom-2.5 left-2.5 z-10 flex flex-wrap gap-1 max-w-[90%]">
@@ -170,11 +161,20 @@ const BookCard = ({ book }) => {
                         {writerName}
                     </span>
                     {/* Title */}
-                    <Link href={`/books/${book._id}`}>
-                    <h4 className="text-lg font-bold text-white group-hover:text-theme-primary transition-colors duration-200 line-clamp-1 mb-1.5">
-                        {title}
-                    </h4>
-                    </Link>
+                    <div className="flex items-start justify-between gap-3">
+                        <Link href={`/books/${book._id}`} className="flex-1">
+                            <h4 className="text-lg font-bold text-white group-hover:text-theme-primary transition-colors duration-200 line-clamp-1 mb-1.5">
+                                {title}
+                            </h4>
+                        </Link>
+
+                        {rating > 0 && (
+                            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-sm font-semibold bg-black/50 text-amber-400 border border-amber-500/20">
+                                <FiStar className="fill-amber-400 stroke-amber-400 w-3.5 h-3.5" />
+                                <span className="text-sm">{rating.toFixed(1)}</span>
+                            </div>
+                        )}
+                    </div>
                     {/* Description */}
                     <p className="text-sm text-slate-400 leading-relaxed line-clamp-2">
                         {description}

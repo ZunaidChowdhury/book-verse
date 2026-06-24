@@ -52,7 +52,7 @@ export default function AdminDashboardPage() {
                     getBooksByGenre()
                 ]);
 
-                console.log('genreData: ', genreData);
+                // console.log('genreData: ', genreData);
 
                 setAnalytics(analyticsData);
                 setMonthlySales(Array.isArray(salesData) ? salesData : []);
