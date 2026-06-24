@@ -10,14 +10,32 @@ import {
     FaCalendarAlt,
     FaHistory
 } from 'react-icons/fa';
-import { getBookById } from '@/lib/api/books';
+import { getBookById, getBookContent, checkIfPurchased } from '@/lib/api/books';
 import PurchaseButton from '@/components/PurchaseButton';
 import BookDetailsActions from '@/components/BookDetailsActions';
+import { getUser } from '@/lib/core/session';
 
 
 const BookDetailsPage = async ({ params }) => {
     const { id } = await params;
     const book = await getBookById(id);
+    const user = await getUser();
+    
+    let bookContent = null;
+    let isPurchased = false;
+
+    // Try to fetch content if user is logged in
+    if (user && user.role === 'reader') {
+        try {
+            const contentData = await getBookContent(id);
+            bookContent = contentData?.content;
+            isPurchased = true;
+        } catch (error) {
+            // Content not available or user hasn't purchased
+            isPurchased = false;
+        }
+    }
+
     console.log('Book Details Page: ', book)
 
     const formatDate = (dateStr) => {
@@ -137,9 +155,24 @@ const BookDetailsPage = async ({ params }) => {
                             <h3 className="text-xs uppercase tracking-widest text-slate-400 font-bold flex items-center gap-2">
                                 <FaBookOpen className="text-purple-400" /> Premium Content Overview
                             </h3>
-                            <p className="text-slate-400 text-sm leading-relaxed font-normal">
-                                {book.content}
-                            </p>
+                            {isPurchased && bookContent ? (
+                                <div className="text-slate-300 text-sm leading-relaxed font-normal prose prose-invert max-w-none">
+                                    <p className="whitespace-pre-wrap">{bookContent}</p>
+                                </div>
+                            ) : (
+                                <div className="text-slate-400 text-sm">
+                                    {book.content ? (
+                                        <>
+                                            <p className="line-clamp-3">{book.content}</p>
+                                            <p className="text-xs text-slate-500 mt-3 italic">
+                                                💡 Purchase this book to view the full content
+                                            </p>
+                                        </>
+                                    ) : (
+                                        <p>No preview content available</p>
+                                    )}
+                                </div>
+                            )}
                         </div>
 
                         {/* Detailed Metadata Grid */}

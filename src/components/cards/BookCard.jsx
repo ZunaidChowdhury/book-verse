@@ -25,6 +25,8 @@ const BookCard = ({ book }) => {
         availabilityStatus = 'Available',
         rating = 0,
         genres = [],
+        soldQuantity = 0,
+        createdAt = new Date().toISOString(),
     } = book;
 
     // Check if book is wishlisted on mount
@@ -48,6 +50,12 @@ const BookCard = ({ book }) => {
     const displayPrice = typeof price === 'number'
         ? (price === 0 ? 'Free' : `$${price.toFixed(2)}`)
         : (price ? (price.toString().startsWith('$') ? price : `$${price}`) : 'Free');
+
+    // Format date
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    };
 
     const handleWishlistToggle = async (e) => {
         e.preventDefault();
@@ -174,25 +182,34 @@ const BookCard = ({ book }) => {
                 </div>
 
                 {/* Card Footer Actions */}
-                <div className="flex items-center justify-between gap-3 pt-3 border-t border-white/5 mt-4">
-                    {/* Price Info */}
-                    <div className="flex flex-col">
-                        <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Price</span>
-                        <span className="text-lg font-extrabold text-white tracking-tight">
-                            {displayPrice}
-                        </span>
+                <div className="flex flex-col gap-2 pt-3 border-t border-white/5 mt-4">
+                    {/* Stats Row */}
+                    <div className="flex items-center justify-between text-xs text-slate-400">
+                        <span>📊 Sold: {soldQuantity}</span>
+                        <span>📅 {formatDate(createdAt)}</span>
                     </div>
 
-                    {/* Action Button */}
-                    <Link href={`/books/${book._id}`} className="shrink-0">
-                        <Button
-                            size="sm"
-                            className="bg-gradient-to-r from-theme-secondary-purple to-theme-primary hover:opacity-90 text-white text-sm font-bold rounded-lg px-4 h-9 shadow-md shadow-theme-primary/10 transition-all duration-300 group/btn cursor-pointer"
-                        >
-                            <span>Details</span>
-                            <FiArrowRight className="w-3.5 h-3.5 ml-1 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
-                        </Button>
-                    </Link>
+                    {/* Price and Details Button Row */}
+                    <div className="flex items-center justify-between gap-3">
+                        {/* Price Info */}
+                        <div className="flex flex-col">
+                            <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Price</span>
+                            <span className="text-lg font-extrabold text-white tracking-tight">
+                                {displayPrice}
+                            </span>
+                        </div>
+
+                        {/* Action Button */}
+                        <Link href={`/books/${book._id}`} className="shrink-0">
+                            <Button
+                                size="sm"
+                                className="bg-gradient-to-r from-theme-secondary-purple to-theme-primary hover:opacity-90 text-white text-sm font-bold rounded-lg px-4 h-9 shadow-md shadow-theme-primary/10 transition-all duration-300 group/btn cursor-pointer"
+                            >
+                                <span>Details</span>
+                                <FiArrowRight className="w-3.5 h-3.5 ml-1 transition-transform duration-200 group-hover/btn:translate-x-0.5" />
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </motion.div>
