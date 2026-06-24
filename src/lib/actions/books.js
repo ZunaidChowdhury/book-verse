@@ -13,5 +13,6 @@ export const deleteBook = async (bookId) => {
 }
 
 export const updateBook = async (bookId, data) => {
-    return serverMutation(`/writer/books/${bookId}`, data, 'PATCH');
+    console.log('Updating book with ID:', bookId, 'Data:', data);
+    return serverMutation(`/books/${bookId}`, data, 'PATCH');
 }

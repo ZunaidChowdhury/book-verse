@@ -21,8 +21,8 @@ export const getAllBooks = async () => {
     return serverFetch('/admin/books');
 }
 
-// Update book status (publish/unpublish)
-export const updateBookStatus = async (bookId, visibility) => {
+// Update book visibility (publish/unpublish)
+export const updateBookVisibility = async (bookId, visibility) => {
     return serverMutation(`/admin/books/${bookId}/status`, { visibility }, 'PATCH');
 }
 

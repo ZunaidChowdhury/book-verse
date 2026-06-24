@@ -17,6 +17,7 @@ export default function SalesHistoryPage() {
             try {
                 setLoading(true)
                 const data = await getSalesHistory()
+                console.log('Fetched sales history data:', data)
                 setSalesData(data)
             } catch (err) {
                 setError(err.message || 'Failed to fetch sales history')

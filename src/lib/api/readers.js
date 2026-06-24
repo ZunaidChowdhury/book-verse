@@ -1,5 +1,10 @@
 import { serverFetch } from "../core/server";
 
+// Get reader dashboard data
+export const getReaderDashboard = async () => {
+    return serverFetch('/reader/dashboard');
+}
+
 // Get reader's purchase history
 export const getPurchaseHistory = async () => {
     return serverFetch('/reader/purchase-history');
