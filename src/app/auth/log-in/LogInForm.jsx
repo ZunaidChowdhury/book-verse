@@ -19,8 +19,6 @@ export default function LogInForm() {
     const router = useRouter();
     const sp = useSearchParams();
 
-    const redirectTo = sp?.get("redirect") || "/";
-
     const [form, setForm] = useState({
         email: "",
         password: "",
@@ -82,7 +80,8 @@ export default function LogInForm() {
         if (data) {
             // AuthInitializer will automatically sync the session to Redux
             // Just redirect to the intended page
-            router.push(redirectTo);
+            // console.log("Login successful, redirecting..., data: ", data);
+            router.push(sp?.get("redirect") || `/dashboard/${data.user.role}`);
         }
 
         if (authError) {

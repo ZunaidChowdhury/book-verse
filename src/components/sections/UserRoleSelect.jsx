@@ -9,23 +9,23 @@ import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
-const UserPreferencePage = () => {
+const UserRoleSelect = () => {
     const router = useRouter();
     const [selectedRole, setSelectedRole] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleLogOut = async () => {
-        await authClient.signOut({
-            fetchOptions: {
-                onSuccess: () => {
-                    router.push("/auth/log-in");
-                },
-            },
-        });
-    }
+    // const handleLogOut = async () => {
+    //     await authClient.signOut({
+    //         fetchOptions: {
+    //             onSuccess: () => {
+    //                 router.push("/auth/log-in");
+    //             },
+    //         },
+    //     });
+    // }
 
     const handleRoleSubmit = async (role) => {
-        setSelectedRole(role);
+
         setIsSubmitting(true);
 
         try {
@@ -59,13 +59,12 @@ const UserPreferencePage = () => {
 
                 {/* HeroUI Buttons Layout Column Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-
                     {/* Option 1: Reader Card Component */}
                     <Button
                         size="lg"
                         isLoading={isSubmitting && selectedRole === "reader"}
                         disabled={isSubmitting}
-                        onClick={() => handleRoleSubmit("reader")}
+                        onClick={() => setSelectedRole("reader")}
                         className="flex flex-col items-center justify-center gap-4 w-full aspect-square h-auto p-6 bg-white/5 hover:bg-[#9945FF]/10 border border-white/5 hover:border-[#9945FF]/30 text-white font-semibold rounded-xl transition-all cursor-pointer group whitespace-normal"
                     >
                         {/* Render icon inside a clean rounded circle shell */}
@@ -87,7 +86,7 @@ const UserPreferencePage = () => {
                         size="lg"
                         isLoading={isSubmitting && selectedRole === "writer"}
                         disabled={isSubmitting}
-                        onClick={() => handleRoleSubmit("writer")}
+                        onClick={() => setSelectedRole("writer")}
                         className="flex flex-col items-center justify-center gap-4 w-full aspect-square h-auto p-6 bg-white/5 hover:bg-[#9945FF]/10 border border-white/5 hover:border-[#9945FF]/30 text-white font-semibold rounded-xl transition-all cursor-pointer group whitespace-normal"
                     >
                         {/* Render icon inside a clean rounded circle shell */}
@@ -105,9 +104,25 @@ const UserPreferencePage = () => {
                     </Button>
 
                 </div>
+
+                <Button
+                    size="lg"
+                    isLoading={isSubmitting && selectedRole !== null}
+                    disabled={isSubmitting}
+                    onClick={() => {
+                        if (selectedRole === null) {
+                            toast.error("Please select a role before continuing.");
+                            return;
+                        }
+                        handleRoleSubmit(selectedRole)
+                    }}
+                    className=" w-full  "
+                >
+                    Continue
+                </Button>
             </div>
         </div>
     );
 }
 
-export default UserPreferencePage
+export default UserRoleSelect
