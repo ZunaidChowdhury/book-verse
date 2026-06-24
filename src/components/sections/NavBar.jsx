@@ -14,6 +14,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "@/redux/slices/themeSlice";
 
 export default function Navbar() {
+  const router = useRouter()
+  const pathname = usePathname();
   const { mode } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
 
@@ -21,18 +23,20 @@ export default function Navbar() {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
-  const router = useRouter()
-  const pathname = usePathname();
+  
 
   // State Management
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
-
-
+  
+  
   // Refs for click-outside detection
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
+  
+
+
 
   // Navigation Links config
   const navLinks = [
@@ -40,7 +44,7 @@ export default function Navbar() {
     { name: "Browse Ebooks", href: "/books" },
     // { name: "Dashboard", href: "/dashboard" },
   ];
-
+  
   const dashboardLinks = {
     admin: '/dashboard/admin',
     writer: '/dashboard/writer',
@@ -61,7 +65,7 @@ export default function Navbar() {
   // Initialize Theme on Mount
   useEffect(() => {
     // const isDark = document.documentElement.classList.contains("dark");
-    if(mode === 'dark') {
+    if (mode === 'dark') {
       setIsDarkMode(true);
     } else {
       setIsDarkMode(false);
@@ -274,24 +278,24 @@ export default function Navbar() {
                       // isBordered
                       color="primary"
                       /> */}
-{user && (
-  <> 
-    <span className="hidden text-sm font-medium tracking-wide text-foreground/90 desktop:block">
-      {`Hi, ${user.name ? user.name.split(' ')[0] : ''}`}
-    </span>
-    <Avatar>
-      <Avatar.Image
-        src={user.image || ''}
-        alt={user.name || 'User avatar'}
-      />
-      <Avatar.Fallback>
-        {user.name?.charAt(0) || '?'}
-      </Avatar.Fallback>
-    </Avatar>
-  </>
-)}
+                    {user && (
+                      <>
+                        <span className="hidden text-sm font-medium tracking-wide text-foreground/90 desktop:block">
+                          {`Hi, ${user.name ? user.name.split(' ')[0] : ''}`}
+                        </span>
+                        <Avatar>
+                          <Avatar.Image
+                            src={user.image || ''}
+                            alt={user.name || 'User avatar'}
+                          />
+                          <Avatar.Fallback>
+                            {user.name?.charAt(0) || '?'}
+                          </Avatar.Fallback>
+                        </Avatar>
+                      </>
+                    )}
 
-                    
+
 
                     <svg
                       className={`absolute bottom-0 right-0 h-4 w-4 text-foreground/40 transition-transform duration-300 ${isUserDropdownOpen ? "rotate-180" : ""

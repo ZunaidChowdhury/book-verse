@@ -4,33 +4,31 @@ import React, { useState } from "react";
 import { Button } from "@heroui/react";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { LiaBookReaderSolid } from "react-icons/lia";
-import { updateUserRole } from "@/lib/actions/user";
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
+import { updateUserRole } from "@/lib/actions/user";
 import { authClient } from "@/lib/auth-client";
+
 
 const UserRoleSelect = () => {
     const router = useRouter();
     const [selectedRole, setSelectedRole] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // const handleLogOut = async () => {
-    //     await authClient.signOut({
-    //         fetchOptions: {
-    //             onSuccess: () => {
-    //                 router.push("/auth/log-in");
-    //             },
-    //         },
-    //     });
-    // }
+    const handleLogOut = async () => {
+        await authClient.signOut({
+            fetchOptions: {
+                onSuccess: () => {
+                    router.push("/auth/log-in");
+                },
+            },
+        });
+    }
 
     const handleRoleSubmit = async (role) => {
-
         setIsSubmitting(true);
 
         try {
-            // Example:
-            // await fetch('/api/user/update-role', { method: 'POST', body: JSON.stringify({ role }) });
             const data = { role: role }
             const res = await updateUserRole(data)
             if (res.modifiedCount > 0) {
@@ -41,7 +39,6 @@ const UserRoleSelect = () => {
             else toast.error("Failed to update.");
         } catch (error) {
             toast.error("Failed to update.");
-            // console.error("Failed to update role:", error);
         } finally {
             setIsSubmitting(false);
         }
