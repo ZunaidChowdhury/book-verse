@@ -38,7 +38,7 @@ export default function ManageBooksPage() {
     const toggleVisibility = async (book) => {
         try {
             setTogglingId(book._id);
-            const newStatus = book.visibility === 'visible' ? 'private' : 'visible';
+            const newStatus = book.visibility === 'publish' ? 'private' : 'publish';
             console.log('Toggling visibility for book:', book.title, 'to:', newStatus);
             await updateBook(book._id, { visibility: newStatus });
 
@@ -46,7 +46,7 @@ export default function ManageBooksPage() {
             setBooks(books.map(b =>
                 b._id === book._id ? { ...b, visibility: newStatus } : b
             ));
-            toast.success(`Book ${newStatus === 'visible' ? 'published' : 'unpublished'} successfully`);
+            toast.success(`Book ${newStatus === 'publish' ? 'published' : 'unpublished'} successfully`);
         } catch (err) {
             console.error('Error toggling visibility:', err);
             toast.error('Failed to toggle visibility');
@@ -206,11 +206,11 @@ export default function ManageBooksPage() {
                                                 ${book.price?.toFixed(2) || '0.00'}
                                             </td>
                                             <td className="px-4 py-3">
-                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${book.visibility === 'visible'
+                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${book.visibility === 'publish'
                                                         ? 'bg-green-100/60 text-green-600'
                                                         : 'bg-yellow-100/60 text-yellow-600'
                                                     }`}>
-                                                    {book.visibility === 'visible' ? 'Published' : 'Unpublished'}
+                                                    {book.visibility === 'publish' ? 'Published' : 'Unpublished'}
                                                 </span>
                                             </td>
                                             <td className="px-4 py-3 flex gap-2">
@@ -218,9 +218,9 @@ export default function ManageBooksPage() {
                                                     onClick={() => toggleVisibility(book)}
                                                     disabled={togglingId === book._id}
                                                     className="cursor-pointer p-2 hover:bg-theme-primary/20 rounded transition-colors disabled:opacity-50"
-                                                    title={book.visibility === 'visible' ? 'Unpublish' : 'Publish'}
+                                                    title={book.visibility === 'publish' ? 'Unpublish' : 'Publish'}
                                                 >
-                                                    {book.visibility === 'visible' ? (
+                                                    {book.visibility === 'publish' ? (
                                                         <Eye size={16} />
                                                     ) : (
                                                         <EyeOff size={16} />
@@ -282,11 +282,11 @@ export default function ManageBooksPage() {
                                         <span className={`font-semibold text-sm ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
                                             ${book.price?.toFixed(2) || '0.00'}
                                         </span>
-                                        <span className={`text-xs px-2 py-1 rounded ${book.visibility === 'visible'
+                                        <span className={`text-xs px-2 py-1 rounded ${book.visibility === 'publish'
                                                 ? 'bg-green-100/60 text-green-600'
                                                 : 'bg-yellow-100/60 text-yellow-600'
                                             }`}>
-                                            {book.visibility === 'visible' ? 'Published' : 'Unpublished'}
+                                            {book.visibility === 'publish' ? 'Published' : 'Unpublished'}
                                         </span>
                                     </div>
                                     <div className="flex gap-2">
@@ -295,7 +295,7 @@ export default function ManageBooksPage() {
                                             disabled={togglingId === book._id}
                                             className="cursor-pointer flex-1 px-3 py-2 hover:bg-theme-primary/20 rounded transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50"
                                         >
-                                            {book.visibility === 'visible' ? (
+                                            {book.visibility === 'publish' ? (
                                                 <>
                                                     <Eye size={14} />
                                                     <span>Unpublish</span>

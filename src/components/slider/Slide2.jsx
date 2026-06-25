@@ -54,7 +54,7 @@ export default function Slide2() {
                     <div className="flex justify-center lg:justify-end items-center w-full">
                         <div className="relative w-full max-w-[450px] aspect-square flex items-center justify-center filter drop-shadow-[0_25px_25px_rgba(153,69,255,0.15)] transition-transform duration-500 hover:scale-[1.02]">
                             <Image
-                                src="/books/b1.png" // Replace with your exact image path
+                                src="book-verse-cover-image-2.png" // Replace with your exact image path
                                 alt="The Dating Playbook for Men Book Cover"
                                 width={450}
                                 height={450}
