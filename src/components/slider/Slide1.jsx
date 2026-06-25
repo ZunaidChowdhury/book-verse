@@ -132,7 +132,7 @@ export default function Slide1() {
              ========================================== */}
                     <div>
                         <Image
-                            src='/hero-1.png'
+                            src='book-verse-cover-image.png'
                             alt=''
                             width={800}
                             height={800} />

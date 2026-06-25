@@ -128,8 +128,8 @@ const BookDetailsPage = async ({ params }) => {
                             <div>
                                 <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Instant Access Price</p>
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-4xl font-black text-white">${book.price}</span>
-                                    <span className="text-xs text-slate-500 line-through">$24.99</span>
+                                    <span className="text-4xl font-black text-white">${book.price.toFixed(2)}</span>
+                                    <span className="text-xs text-slate-500 line-through">${(book.price * 5).toFixed(2)}</span>
                                 </div>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-3">
@@ -182,7 +182,7 @@ const BookDetailsPage = async ({ params }) => {
                             <div>
                                 <span className="block text-xs text-slate-500 font-medium mb-1">Status</span>
                                 <span className="text-sm font-bold text-emerald-400 animate-pulse">
-                                    {book.visibilityStatus === 'published' ? 'Live' : 'Draft'}
+                                    {book.visibility === 'publish' ? 'Live' : 'Draft'}
                                 </span>
                             </div>
                             <div>

@@ -9,7 +9,7 @@ import { authClient } from '@/lib/auth-client'
 import { useUploadThing } from '@/lib/uploadthing'
 
 const visibilityOptions = [
-    { key: 'visible', label: 'Visible' },
+    { key: 'publish', label: 'Publish' },
     { key: 'private', label: 'Private' },
 ]
 
@@ -150,7 +150,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
         price: '',
         availabilityStatus: 'available',
         stock: '',
-        visibility: 'visible',
+        visibility: 'publish',
         genres: [],
         totalPages: '',
         yearOfPublishing: '',
@@ -176,7 +176,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                 price: book.price || '',
                 availabilityStatus: book.availabilityStatus || 'available',
                 stock: book.stock || '',
-                visibility: book.visibility || 'visible',
+                visibility: book.visibility || 'publish',
                 genres: book.genres || [],
                 totalPages: book.totalPages || '',
                 yearOfPublishing: book.yearOfPublishing || '',
@@ -308,7 +308,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                     price: '',
                     availabilityStatus: 'available',
                     stock: '',
-                    visibility: 'visible',
+                    visibility: 'publish',
                     genres: [],
                     totalPages: '',
                     yearOfPublishing: '',
