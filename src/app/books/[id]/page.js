@@ -182,7 +182,7 @@ const BookDetailsPage = async ({ params }) => {
                             <div>
                                 <span className="block text-xs text-slate-500 font-medium mb-1">Status</span>
                                 <span className="text-sm font-bold text-emerald-400 animate-pulse">
-                                    {book.visibilityStatus === 'published' ? 'Live' : 'Draft'}
+                                    {book.visibility === 'published' ? 'Live' : 'Draft'}
                                 </span>
                             </div>
                             <div>
