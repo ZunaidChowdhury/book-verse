@@ -34,7 +34,7 @@ const FeaturedBooks = ({ featuredBooks }) => {
   };
 
   return (
-    <div className='py-12 tablet:py-30 overflow-hidden'>
+    <div className='py-12 tablet:py-30 overflow-hidden bg-background'>
       {/* container */}
       <div className='max-w-358 px-4 mx-auto'>
         <SectionHeading

@@ -26,10 +26,10 @@ const swipePower = (offset, velocity) => {
   return Math.abs(offset) * velocity;
 };
 
-export default function Slider({ slides }) {
+export default function Slider({ slides, isDarkMode }) {
   const [[page, direction], setPage] = useState([0, 0]);
 
-  // Handle case where slides is empty or undefined
+  // Prevent crashes if slides array is unpopulated or empty
   if (!slides || slides.length === 0) {
     return null;
   }
@@ -40,7 +40,7 @@ export default function Slider({ slides }) {
     setPage([page + newDirection, newDirection]);
   }, [page]);
 
-  // Auto-play feature: transitions every 7 seconds
+  // Slider timing mechanism: changes page targets every 7 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       paginate(1);
@@ -51,7 +51,9 @@ export default function Slider({ slides }) {
   const ActiveSlide = slides[slideIndex];
 
   return (
-    <div className="relative w-full min-h-[calc(100vh-5rem)] overflow-hidden bg-theme-background">
+    <div className={`relative w-full min-h-[calc(100vh-5rem)] overflow-hidden transition-colors duration-300 ${isDarkMode ? "bg-theme-background" : "bg-foreground"
+      }`}>
+      {/* Slider Core Stage View */}
       <div className="relative w-full min-h-[calc(100vh-5rem)] flex items-center">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
@@ -79,31 +81,43 @@ export default function Slider({ slides }) {
             }}
             className="absolute inset-0 w-full h-full"
           >
-            <ActiveSlide />
+            {/* Inject active contextual props downward into slides dynamically */}
+            <ActiveSlide isDarkMode={isDarkMode} />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Left Navigation Arrow */}
-      <button
-        onClick={() => paginate(-1)}
-        className="absolute left-4 tablet:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-theme-primary/50 hover:shadow-[0_0_15px_rgba(78,103,252,0.3)] active:scale-95 text-white transition-all duration-300 flex items-center justify-center backdrop-blur-md cursor-pointer group"
-        aria-label="Previous Slide"
-      >
-        <FiChevronLeft className="w-6 h-6 transition-transform group-hover:-translate-x-0.5" />
-      </button>
+      {/* Navigation Arrow Elements Container */}
+      <div className="absolute bottom-6 tablet:bottom-auto tablet:top-1/2 tablet:-translate-y-1/2 left-4 right-4 tablet:left-6 tablet:right-6 desktop:left-8 desktop:right-8 z-20 flex justify-between tablet:block pointer-events-none">
 
-      {/* Right Navigation Arrow */}
-      <button
-        onClick={() => paginate(1)}
-        className="absolute right-4 tablet:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-theme-primary/50 hover:shadow-[0_0_15px_rgba(78,103,252,0.3)] active:scale-95 text-white transition-all duration-300 flex items-center justify-center backdrop-blur-md cursor-pointer group"
-        aria-label="Next Slide"
-      >
-        <FiChevronRight className="w-6 h-6 transition-transform group-hover:translate-x-0.5" />
-      </button>
+        {/* Left Navigation Arrow */}
+        <button
+          onClick={() => paginate(-1)}
+          className={`w-10 h-10 tablet:w-12 tablet:h-12 rounded-full border transition-all duration-300 flex items-center justify-center backdrop-blur-md cursor-pointer group pointer-events-auto active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] tablet:absolute tablet:left-0 tablet:-translate-y-1/2 ${isDarkMode
+              ? "bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-theme-primary/50 hover:shadow-[0_0_15px_rgba(78,103,252,0.3)]"
+              : "bg-black/5 border-black/10 text-text-primary hover:bg-black/10 hover:border-theme-primary/50 hover:shadow-[0_0_15px_rgba(78,103,252,0.15)]"
+            }`}
+          aria-label="Previous Slide"
+        >
+          <FiChevronLeft className="w-5 h-5 tablet:w-6 tablet:h-6 transition-transform group-hover:-translate-x-0.5" />
+        </button>
 
-      {/* Horizontal Line Position Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2.5 items-center justify-center">
+        {/* Right Navigation Arrow */}
+        <button
+          onClick={() => paginate(1)}
+          className={`w-10 h-10 tablet:w-12 tablet:h-12 rounded-full border transition-all duration-300 flex items-center justify-center backdrop-blur-md cursor-pointer group pointer-events-auto active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] tablet:absolute tablet:right-0 tablet:-translate-y-1/2 ${isDarkMode
+              ? "bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-theme-primary/50 hover:shadow-[0_0_15px_rgba(78,103,252,0.3)]"
+              : "bg-black/5 border-black/10 text-text-primary hover:bg-black/10 hover:border-theme-primary/50 hover:shadow-[0_0_15px_rgba(78,103,252,0.15)]"
+            }`}
+          aria-label="Next Slide"
+        >
+          <FiChevronRight className="w-5 h-5 tablet:w-6 tablet:h-6 transition-transform group-hover:translate-x-0.5" />
+        </button>
+
+      </div>
+
+      {/* Horizontal Indicator Dots Row */}
+      <div className="absolute bottom-18 tablet:bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2 tablet:gap-2.5 items-center justify-center">
         {slides.map((_, index) => (
           <button
             key={index}
@@ -113,11 +127,14 @@ export default function Slider({ slides }) {
                 setPage([page + diff, diff > 0 ? 1 : -1]);
               }
             }}
-            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-              index === slideIndex 
-                ? "w-10 bg-white shadow-[0_0_8px_rgba(255,255,255,0.6)]" 
-                : "w-5 bg-white/30 hover:bg-white/60"
-            }`}
+            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] ${index === slideIndex
+                ? isDarkMode
+                  ? "w-8 tablet:w-10 bg-white shadow-[0_0_8px_rgba(255,255,255,0.6)]"
+                  : "w-8 tablet:w-10 bg-text-primary shadow-[0_0_8px_rgba(0,0,0,0.2)]"
+                : isDarkMode
+                  ? "w-4 tablet:w-5 bg-white/30 hover:bg-white/60"
+                  : "w-4 tablet:w-5 bg-text-primary/20 hover:bg-text-primary/50"
+              }`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}

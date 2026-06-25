@@ -13,8 +13,8 @@ html {
 }
 
 :root[data-theme="light"] {
-  --background: #f8fafc;
-  --foreground: #3b3b3b;
+  --background: #ececec;
+  --foreground: #ffffff;
 
   --theme-primary: #4e67fc;
   --theme-secondary-purple: #7565f3;
@@ -22,12 +22,12 @@ html {
 
   --text-primary: #0f172a;
   --text-secondary: #475569;
-  --text-white: rgb(206, 0, 0);
+  --text-white: white;
 }
 
 :root[data-theme="dark"] {
-  --background: #121212;
-  --foreground: #e0e0e0;
+  --background: #070b1e;
+  --foreground: #0b0f24;
 
   --theme-primary: #4e67fc;
   --theme-secondary-purple: #7565f3;
@@ -52,9 +52,9 @@ html {
   --color-text-secondary: var(--text-secondary);
   --color-text-white: var(--text-white);
 
-  /* fonts */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* fonts / UI-[font-sans], heading[font-serif] */
+  --font-serif: var(--font-bookverse-serif), serif;
+  --font-sans: var(--font-bookverse-sans), sans-serif; 
 
   /* breakpoints */
   /* 448px */

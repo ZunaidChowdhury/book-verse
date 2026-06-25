@@ -131,7 +131,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-foreground/5 bg-background/80 backdrop-blur-xl transition-all duration-300">
+      <header className={`sticky top-0 z-50 w-full border-b  ${isDarkMode ? 'bg-theme-background/8 border-white/5' : 'bg-foreground border-black/5'}  backdrop-blur-xl transition-all duration-300`}>
         <div className="mx-auto max-w-[1400px] px-4 tablet:px-6 desktop:px-8">
           <div className="flex h-20 items-center justify-between gap-4">
 
@@ -141,14 +141,14 @@ export default function Navbar() {
               <button
                 id="hamburger-trigger"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="group flex h-10 w-10 flex-col items-center justify-center rounded-md border border-foreground/5 bg-foreground/5 transition-all hover:bg-foreground/10 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] desktop:hidden"
+                className="group flex h-10 w-10 flex-col items-center justify-center rounded-md border border-text-primary/5 bg-text-primary/5 text-text-primary/70 transition-all duration hover:bg-text-primary/10 hover:text-text-primary focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] desktop:hidden"
                 aria-expanded={isMobileMenuOpen}
                 aria-label="Toggle Navigation Menu"
               >
                 <div className="relative w-5 h-3">
-                  <span className={`absolute left-0 h-[2px] w-5 bg-foreground rounded-md transition-all duration-300 ${isMobileMenuOpen ? "top-[5px] rotate-45" : "top-0"}`} />
-                  <span className={`absolute left-0 h-[2px] w-5 bg-foreground rounded-md transition-all duration-300 top-[5px] ${isMobileMenuOpen ? "opacity-0" : "opacity-100"}`} />
-                  <span className={`absolute left-0 h-[2px] w-5 bg-foreground rounded-md transition-all duration-300 ${isMobileMenuOpen ? "top-[5px] -rotate-45" : "top-[10px]"}`} />
+                  <span className={`absolute left-0 h-[2px] w-5 bg-text-primary rounded-md transition-all duration-300 ${isMobileMenuOpen ? "top-[5px] rotate-45" : "top-0"}`} />
+                  <span className={`absolute left-0 h-[2px] w-5 bg-text-primary rounded-md transition-all duration-300 top-[5px] ${isMobileMenuOpen ? "opacity-0" : "opacity-100"}`} />
+                  <span className={`absolute left-0 h-[2px] w-5 bg-text-primary rounded-md transition-all duration-300 ${isMobileMenuOpen ? "top-[5px] -rotate-45" : "top-[10px]"}`} />
                 </div>
               </button>
 
@@ -190,7 +190,7 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`relative px-4 py-2 text-base font-medium tracking-wide transition-colors duration-200 rounded-md focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] ${isActive ? "text-[var(--theme-primary)] font-semibold" : "text-text-primary/60 hover:text-theme-primary"
+                    className={`relative px-4 py-2 text-base font-medium tracking-wide transition-colors duration-200 rounded-md focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] ${isActive ? "text-[var(--theme-primary)] font-semibold" : "text-text-primary hover:text-theme-primary"
                       }`}
                   >
                     {link.name}
@@ -267,7 +267,7 @@ export default function Navbar() {
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                    className="relative flex items-center gap-2.5 rounded-md  p-1.5 pr-3 text-left transition-all focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] cursor-pointer"
+                    className="group relative flex items-center gap-2.5 rounded-md  p-1.5 pr-3 text-left transition-all focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] cursor-pointer"
                     aria-haspopup="true"
                     aria-expanded={isUserDropdownOpen}
                   >
@@ -280,7 +280,7 @@ export default function Navbar() {
                       /> */}
                     {user && (
                       <>
-                        <span className="hidden text-sm font-medium tracking-wide text-foreground/90 desktop:block">
+                        <span className="hidden text-sm font-medium tracking-wide text-text-primary desktop:block">
                           {`Hi, ${user.name ? user.name.split(' ')[0] : ''}`}
                         </span>
                         <Avatar>
@@ -298,7 +298,7 @@ export default function Navbar() {
 
 
                     <svg
-                      className={`absolute bottom-0 right-0 h-4 w-4 text-foreground/40 transition-transform duration-300 ${isUserDropdownOpen ? "rotate-180" : ""
+                      className={`absolute bottom-0 right-0 h-4 w-4 text-text-primary/60 group-hover:text-theme-primary transition-transform duration-300 ${isUserDropdownOpen ? "rotate-180" : ""
                         }`}
                       viewBox="0 0 24 24"
                       fill="none"
@@ -317,22 +317,22 @@ export default function Navbar() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute right-0 mt-2 w-64 origin-top-right rounded-md border border-foreground/5 bg-background p-1.5 shadow-2xl ring-1 ring-black/5 backdrop-blur-xl"
+                        className={`absolute right-0 mt-2 w-64 origin-top-right rounded-md border border-white/5 ${isDarkMode ? 'bg-theme-background' : 'bg-foreground'}  transition-all duration-300 p-1.5 shadow-2xl ring-1 ring-black/5`}
                         role="menu"
                       >
                         {/* Dropdown Header */}
-                        <div className="px-3 py-2.5 border-b border-foreground/5 mb-1">
-                          <p className="text-xs text-foreground/50">Signed in as</p>
-                          <p className="text-sm font-semibold text-foreground/90 truncate">{user.email}</p>
+                        <div className="px-3 py-2.5 border-b border-white/5 mb-1">
+                          <p className="text-xs text-text-primary/60">Signed in as</p>
+                          <p className="text-sm font-semibold text-text-primary truncate">{user.email}</p>
                         </div>
 
                         {/* Dropdown Items */}
                         <button
                           role="menuitem"
                           onClick={() => setIsUserDropdownOpen(false)}
-                          className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-foreground/5 hover:text-foreground cursor-pointer"
+                          className={`flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm  transition-colors  text-text-primary ${isDarkMode ? 'hover:bg-theme-primary' : 'hover:bg-theme-primary'}  cursor-pointer`}
                         >
-                          <Gear className="h-4 w-4 text-foreground/50" />
+                          <Gear className="h-4 w-4 text-text-primary" />
                           <span>Settings</span>
                         </button>
 
@@ -358,166 +358,166 @@ export default function Navbar() {
       </header>
 
       {/* Mobile Menu Drawer Panel */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            {/* Backdrop Overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm desktop:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
+<AnimatePresence>
+  {isMobileMenuOpen && (
+    <>
+      {/* Backdrop Overlay */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm desktop:hidden"
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
 
-            {/* Mobile Drawer */}
-            <motion.div
-              ref={mobileMenuRef}
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", bounce: 0, duration: 0.3 }}
-              className="fixed bottom-0 left-0 top-0 z-50 flex w-full max-w-xs flex-col border-r border-foreground/5 bg-background p-6 shadow-2xl desktop:hidden"
-              role="dialog"
-              aria-modal="true"
-              aria-label="Mobile Navigation Drawer"
-            >
-              {/* Drawer Brand Header */}
-              <div className="flex items-center justify-between mb-8">
+      {/* Mobile Drawer */}
+      <motion.div
+        ref={mobileMenuRef}
+        initial={{ x: "-100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "-100%" }}
+        transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+        className={`fixed bottom-0 left-0 top-0 z-50 flex w-full max-w-xs flex-col border-r p-6 shadow-2xl backdrop-blur-xl transition-all duration-300 desktop:hidden ${
+          isDarkMode ? 'bg-theme-background/8 border-white/5' : 'bg-foreground border-black/5'
+        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile Navigation Drawer"
+      >
+        {/* Drawer Brand Header */}
+        <div className="flex items-center justify-between mb-8">
+          <Link
+            href="/"
+            className="flex items-center gap-3 transition-opacity duration-200 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-label="BookVerse Home"
+          >
+            <div className="relative flex h-10 w-10 items-center justify-center">
+              <Image
+                src="/book-verse-logo.png"
+                alt="BookVerse Logo"
+                width={40}
+                height={40}
+                priority
+                className="object-cover"
+                style={{ width: "auto", height: "auto" }}
+              />
+            </div>
+            <span className="bg-gradient-to-r from-text-primary via-text-primary/90 to-text-primary/70 bg-clip-text text-xl font-bold tracking-tight text-transparent">
+              BookVerse
+            </span>
+          </Link>
+          
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="group flex h-10 w-10 items-center justify-center rounded-md border border-text-primary/5 bg-text-primary/5 text-text-primary transition-all hover:bg-theme-primary focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
+            aria-label="Close Mobile Menu"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Navigation Links */}
+        <nav className="flex flex-col gap-1.5" aria-label="Mobile Navigation Links">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`relative flex items-center justify-between rounded-md px-4 py-3 text-base font-medium tracking-wide transition-colors duration-200 text-text-primary hover:bg-theme-primary focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] ${
+                  isActive ? "bg-[var(--theme-primary)]/10 font-semibold" : ""
+                }`}
+              >
+                <span>{link.name}</span>
+                {isActive && (
+                  <motion.span 
+                    layoutId="mobileActiveIndicator"
+                    className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-[var(--theme-primary)] to-[var(--theme-secondary-purple)]"
+                  />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Drawer Footer Actions */}
+        <div className="mt-auto border-t border-text-primary/5 pt-6">
+          {!user ? (
+            <div className="flex flex-col gap-3">
+              <Link href={`/auth/log-in`} onClick={() => setIsMobileMenuOpen(false)} className="w-full">
+                <Button
+                  variant="light"
+                  className="w-full border border-text-primary/10 bg-transparent hover:bg-theme-primary text-text-primary font-medium text-sm transition-all rounded-md"
+                >
+                  Log In
+                </Button>
+              </Link>
+              <Link href={`/auth/register`} onClick={() => setIsMobileMenuOpen(false)} className="w-full">
+                <Button
+                  className="w-full bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all cursor-pointer rounded-md"
+                >
+                  Register
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {/* User Profile Segment */}
+              <div className="flex items-center gap-3 px-2">
+                <div className="relative h-10 w-10 overflow-hidden rounded-full border border-text-primary/10">
+                  <Image
+                    src={user?.image}
+                    alt={`${user?.name || 'User'}'s profile picture`}
+                    fill
+                    sizes="40px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold tracking-wide text-text-primary truncate">
+                    {user?.name}
+                  </p>
+                  <p className="text-xs text-text-primary/50 truncate">
+                    {user?.email}
+                  </p>
+                </div>
+              </div>
+
+              {/* Utility Actions */}
+              <div className="flex flex-col gap-1.5 mt-2">
                 <Link
-                  href="/"
-                  className="flex items-center gap-3"
+                  href="/settings"
                   onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex w-full items-center gap-3 rounded-md px-4 py-3 text-base font-medium tracking-wide text-text-primary transition-colors hover:bg-theme-primary focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
                 >
-                  <div className="relative flex h-9 w-9 items-center justify-center">
-                    <Image
-                      src="/book-verse-logo.png"
-                      alt="BookVerse Logo"
-                      width={36}
-                      height={36}
-                      priority
-                      className="object-cover"
-                      style={{ width: "auto", height: "auto" }}
-                    />
-                  </div>
-                  <span className="text-lg font-bold bg-gradient-to-r from-text-primary via-text-primary/90 to-text-primary/70 bg-clip-text text-transparent">BookVerse</span>
+                  <Gear className="h-5 w-5 text-text-primary" />
+                  <span>Settings</span>
                 </Link>
+
                 <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex h-8 w-8 items-center justify-center rounded-md border border-foreground/5 bg-foreground/5 text-foreground/50 hover:text-foreground"
-                  aria-label="Close Mobile Menu"
+                  onClick={() => {
+                    handleLogOut();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex w-full items-center gap-3 rounded-md px-4 py-3 text-base font-medium tracking-wide text-red-500 transition-colors hover:bg-red-500/10 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] cursor-pointer"
                 >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  <ArrowRightFromSquare className="h-5 w-5" />
+                  <span>Log Out</span>
                 </button>
               </div>
+            </div>
+          )}
+        </div>
+      </motion.div>
+    </>
+  )}
+</AnimatePresence>
 
-              {/* Navigation links inside drawer */}
-              <nav className="flex flex-col gap-1.5" aria-label="Mobile Navigation Links">
-                {navLinks.map((link) => {
-                  const isActive = pathname === link.href;
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`relative flex items-center justify-between rounded-md px-4 py-3 text-base font-semibold transition-colors ${isActive
-                        ? "bg-[var(--theme-primary)]/10 text-[var(--theme-primary)]"
-                        : "text-foreground/75 hover:bg-foreground/5 hover:text-foreground"
-                        }`}
-                    >
-                      <span>{link.name}</span>
-                      {isActive && (
-                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--theme-primary)]" />
-                      )}
-                    </Link>
-                  );
-                })}
-              </nav>
 
-              {/* Drawer Footer Actions */}
-              <div className="mt-auto border-t border-foreground/5 pt-6">
-                {!user ? (
-                  <div className="flex flex-col gap-3">
-                    <Link href={`/auth/log-in`}>
-                      <Button
-                        variant="bordered"
-                        fullWidth
-                        className="rounded-md border-foreground/10 bg-transparent hover:bg-foreground/5 text-foreground font-semibold py-6 transition-all"
-                        radius="md"
-                        onPress={() => {
-                          // setIsAuthenticated(true);
-                          setIsMobileMenuOpen(false);
-                        }}
-                      >
-                        Log In
-                      </Button>
-                    </Link>
-                    <Link href={`/auth/register`}>
-                      <Button
-                        fullWidth
-                        className="rounded-md bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold py-6 shadow-lg shadow-[var(--theme-primary)]/20 transition-all"
-                        radius="md"
-                        onPress={() => {
-                          // setIsAuthenticated(true);
-                          setIsMobileMenuOpen(false);
-                        }}
-                      >
-                        Register
-                      </Button>
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-4">
-                    {/* User profile segment */}
-                    <div className="flex items-center gap-3 px-2">
-                      <Avatar>
-                        <Avatar.Image
-                          src={user?.image || ''}
-                          alt={user?.name}
-                        // refererPolicy='no-referrer'
-                        />
-                        <Avatar.Fallback>
-                          {user?.name.charAt(0)}
-                          {user?.name[0]}
-                        </Avatar.Fallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-foreground truncate">{user?.name}</p>
-                        <p className="text-xs text-foreground/50 truncate">{user?.email}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-1.5 mt-2">
-                      <button
-                        onClick={() => {
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className="flex w-full items-center gap-3 rounded-md px-4 py-3 text-base font-semibold text-foreground/75 hover:bg-foreground/5 hover:text-foreground cursor-pointer"
-                      >
-                        <Gear className="h-5 w-5 text-foreground/45" />
-                        <span>Settings</span>
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          handleLogOut();
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className="flex w-full items-center gap-3 rounded-md px-4 py-3 text-base font-semibold text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 cursor-pointer"
-                      >
-                        <ArrowRightFromSquare className="h-5 w-5" />
-                        <span>Log Out</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </>
   );
 }
