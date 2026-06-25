@@ -51,10 +51,10 @@ export default function Slider({ slides, isDarkMode }) {
   const ActiveSlide = slides[slideIndex];
 
   return (
-    <div className={`relative w-full min-h-[calc(100vh-5rem)] overflow-hidden transition-colors duration-300 ${isDarkMode ? "bg-theme-background" : "bg-foreground"
+    <div className={`relative w-full min-h-auto tablet:min-h-[calc(100vh-5rem)] overflow-hidden transition-colors duration-300 ${isDarkMode ? "bg-theme-background" : "bg-foreground"
       }`}>
       {/* Slider Core Stage View */}
-      <div className="relative w-full min-h-[calc(100vh-5rem)] flex items-center">
+      <div className="relative w-full min-h-auto tablet:min-h-[calc(100vh-5rem)] flex items-start tablet:items-center">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={page}
@@ -79,7 +79,7 @@ export default function Slider({ slides, isDarkMode }) {
                 paginate(-1);
               }
             }}
-            className="absolute inset-0 w-full h-full"
+            className="relative w-full"
           >
             {/* Inject active contextual props downward into slides dynamically */}
             <ActiveSlide isDarkMode={isDarkMode} />
@@ -88,7 +88,7 @@ export default function Slider({ slides, isDarkMode }) {
       </div>
 
       {/* Navigation Arrow Elements Container */}
-      <div className="absolute bottom-6 tablet:bottom-auto tablet:top-1/2 tablet:-translate-y-1/2 left-4 right-4 tablet:left-6 tablet:right-6 desktop:left-8 desktop:right-8 z-20 flex justify-between tablet:block pointer-events-none">
+      <div className="absolute top-1/2 -translate-y-1/2 left-4 right-4 tablet:left-6 tablet:right-6 desktop:left-8 desktop:right-8 z-20 flex justify-between pointer-events-none">
 
         {/* Left Navigation Arrow */}
         <button

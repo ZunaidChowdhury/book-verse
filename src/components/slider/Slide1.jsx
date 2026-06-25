@@ -32,7 +32,7 @@ export default function Slide1({ isDarkMode }) {
     ];
 
     return (
-        <section className={`relative w-full min-h-[calc(100vh-5rem)] overflow-hidden flex items-center transition-all duration-300 ${isDarkMode
+        <section className={`relative w-full min-h-auto tablet:min-h-[calc(100vh-5rem)] overflow-hidden flex items-start tablet:items-center transition-all duration-300 ${isDarkMode
                 ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-b border-white/5 text-white'
                 : 'bg-gradient-to-br from-foreground via-foreground/95 to-[var(--theme-primary)]/5 text-text-primary border-b border-black/5'
             }`}>
@@ -129,8 +129,8 @@ export default function Slide1({ isDarkMode }) {
                     </div>
 
                     {/* Right Column: Isolated Artwork Scene */}
-                    <div className="w-full flex justify-center order-1 desktop:order-2 max-w-[320px] tablet:max-w-[500px] desktop:max-w-full mx-auto">
-                        <div className="relative w-full aspect-square">
+                    <div className="w-full flex justify-center order-1 desktop:order-2 max-w-[260px] tablet:max-w-[500px] desktop:max-w-full mx-auto max-h-[320px] tablet:max-h-none">
+                        <div className="relative w-full aspect-square overflow-hidden">
                             <Image
                                 src='/book-verse-cover-image.png'
                                 alt='BookVerse Cover Artwork illustration'

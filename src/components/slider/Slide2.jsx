@@ -8,7 +8,7 @@ import { ArrowRight } from "@gravity-ui/icons";
 
 export default function GroundedHero({ isDarkMode }) {
     return (
-        <section className={`relative w-full min-h-[calc(100vh-5rem)] overflow-hidden flex items-center transition-all duration-300 ${
+        <section className={`relative w-full min-h-auto tablet:min-h-[calc(100vh-5rem)] overflow-hidden flex items-start tablet:items-center transition-all duration-300 ${
             isDarkMode
                 ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-b border-white/5 text-white'
                 : 'bg-gradient-to-br from-foreground via-foreground/95 to-[var(--theme-primary)]/5 text-text-primary border-b border-black/5'
@@ -62,15 +62,15 @@ export default function GroundedHero({ isDarkMode }) {
                     {/* ==========================================
                         RIGHT COLUMN: ISOLATED ARTWORK SCENE
                        ========================================== */}
-                    <div className="w-full flex justify-center order-1 desktop:order-2 max-w-[320px] tablet:max-w-[450px] desktop:max-w-full mx-auto">
-                        <div className="relative w-full aspect-square flex items-center justify-center filter drop-shadow-[0_25px_25px_rgba(78,103,252,0.15)] transition-transform duration-500 hover:scale-[1.02]">
+                    <div className="w-full flex justify-center order-1 desktop:order-2 max-w-[260px] tablet:max-w-[450px] desktop:max-w-full mx-auto max-h-[320px] tablet:max-h-[533px]">
+                        <div className="relative w-full aspect-square flex items-center justify-center overflow-hidden filter drop-shadow-[0_25px_25px_rgba(78,103,252,0.15)] transition-transform duration-500 hover:scale-[1.02]">
                             <Image
                                 src="/book-verse-cover-image-2.png"
                                 alt="The Dating Playbook for Men Book Cover"
                                 fill
                                 priority
                                 sizes="(max-w-768px) 320px, (max-w-1200px) 450px, 600px"
-                                className="object-contain"
+                                className="object-contain rotate-8"
                             />
                         </div>
                     </div>
