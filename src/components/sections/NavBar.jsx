@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "@/redux/slices/themeSlice";
 import { DashboardSidebarContent } from "../dashboard/DashboardSidebarContent";
 import { BookOpen, Home } from "lucide-react";
+import { CgProfile } from "react-icons/cg";
 
 export default function Navbar() {
   const router = useRouter()
@@ -52,14 +53,15 @@ export default function Navbar() {
     reader: '/dashboard/reader',
   }
 
-  // if (user?.email) {
-  //   navLinks.push(
-  //     {
-  //       name: 'Dashboard',
-  //       href: dashboardLinks[user?.role || 'reader']
-  //     }
-  //   )
-  // }
+  if (user?.email) {
+    navLinks.push(
+      {
+        icon: Home,
+        name: 'Dashboard',
+        href: dashboardLinks[user?.role || 'reader']
+      }
+    )
+  }
 
 
 
@@ -319,10 +321,19 @@ export default function Navbar() {
                         </div>
 
                         {/* Dropdown Items */}
+                                                <button
+                          role="menuitem"
+                          onClick={() => router.push(`/user/${user.id}`)}
+                          className={`flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm  transition-colors  text-text-primary hover:bg-theme-primary/30  cursor-pointer`}
+                        >
+                          <CgProfile  className="h-4 w-4 text-text-primary" />
+                          <span>Profile</span>
+                        </button>
+
                         <button
                           role="menuitem"
                           onClick={() => setIsUserDropdownOpen(false)}
-                          className={`flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm  transition-colors  text-text-primary ${isDark ? 'hover:bg-theme-primary' : 'hover:bg-theme-primary'}  cursor-pointer`}
+                          className={`flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm  transition-colors  text-text-primary hover:bg-theme-primary/30  cursor-pointer`}
                         >
                           <Gear className="h-4 w-4 text-text-primary" />
                           <span>Settings</span>
@@ -334,7 +345,7 @@ export default function Navbar() {
                             handleLogOut();
                             setIsUserDropdownOpen(false);
                           }}
-                          className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm text-rose-500 hover:text-white transition-colors hover:bg-rose-500 cursor-pointer"
+                          className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm text-rose-500 transition-colors hover:bg-rose-500/30 cursor-pointer"
                         >
                           <ArrowRightFromSquare className="h-4 w-4" />
                           <span className="font-medium">Log Out</span>
@@ -420,8 +431,7 @@ export default function Navbar() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`relative flex gap-3 items-center rounded-md px-4 py-3 text-base font-medium tracking-wide transition-colors duration-200 text-text-primary hover:bg-theme-primary hover:text-white focus-visible:outline-2  focus-visible:outline-[var(--theme-primary)] ${isActive ? "bg-theme-primary text-white] " : ""
-                        }`}
+                      className={`relative flex gap-3 items-center rounded-md px-4 py-3 text-base font-medium tracking-wide transition-colors duration-200 text-text-primary hover:bg-theme-primary/30  focus-visible:outline-2  focus-visible:outline-[var(--theme-primary)] ${isActive ? "bg-theme-primary text-white] " : ""}`}
                     >
                       <Icon size={20} className="flex-shrink-0" />
                       <span>{link.name}</span>
@@ -454,14 +464,14 @@ export default function Navbar() {
                     <Link href={`/auth/log-in`} onClick={() => setIsMobileMenuOpen(false)} className="w-full">
                       <Button
                         variant="light"
-                        className="w-full border border-text-primary/10 bg-transparent hover:bg-theme-primary text-text-primary font-medium text-sm transition-all rounded-md"
+                        className="w-full border border-text-primary/10 bg-transparent hover:bg-theme-primary/30 text-text-primary font-medium text-sm transition-all rounded-md"
                       >
                         Log In
                       </Button>
                     </Link>
                     <Link href={`/auth/register`} onClick={() => setIsMobileMenuOpen(false)} className="w-full">
                       <Button
-                        className="w-full bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all cursor-pointer rounded-md"
+                        className="w-full bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/30 text-white font-semibold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all cursor-pointer rounded-md"
                       >
                         Register
                       </Button>
@@ -495,7 +505,7 @@ export default function Navbar() {
                       <Link
                         href="/settings"
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex w-full items-center gap-3 rounded-md px-4 py-3 text-base font-medium tracking-wide text-text-primary transition-colors hover:bg-theme-primary focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
+                        className="flex w-full items-center gap-3 rounded-md px-4 py-3 text-base font-medium tracking-wide text-text-primary transition-colors hover:bg-theme-primary/30 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
                       >
                         <Gear className="h-5 w-5 text-text-primary" />
                         <span>Settings</span>

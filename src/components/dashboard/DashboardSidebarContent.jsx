@@ -62,11 +62,17 @@ export function DashboardSidebarContent({usingNavSidebar=false}) {
 
     const navItems = navLinksMap[user?.role || 'reader'];
 
+    if(usingNavSidebar){
+        const newNavItems = navItems.filter(item => item.label !== 'Dashboard')
+        navItems.splice(0, navItems.length, ...newNavItems);
+    }
+
+
     const isActive = (href) => pathname === href;
 
     const navContent = (
         <nav className="flex flex-col gap-1">
-            {navItems.map((item) => {
+            {navItems.map((item) => {               
                 const Icon = item.icon;
                 const active = isActive(item.href);
                 return (
@@ -79,8 +85,8 @@ export function DashboardSidebarContent({usingNavSidebar=false}) {
                                 ? 'bg-theme-primary text-white'
                                 : 'bg-theme-primary text-white'
                             : isDark
-                                ? 'text-text-primary hover:bg-theme-primary/30 hover:text-white'
-                                : 'text-text-primary hover:bg-theme-primary hover:text-white'
+                                ? 'text-text-primary hover:bg-theme-primary/30'
+                                : 'text-text-primary hover:bg-theme-primary/30 '
                             }`}
                     >
                         <Icon size={20} className="flex-shrink-0" />

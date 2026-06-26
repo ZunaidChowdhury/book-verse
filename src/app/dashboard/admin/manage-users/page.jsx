@@ -5,9 +5,10 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Trash2, Edit2, ChevronDown } from 'lucide-react';
 import { getAllUsers, updateUserRole, deleteUser } from '@/lib/api/admin';
+import Link from 'next/link';
 
 export default function ManageUsersPage() {
-    const { mode } = useSelector((state) => state.theme);
+    const { isDark } = useSelector((state) => state.theme);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -80,9 +81,9 @@ export default function ManageUsersPage() {
 
     if (loading) {
         return (
-            <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
+            <div className={`min-h-screen ${isDark ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
                 <div className="text-center py-12">
-                    <p className={`text-lg ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <p className={`text-lg ${isDark ? 'text-text-secondary' : 'text-text-secondary'}`}>
                         Loading users...
                     </p>
                 </div>
@@ -92,7 +93,7 @@ export default function ManageUsersPage() {
 
     if (error) {
         return (
-            <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
+            <div className={`min-h-screen ${isDark ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
                 <div className="text-center py-12">
                     <p className="text-lg text-red-500">{error}</p>
                 </div>
@@ -101,14 +102,14 @@ export default function ManageUsersPage() {
     }
 
     return (
-        <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} transition-colors`}>
+        <div className={`min-h-screen bg-background transition-colors`}>
             <div className="p-4 sm:p-6 lg:p-8">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className={`text-3xl sm:text-4xl font-bold mb-2 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                    <h1 className={`text-3xl sm:text-4xl font-bold mb-2 text-text-primary`}>
                         Manage Users
                     </h1>
-                    <p className={`text-sm sm:text-base ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <p className={`text-sm sm:text-base text-text-secondary`}>
                         View and manage user roles and permissions
                     </p>
                 </div>
@@ -116,7 +117,7 @@ export default function ManageUsersPage() {
                 {/* Sort Dropdown */}
                 <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
                     <div className="text-sm sm:text-base">
-                        <span className={mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}>
+                        <span className={'text-text-secondary'}>
                             Total: {users.length} user{users.length !== 1 ? 's' : ''}
                         </span>
                     </div>
@@ -124,9 +125,9 @@ export default function ManageUsersPage() {
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
                         className={`px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${
-                            mode === 'dark'
+                            isDark
                                 ? 'bg-foreground border-border-dark text-text-primary'
-                                : 'bg-background border-border-light text-text-primary'
+                                : 'bg-foreground border-border-light text-text-primary'
                         }`}
                     >
                         <option value="name-az">Name: A-Z</option>
@@ -137,8 +138,8 @@ export default function ManageUsersPage() {
                 </div>
 
                 {users.length === 0 ? (
-                    <div className={`text-center py-16 rounded-lg ${mode === 'dark' ? 'bg-foreground' : 'bg-background'}`}>
-                        <p className={`text-lg ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <div className={`text-center py-16 rounded-lg bg-foreground`}>
+                        <p className={`text-lg text-text-secondary`}>
                             No users found
                         </p>
                     </div>
@@ -146,30 +147,32 @@ export default function ManageUsersPage() {
                     <>
                         {/* Desktop Table View */}
                         <div className="hidden md:block overflow-x-auto rounded-lg border border-border-dark">
-                            <table className={`w-full text-sm ${mode === 'dark' ? 'bg-foreground' : 'bg-background'}`}>
+                            <table className={`w-full text-sm bg-foreground`}>
                                 <thead>
-                                    <tr className={`border-b ${mode === 'dark' ? 'border-border-dark bg-black/50' : 'border-border-light bg-gray-50'}`}>
-                                        <th className={`px-4 py-3 text-left font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                    <tr className={`border-b ${isDark ? 'border-border-dark bg-black/50' : 'border-border-light bg-gray-50'}`}>
+                                        <th className={`px-4 py-3 text-left font-semibold text-text-primary`}>
                                             Name
                                         </th>
-                                        <th className={`px-4 py-3 text-left font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                        <th className={`px-4 py-3 text-left font-semibold text-text-primary`}>
                                             Email
                                         </th>
-                                        <th className={`px-4 py-3 text-left font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                        <th className={`px-4 py-3 text-left font-semibold text-text-primary`}>
                                             Role
                                         </th>
-                                        <th className={`px-4 py-3 text-left font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                        <th className={`px-4 py-3 text-left font-semibold text-text-primary`}>
                                             Actions
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {sortedUsers.map((user) => (
-                                        <tr key={user._id} className={`border-b ${mode === 'dark' ? 'border-border-dark hover:bg-black/30' : 'border-border-light hover:bg-gray-50'} transition-colors`}>
-                                            <td className={`px-4 py-3 font-medium ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
-                                                {user.name || 'N/A'}
+                                        <tr key={user._id} className={`border-b ${isDark ? 'border-border-dark hover:bg-black/30' : 'border-border-light hover:bg-gray-50'} transition-colors`}>
+                                            <td className={`px-4 py-3 font-medium ${isDark ? 'text-text-primary' : 'text-text-primary'}`}>
+                                                <Link href={`/user/${user._id}`} className="underline">
+                                                    {user.name || 'N/A'}
+                                                </Link>
                                             </td>
-                                            <td className={`px-4 py-3 ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                                            <td className={`px-4 py-3 ${isDark ? 'text-text-secondary' : 'text-text-secondary'}`}>
                                                 {user.email}
                                             </td>
                                             <td className="px-4 py-3">
@@ -178,7 +181,7 @@ export default function ManageUsersPage() {
                                                         value={selectedRole[user._id] || user.role}
                                                         onChange={(e) => setSelectedRole(prev => ({ ...prev, [user._id]: e.target.value }))}
                                                         className={`px-2 py-1 rounded text-sm border ${
-                                                            mode === 'dark'
+                                                            isDark
                                                                 ? 'bg-black/50 border-border-dark text-text-primary'
                                                                 : 'bg-white border-border-light text-text-primary'
                                                         }`}
@@ -211,7 +214,7 @@ export default function ManageUsersPage() {
                                                         <button
                                                             onClick={() => setEditingId(null)}
                                                             className={`px-3 py-1 rounded text-sm ${
-                                                                mode === 'dark'
+                                                                isDark
                                                                     ? 'bg-foreground border border-border-dark text-text-primary'
                                                                     : 'bg-gray-100 border border-border-light text-text-primary'
                                                             }`}
@@ -223,7 +226,7 @@ export default function ManageUsersPage() {
                                                     <>
                                                         <button
                                                             onClick={() => setEditingId(user._id)}
-                                                            className="p-2 hover:bg-theme-primary/20 rounded transition-colors"
+                                                            className="p-2 text-text-primary  hover:bg-theme-primary/20 rounded transition-colors"
                                                             title="Edit role"
                                                         >
                                                             <Edit2 size={16} />
@@ -250,30 +253,30 @@ export default function ManageUsersPage() {
                                 <div 
                                     key={user._id}
                                     className={`p-4 rounded-lg border transition-all ${
-                                        mode === 'dark' 
+                                        isDark 
                                             ? 'bg-foreground border-border-dark' 
                                             : 'bg-background border-border-light'
                                     }`}
                                 >
                                     <div className="flex justify-between items-start mb-4">
                                         <div>
-                                            <h3 className={`font-semibold text-sm sm:text-base ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                            <h3 className={`font-semibold text-sm sm:text-base ${isDark ? 'text-text-primary' : 'text-text-primary'}`}>
                                                 {user.name || 'N/A'}
                                             </h3>
-                                            <p className={`text-xs sm:text-sm ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                                            <p className={`text-xs sm:text-sm ${isDark ? 'text-text-secondary' : 'text-text-secondary'}`}>
                                                 {user.email}
                                             </p>
                                         </div>
                                     </div>
                                     <div className="mb-4">
-                                        <p className={`text-xs mb-2 ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                                        <p className={`text-xs mb-2 ${isDark ? 'text-text-secondary' : 'text-text-secondary'}`}>
                                             Role
                                         </p>
                                         <select
                                             value={selectedRole[user._id] || user.role}
                                             onChange={(e) => setSelectedRole(prev => ({ ...prev, [user._id]: e.target.value }))}
                                             className={`w-full px-2 py-1 rounded border text-sm ${
-                                                mode === 'dark'
+                                                isDark
                                                     ? 'bg-black/50 border-border-dark text-text-primary'
                                                     : 'bg-white border-border-light text-text-primary'
                                             }`}

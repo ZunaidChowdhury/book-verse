@@ -23,7 +23,8 @@ export async function proxy(request) {
     // Target your protected routes (e.g., /all-facilities or deep nested panels)
     // private routes [only authenticated users]
     const isProtectedRoute = pathname.startsWith("/dashboard") ||
-                             pathname.startsWith("/auth/social-login");
+                             pathname.startsWith("/auth/social-login") ||
+                             pathname.startsWith("/auth/user");
     // pathname.startsWith("/auth/register") ||
 
     if (isProtectedRoute && !session) {

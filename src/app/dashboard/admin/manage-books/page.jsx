@@ -10,7 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function ManageBooksPage() {
-    const { mode } = useSelector((state) => state.theme);
+    const { isDark } = useSelector((state) => state.theme);
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -87,9 +87,9 @@ export default function ManageBooksPage() {
 
     if (loading) {
         return (
-            <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
+            <div className={`min-h-screen bg-background p-4 sm:p-6 lg:p-8`}>
                 <div className="text-center py-12">
-                    <p className={`text-lg ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <p className={`text-lg text-text-secondary`}>
                         Loading books...
                     </p>
                 </div>
@@ -99,7 +99,7 @@ export default function ManageBooksPage() {
 
     if (error) {
         return (
-            <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
+            <div className={`min-h-screen bg-background p-4 sm:p-6 lg:p-8`}>
                 <div className="text-center py-12">
                     <p className="text-lg text-red-500">{error}</p>
                 </div>
@@ -108,14 +108,14 @@ export default function ManageBooksPage() {
     }
 
     return (
-        <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} transition-colors`}>
+        <div className={`min-h-screen bg-background transition-colors`}>
             <div className="p-4 sm:p-6 lg:p-8">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className={`text-3xl sm:text-4xl font-bold mb-2 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                    <h1 className={`text-3xl sm:text-4xl font-bold mb-2 text-text-primary`}>
                         Manage Books
                     </h1>
-                    <p className={`text-sm sm:text-base ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <p className={`text-sm sm:text-base text-text-secondary`}>
                         View and manage all ebooks in the system
                     </p>
                 </div>
@@ -123,16 +123,16 @@ export default function ManageBooksPage() {
                 {/* Sort Dropdown */}
                 <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
                     <div className="text-sm sm:text-base">
-                        <span className={mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}>
+                        <span className='text-text-secondary'>
                             Total: {books.length} book{books.length !== 1 ? 's' : ''}
                         </span>
                     </div>
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
-                        className={`px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${mode === 'dark'
+                        className={`px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${isDark
                                 ? 'bg-foreground border-border-dark text-text-primary'
-                                : 'bg-background border-border-light text-text-primary'
+                                : 'bg-foreground border-border-light text-text-primary'
                             }`}
                     >
                         <option value="date-desc">Latest First</option>
@@ -144,8 +144,8 @@ export default function ManageBooksPage() {
                 </div>
 
                 {books.length === 0 ? (
-                    <div className={`text-center py-16 rounded-lg ${mode === 'dark' ? 'bg-foreground' : 'bg-background'}`}>
-                        <p className={`text-lg ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <div className={`text-center py-16 rounded-lg bg-foreground`}>
+                        <p className={`text-lg text-text-secondary`}>
                             No books found
                         </p>
                     </div>
@@ -153,29 +153,29 @@ export default function ManageBooksPage() {
                     <>
                         {/* Desktop Table View */}
                         <div className="hidden md:block overflow-x-auto rounded-lg border border-border-dark">
-                            <table className={`w-full text-sm ${mode === 'dark' ? 'bg-foreground' : 'bg-background'}`}>
+                            <table className={`w-full text-sm bg-foreground`}>
                                 <thead>
-                                    <tr className={`border-b ${mode === 'dark' ? 'border-border-dark bg-black/50' : 'border-border-light bg-gray-50'}`}>
-                                        <th className={`px-4 py-3 text-left font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                    <tr className={`border-b ${isDark ? 'border-border-dark bg-black/50' : 'border-border-light bg-gray-50'}`}>
+                                        <th className={`px-4 py-3 text-left font-semibold text-text-primary`}>
                                             Book
                                         </th>
-                                        <th className={`px-4 py-3 text-left font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                        <th className={`px-4 py-3 text-left font-semibold text-text-primary`}>
                                             Writer
                                         </th>
-                                        <th className={`px-4 py-3 text-left font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                        <th className={`px-4 py-3 text-left font-semibold text-text-primary`}>
                                             Price
                                         </th>
-                                        <th className={`px-4 py-3 text-left font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                        <th className={`px-4 py-3 text-left font-semibold text-text-primary`}>
                                             Status
                                         </th>
-                                        <th className={`px-4 py-3 text-left font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                        <th className={`px-4 py-3 text-left font-semibold text-text-primary`}>
                                             Actions
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {sortedBooks.map((book) => (
-                                        <tr key={book._id} className={`border-b ${mode === 'dark' ? 'border-border-dark hover:bg-black/30' : 'border-border-light hover:bg-gray-50'} transition-colors`}>
+                                        <tr key={book._id} className={`border-b ${isDark ? 'border-border-dark hover:bg-black/30' : 'border-border-light hover:bg-gray-50'} transition-colors`}>
                                             <td className={`px-4 py-3`}>
                                                 <div className="flex gap-3 items-center">
                                                     {book.image ? (
@@ -189,26 +189,26 @@ export default function ManageBooksPage() {
                                                         />
                                                         </Link>
                                                     ) : (
-                                                        <div className={`w-10 h-12 rounded flex items-center justify-center text-lg ${mode === 'dark' ? 'bg-black/50' : 'bg-gray-200'
+                                                        <div className={`w-10 h-12 rounded flex items-center justify-center text-lg ${isDark ? 'bg-black/50' : 'bg-gray-200'
                                                             }`}>
                                                             📚
                                                         </div>
                                                     )}
-                                                    <Link href={`/books/${book._id}`} className={`underline font-medium max-w-xs truncate ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                                    <Link href={`/books/${book._id}`} className={`underline font-medium max-w-xs truncate text-text-primary`}>
                                                         {book.title}
                                                     </Link  >
                                                 </div>
                                             </td>
-                                            <td className={`px-4 py-3 ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                                            <td className={`px-4 py-3 text-text-secondary`}>
                                                 {book.writerName || 'N/A'}
                                             </td>
-                                            <td className={`px-4 py-3 font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                            <td className={`px-4 py-3 font-semibold text-text-primary`}>
                                                 ${book.price?.toFixed(2) || '0.00'}
                                             </td>
                                             <td className="px-4 py-3">
                                                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${book.visibility === 'publish'
-                                                        ? 'bg-green-100/60 text-green-600'
-                                                        : 'bg-yellow-100/60 text-yellow-600'
+                                                        ? 'bg-green-500 text-text-primary'
+                                                        : 'bg-yellow-500 text-text-primary'
                                                     }`}>
                                                     {book.visibility === 'publish' ? 'Published' : 'Unpublished'}
                                                 </span>
@@ -217,7 +217,7 @@ export default function ManageBooksPage() {
                                                 <button
                                                     onClick={() => toggleVisibility(book)}
                                                     disabled={togglingId === book._id}
-                                                    className="cursor-pointer p-2 hover:bg-theme-primary/20 rounded transition-colors disabled:opacity-50"
+                                                    className="cursor-pointer p-2 text-text-primary hover:bg-theme-primary/20 rounded transition-colors disabled:opacity-50"
                                                     title={book.visibility === 'publish' ? 'Unpublish' : 'Publish'}
                                                 >
                                                     {book.visibility === 'publish' ? (
@@ -245,9 +245,9 @@ export default function ManageBooksPage() {
                             {sortedBooks.map((book) => (
                                 <div
                                     key={book._id}
-                                    className={`p-4 rounded-lg border transition-all ${mode === 'dark'
+                                    className={`p-4 rounded-lg border transition-all ${isDark
                                             ? 'bg-foreground border-border-dark'
-                                            : 'bg-background border-border-light'
+                                            : 'bg-foreground border-border-light'
                                         }`}
                                 >
                                     <div className="flex gap-3 mb-4">
@@ -262,24 +262,24 @@ export default function ManageBooksPage() {
                                                 className="rounded object-cover"
                                             /> </Link>
                                         ) : (
-                                            <div className={`w-10 h-12 rounded flex items-center justify-center text-lg ${mode === 'dark' ? 'bg-black/50' : 'bg-gray-200'
+                                            <div className={`w-10 h-12 rounded flex items-center justify-center text-lg ${isDark ? 'bg-black/50' : 'bg-gray-200'
                                                 }`}>
                                                 📚
                                             </div>
                                         )}
                                         <div className="flex-1">
                                             <Link href={`/books/${book._id}`} className="block">
-                                                <h3 className={`underline font-semibold text-sm ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                                <h3 className={`underline font-semibold text-sm text-text-primary`}>
                                                     {book.title}
                                                 </h3>
                                             </Link>
-                                            <p className={`text-xs ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                                            <p className={`text-xs text-text-secondary'}`}>
                                                 By {book.writerName || 'N/A'}
                                             </p>
                                         </div>
                                     </div>
                                     <div className="flex justify-between items-center mb-3 pb-3 border-b border-border-dark">
-                                        <span className={`font-semibold text-sm ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                        <span className={`font-semibold text-sm text-text-primary`}>
                                             ${book.price?.toFixed(2) || '0.00'}
                                         </span>
                                         <span className={`text-xs px-2 py-1 rounded ${book.visibility === 'publish'
