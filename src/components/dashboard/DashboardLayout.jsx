@@ -1,6 +1,6 @@
 'use client'
 
-import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
+import { DashboardSidebar } from '@/components/dashboard/DashboardSidebarContent';
 import { useSelector } from 'react-redux';
 import { authClient } from '@/lib/auth-client';
 

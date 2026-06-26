@@ -23,7 +23,7 @@ import { useUploadThing } from "@/lib/uploadthing";
 import { BiBookReader } from "react-icons/bi";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { LiaBookReaderSolid } from "react-icons/lia";
-
+import { useSelector } from "react-redux";
 
 // Password rule validation hook
 function usePasswordRules(password) {
@@ -168,6 +168,7 @@ function ProfileImageUploader({ onUploadComplete, onUploadError, onUploadBegin }
 }
 
 export default function RegisterForm() {
+  const { isDark } = useSelector((state) => state.theme);
 
   const router = useRouter();
 
@@ -242,6 +243,7 @@ export default function RegisterForm() {
   }
 
   async function handleSubmit(e) {
+
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -276,21 +278,24 @@ export default function RegisterForm() {
   }
 
   // Consistent input wrapper styling using theme variables to support dark/light modes
-  const inputClass = "w-full bg-foreground/[0.03] hover:bg-foreground/[0.06] border border-foreground/10 hover:border-foreground/20 focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)]/40 transition-all duration-200 rounded-md h-11 pl-10 pr-4 text-foreground placeholder:text-foreground/40 text-sm outline-none";
-  const passwordInputClass = "w-full bg-foreground/[0.03] hover:bg-foreground/[0.06] border border-foreground/10 hover:border-foreground/20 focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)]/40 transition-all duration-200 rounded-md h-11 pl-10 pr-10 text-foreground placeholder:text-foreground/40 text-sm outline-none";
+  const inputClass = "w-full h-11 pl-10 pr-4 rounded-lg bg-text-primary/5 border border-text-primary/10 text-text-primary placeholder-text-primary/40 text-sm focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)] focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-300";
+  const passwordInputClass = "w-full h-11 pl-10 pr-10 rounded-lg bg-text-primary/5 border border-text-primary/10 text-text-primary placeholder-text-primary/40 text-sm focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)] focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-300";
 
   return (
-    <div className="flex-1 flex items-center justify-center px-4 py-12 bg-background transition-colors duration-300">
-      {/* Decorative Blur Backgrounds */}
-      <div className="absolute -z-10 h-[500px] w-[500px] rounded-full bg-[var(--theme-primary)]/8 blur-[120px] pointer-events-none" />
+    <div className={`flex-1 flex items-center justify-center px-4 py-12 transition-colors duration-300 ${isDark ? 'bg-theme-background' : 'bg-foreground'}`}>
+      {/* Decorative Blur Background (styled from theme) */}
+      <div className="absolute -z-10 h-[380px] w-[380px] rounded-full bg-[var(--theme-primary)]/10 blur-[90px] pointer-events-none" />
 
-      {/* Main Card — flat single-card, 2-col grid inside */}
-      <div className="w-full max-w-[780px] rounded-xl border border-foreground/8 bg-background/70 backdrop-blur-md shadow-2xl transition-all duration-300 px-8 py-9">
+      {/* Main Form Container Card with standard dark-gradient theme architecture */}
+      <div className={`w-full max-w-[780px] rounded-2xl border px-6 py-8 tablet:px-8 shadow-xl transition-all duration-300 ${isDark
+          ? 'bg-gradient-to-b from-theme-background/40 to-theme-background/80 border-white/5'
+          : 'bg-gradient-to-b from-foreground/5 to-foreground/10 border-black/5'
+        }`}>
 
         {/* Header — full width */}
-        <div className="mb-7">
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Create your account</h1>
-          <p className="mt-1.5 text-sm text-foreground/55">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold tracking-tight text-text-primary">Create your account</h1>
+          <p className="mt-1.5 text-sm text-text-primary/70">
             Join{" "}
             <span className="text-[var(--theme-primary)] font-semibold">BookVerse</span>
             {" "}— your reading &amp; writing community
@@ -302,29 +307,38 @@ export default function RegisterForm() {
           type="button"
           variant="bordered"
           fullWidth
-          className="border border-foreground/15 dark:border-white/15 bg-transparent hover:bg-foreground/5 text-foreground/80 hover:text-foreground font-semibold h-11 rounded-md transition-all duration-200 mb-6"
+          className="w-full flex items-center justify-center gap-2.5 border border-text-primary/10 bg-text-primary/5 text-text-primary/80 hover:text-text-primary hover:bg-text-primary/10 font-semibold h-11 rounded-lg focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-200 cursor-pointer"
           onClick={handleGoogleSignUp}
         >
-          <FcGoogle size={22} />
-          Continue with Google
+          <FcGoogle size={20} />
+          <span>Continue with Google</span>
         </Button>
 
         {/* Divider — full width */}
-        <div className="flex items-center gap-3 mb-7">
-          <div className="flex-1 h-[1px] bg-foreground/10" />
-          <span className="text-xs font-semibold text-foreground/35 uppercase tracking-widest">or</span>
-          <div className="flex-1 h-[1px] bg-foreground/10" />
+        <div className="flex items-center gap-3 my-6">
+          <div className="flex-1 h-[1px] bg-text-primary/5" />
+          <span className="text-xs font-semibold text-text-primary/40 uppercase tracking-widest">
+            or
+          </span>
+          <div className="flex-1 h-[1px] bg-text-primary/5" />
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
+
+          {/* Form Level Error */}
+          {errors.form && (
+            <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 px-3.5 py-2.5">
+              <span className="text-rose-400 text-sm font-medium">{errors.form}</span>
+            </div>
+          )}
 
           {/* Row 1: Full Name | Email */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <TextField isInvalid={!!errors.fullName} className="flex flex-col gap-1.5">
-              <Label className="text-foreground/80 text-sm font-medium">Full Name</Label>
+              <Label className="text-text-primary/90 text-sm font-medium">Full Name</Label>
               <div className="relative flex items-center">
-                <Person className="absolute left-3 text-foreground/40 shrink-0" width={16} height={16} />
+                <Person className="absolute left-3.5 text-text-primary/40 shrink-0" width={16} height={16} />
                 <Input
                   placeholder="Jane Doe"
                   value={form.fullName}
@@ -332,13 +346,13 @@ export default function RegisterForm() {
                   className={inputClass}
                 />
               </div>
-              {errors.fullName && <span className="text-rose-500 text-xs mt-0.5">{errors.fullName}</span>}
+              {errors.fullName && <span className="text-rose-400 text-xs mt-0.5 font-medium">{errors.fullName}</span>}
             </TextField>
 
             <TextField isInvalid={!!errors.email} className="flex flex-col gap-1.5">
-              <Label className="text-foreground/80 text-sm font-medium">Email Address</Label>
+              <Label className="text-text-primary/90 text-sm font-medium">Email Address</Label>
               <div className="relative flex items-center">
-                <Envelope className="absolute left-3 text-foreground/40 shrink-0" width={16} height={16} />
+                <Envelope className="absolute left-3.5 text-text-primary/40 shrink-0" width={16} height={16} />
                 <Input
                   type="email"
                   placeholder="name@domain.com"
@@ -347,17 +361,17 @@ export default function RegisterForm() {
                   className={inputClass}
                 />
               </div>
-              {errors.email && <span className="text-rose-500 text-xs mt-0.5">{errors.email}</span>}
+              {errors.email && <span className="text-rose-400 text-xs mt-0.5 font-medium">{errors.email}</span>}
             </TextField>
           </div>
 
           {/* Row 2: Password | Confirm Password */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Password */}
             <TextField isInvalid={!!errors.password} className="flex flex-col gap-1.5">
-              <Label className="text-foreground/80 text-sm font-medium">Password</Label>
+              <Label className="text-text-primary/90 text-sm font-medium">Password</Label>
               <div className="relative flex items-center">
-                <Lock className="absolute left-3 text-foreground/40 shrink-0" width={16} height={16} />
+                <Lock className="absolute left-3.5 text-text-primary/40 shrink-0" width={16} height={16} />
                 <Input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
@@ -368,20 +382,20 @@ export default function RegisterForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute right-3 text-foreground/40 hover:text-foreground transition-colors focus:outline-none"
+                  className="absolute right-3 text-text-primary/40 hover:text-text-primary transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] cursor-pointer"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeSlash width={18} height={18} /> : <Eye width={18} height={18} />}
                 </button>
               </div>
-              {errors.password && <span className="text-rose-500 text-xs mt-0.5">{errors.password}</span>}
+              {errors.password && <span className="text-rose-400 text-xs mt-0.5 font-medium">{errors.password}</span>}
             </TextField>
 
             {/* Confirm Password */}
             <TextField isInvalid={!!errors.confirmPassword} className="flex flex-col gap-1.5">
-              <Label className="text-foreground/80 text-sm font-medium">Confirm Password</Label>
+              <Label className="text-text-primary/90 text-sm font-medium">Confirm Password</Label>
               <div className="relative flex items-center">
-                <Lock className="absolute left-3 text-foreground/40 shrink-0" width={16} height={16} />
+                <Lock className="absolute left-3.5 text-text-primary/40 shrink-0" width={16} height={16} />
                 <Input
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="••••••••"
@@ -392,13 +406,13 @@ export default function RegisterForm() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword((prev) => !prev)}
-                  className="absolute right-3 text-foreground/40 hover:text-foreground transition-colors focus:outline-none"
+                  className="absolute right-3 text-text-primary/40 hover:text-text-primary transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] cursor-pointer"
                   aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                 >
                   {showConfirmPassword ? <EyeSlash width={18} height={18} /> : <Eye width={18} height={18} />}
                 </button>
               </div>
-              {errors.confirmPassword && <span className="text-rose-500 text-xs mt-0.5">{errors.confirmPassword}</span>}
+              {errors.confirmPassword && <span className="text-rose-400 text-xs mt-0.5 font-medium">{errors.confirmPassword}</span>}
             </TextField>
           </div>
 
@@ -425,7 +439,7 @@ export default function RegisterForm() {
 
           {/* Row 3: Profile Image — full width */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-foreground/80 text-sm font-medium">Profile Image</label>
+            <label className="text-text-primary/90 text-sm font-medium">Profile Image</label>
             {!form.profileImageUrl ? (
               <ProfileImageUploader
                 onUploadComplete={(res) => {
@@ -445,10 +459,10 @@ export default function RegisterForm() {
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <CircleCheck className="text-emerald-500 shrink-0 w-5 h-5" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-foreground text-sm font-medium truncate">
+                    <p className="text-text-primary text-sm font-medium truncate">
                       {form.profileImage?.name || "Image uploaded"}
                     </p>
-                    <p className="text-foreground/50 text-xs">
+                    <p className="text-text-primary/50 text-xs">
                       {form.profileImage?.size ? (form.profileImage.size / 1024).toFixed(2) + " KB" : "Successfully uploaded"}
                     </p>
                   </div>
@@ -459,18 +473,18 @@ export default function RegisterForm() {
                     setForm((prev) => ({ ...prev, profileImageUrl: "", profileImage: null }));
                     if (errors.profileImage) setErrors((prev) => ({ ...prev, profileImage: null }));
                   }}
-                  className="text-[var(--theme-primary)] hover:underline text-sm font-medium transition-colors shrink-0"
+                  className="text-[var(--theme-primary)] hover:text-text-primary text-sm font-medium transition-colors shrink-0 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] cursor-pointer"
                 >
                   Clear
                 </button>
               </div>
             )}
-            {errors.profileImage && <span className="text-rose-500 text-xs mt-0.5 font-medium">{errors.profileImage}</span>}
+            {errors.profileImage && <span className="text-rose-400 text-xs mt-0.5 font-medium">{errors.profileImage}</span>}
           </div>
 
           {/* Row 4: I'm a — icon cards */}
           <div className="flex flex-col gap-2">
-            <span className="text-foreground/80 text-sm font-medium">I&apos;m a</span>
+            <span className="text-text-primary/90 text-sm font-medium">I&apos;m a</span>
             <div className="grid grid-cols-2 gap-3">
               {[
                 { value: "reader", label: "Reader", Icon: LiaBookReaderSolid },
@@ -485,7 +499,7 @@ export default function RegisterForm() {
                     className={`flex flex-col items-center justify-center gap-2.5 h-20 w-full rounded-xl border-2 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-primary)]/50 cursor-pointer
                       ${isSelected
                         ? "border-[var(--theme-primary)] bg-[var(--theme-primary)]/8 text-[var(--theme-primary)] shadow-md shadow-[var(--theme-primary)]/10"
-                        : "border-foreground/10 bg-foreground/[0.03] text-foreground/40 hover:border-[var(--theme-primary)]/40 hover:bg-[var(--theme-primary)]/5 hover:text-[var(--theme-primary)]/60"
+                        : "border-text-primary/10 bg-text-primary/[0.03] text-text-primary/40 hover:border-[var(--theme-primary)]/40 hover:bg-[var(--theme-primary)]/5 hover:text-[var(--theme-primary)]/60"
                       }`}
                   >
                     <Icon size={22} strokeWidth={isSelected ? 2.5 : 1.8} />
@@ -496,23 +510,23 @@ export default function RegisterForm() {
             </div>
           </div>
 
-          {/* Submit — full width */}
+          {/* Submit — full width, gradient button matching LogInForm */}
           <Button
             id="register-submit"
             type="submit"
             fullWidth
-            className="mt-1 h-11 bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all cursor-pointer rounded-md"
+            className="mt-2 w-full h-11 bg-gradient-to-r from-[var(--theme-secondary-purple)] to-[var(--theme-primary)] hover:opacity-90 text-white font-bold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all duration-300 cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
           >
             Create Account
           </Button>
         </form>
 
         {/* Footer */}
-        <p className="mt-5 text-center text-sm text-foreground/50">
+        <p className="mt-6 text-center text-sm text-text-primary/70">
           Have an account?{" "}
           <Link
             href={`/auth/log-in`}
-            className="text-[var(--theme-primary)] hover:underline font-semibold transition-all duration-150"
+            className="text-[var(--theme-primary)] hover:text-text-primary font-semibold transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
           >
             Log in
           </Link>

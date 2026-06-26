@@ -9,6 +9,7 @@ import FeaturedBooks from "../components/sections/FeaturedBooks";
 import { getTopWriters } from "@/lib/api/writers";
 import TopWriters from "@/components/sections/TopWriters";
 import BookGenres from "@/components/sections/BookGenres";
+import Newsletter from "@/components/sections/Newsletter";
 
 
 export default async function Home() {
@@ -23,6 +24,7 @@ export default async function Home() {
       <FeaturedBooks featuredBooks={featuredBooks} />
       <TopWriters topWriters={topWriters} />
       <BookGenres />
+      <Newsletter />
       
 
       {/* <Image

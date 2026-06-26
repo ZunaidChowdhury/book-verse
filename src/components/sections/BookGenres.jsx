@@ -77,7 +77,7 @@ export default function BookGenres() {
                     classNames='pb-8 tablet:pb-16'
                 />
 
-                {/* Responsive Grid System mirroring the 4x3 image matrix layout */}
+                {/* Responsive Grid System mirroring your standard design framework layout */}
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
@@ -91,22 +91,30 @@ export default function BookGenres() {
                             <motion.div
                                 key={genre.slug}
                                 variants={itemVariants}
+                                whileHover={{ y: -6 }}
+                                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                                 className="w-full"
                             >
                                 <Link
                                     href={`/genres/${genre.slug}`}
-                                    className={`group flex h-20 items-center gap-4 rounded-md border ${genre.style} p-4 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]`}
+                                    className="group relative flex h-24 items-center gap-4 rounded-2xl bg-gradient-to-b from-[#111836] to-[#0b0f24] border border-white/5 hover:border-theme-primary/45 p-5 transition-all duration-300 shadow-lg hover:shadow-[0_12px_24px_rgba(78,103,252,0.12)] focus:outline-none focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] overflow-hidden"
                                     aria-label={`Explore books in the ${genre.name} category`}
                                 >
-                                    {/* Left Side: Icon Container Box */}
-                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-background/50 border border-foreground/5 transition-transform duration-300 group-hover:scale-105">
+                                    {/* Subtle Glow Effect on Hover */}
+                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-[radial-gradient(circle_at_center,var(--theme-primary)_0%,transparent_70%)] pointer-events-none" />
+
+                                    {/* Left Side: Icon Container Box built matching standard book item layout */}
+                                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#070b1e] border border-white/5 text-theme-primary/90 shadow-md shadow-black/40 transition-transform duration-300 group-hover:scale-105">
                                         <IconComponent className="h-5 w-5 transition-transform duration-300 group-hover:rotate-6" />
                                     </div>
 
-                                    {/* Right Side: Category Title Text */}
-                                    <div className="overflow-hidden">
-                                        <span className="block truncate text-base font-bold tracking-tight text-foreground transition-colors duration-200 group-hover:text-foreground/90">
+                                    {/* Right Side: Category Title Details */}
+                                    <div className="overflow-hidden flex-1">
+                                        <span className="block truncate text-base font-bold tracking-tight text-white transition-colors duration-200 group-hover:text-theme-primary">
                                             {genre.name}
+                                        </span>
+                                        <span className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mt-0.5">
+                                            Explore Collection
                                         </span>
                                     </div>
                                 </Link>
