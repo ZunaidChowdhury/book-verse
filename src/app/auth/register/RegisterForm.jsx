@@ -116,10 +116,10 @@ function ProfileImageUploader({ onUploadComplete, onUploadError, onUploadBegin }
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onClick={() => !isUploading && fileInputRef.current?.click()}
-      className={`border-2 border-dashed rounded-md p-6 transition-all duration-200 flex flex-col items-center justify-center gap-2 cursor-pointer select-none
+      className={`border-2 border-dashed rounded-xl p-6 transition-all duration-200 flex flex-col items-center justify-center gap-2 cursor-pointer select-none
         ${isDragOver
-          ? "border-[var(--theme-primary)] bg-[var(--theme-primary)]/10 scale-[1.01]"
-          : "border-foreground/10 hover:border-foreground/30 bg-foreground/5 hover:bg-foreground/[0.07]"
+          ? "border-[var(--theme-primary)] bg-[var(--theme-primary)]/10 scale-[1.01] shadow-[0_0_0_1px_rgba(255,255,255,0.03)]"
+          : "border-text-primary/15 hover:border-[var(--theme-primary)]/40 bg-text-primary/[0.03] hover:bg-[var(--theme-primary)]/8"
         }
         ${isUploading ? "pointer-events-none opacity-70" : ""}
       `}
@@ -136,13 +136,13 @@ function ProfileImageUploader({ onUploadComplete, onUploadError, onUploadBegin }
       {/* Icon */}
       <div className={`transition-transform duration-200 ${isDragOver ? "scale-110" : ""}`}>
         <ArrowUpFromLine
-          className={`w-5 h-5 transition-colors duration-200 ${isDragOver ? "text-[var(--theme-primary)]" : "text-foreground/40"
+          className={`w-5 h-5 transition-colors duration-200 ${isDragOver ? "text-[var(--theme-primary)]" : "text-text-primary/60"
             }`}
         />
       </div>
 
       {/* Text */}
-      <p className={`text-xs font-medium transition-colors duration-200 ${isDragOver ? "text-[var(--theme-primary)]" : "text-foreground/40"
+      <p className={`text-sm font-semibold transition-colors duration-200 ${isDragOver ? "text-[var(--theme-primary)]" : "text-text-primary/70"
         }`}>
         {isUploading
           ? "Uploading..."
@@ -162,7 +162,7 @@ function ProfileImageUploader({ onUploadComplete, onUploadError, onUploadBegin }
         </button>
       )}
 
-      <span className="text-xs text-foreground/30 mt-0.5">Image (4MB max)</span>
+      <span className="text-xs text-text-primary/55 mt-0.5">Image (4MB max)</span>
     </div>
   );
 }
@@ -278,8 +278,8 @@ export default function RegisterForm() {
   }
 
   // Consistent input wrapper styling using theme variables to support dark/light modes
-  const inputClass = "w-full h-11 pl-10 pr-4 rounded-lg bg-text-primary/5 border border-text-primary/10 text-text-primary placeholder-text-primary/40 text-sm focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)] focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-300";
-  const passwordInputClass = "w-full h-11 pl-10 pr-10 rounded-lg bg-text-primary/5 border border-text-primary/10 text-text-primary placeholder-text-primary/40 text-sm focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)] focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-300";
+  const inputClass = "w-full h-11 pl-10 pr-4 rounded-lg bg-text-primary/5 border border-text-primary/15 text-text-primary placeholder-text-primary/45 text-sm focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)] focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-300";
+  const passwordInputClass = "w-full h-11 pl-10 pr-10 rounded-lg bg-text-primary/5 border border-text-primary/15 text-text-primary placeholder-text-primary/45 text-sm focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)] focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-300";
 
   return (
     <div className={`flex-1 flex items-center justify-center px-4 py-12 transition-colors duration-300 ${isDark ? 'bg-theme-background' : 'bg-foreground'}`}>
@@ -420,7 +420,7 @@ export default function RegisterForm() {
           {form.password.length > 0 && (
             <div className={`flex flex-col sm:flex-row sm:items-center sm:gap-6 gap-1.5 rounded-md border px-4 py-3 transition-all duration-300 ${allRulesPassed
               ? "border-emerald-500/30 bg-emerald-500/5"
-              : "border-foreground/5 bg-foreground/[0.02]"
+              : "border-text-primary/10 bg-text-primary/[0.03]"
               }`}>
               {allRulesPassed ? (
                 <div className="flex items-center gap-2">
@@ -499,7 +499,7 @@ export default function RegisterForm() {
                     className={`flex flex-col items-center justify-center gap-2.5 h-20 w-full rounded-xl border-2 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-primary)]/50 cursor-pointer
                       ${isSelected
                         ? "border-[var(--theme-primary)] bg-[var(--theme-primary)]/8 text-[var(--theme-primary)] shadow-md shadow-[var(--theme-primary)]/10"
-                        : "border-text-primary/10 bg-text-primary/[0.03] text-text-primary/40 hover:border-[var(--theme-primary)]/40 hover:bg-[var(--theme-primary)]/5 hover:text-[var(--theme-primary)]/60"
+                        : "border-text-primary/15 bg-text-primary/[0.03] text-text-primary/60 hover:border-[var(--theme-primary)]/40 hover:bg-[var(--theme-primary)]/5 hover:text-[var(--theme-primary)]/80"
                       }`}
                   >
                     <Icon size={22} strokeWidth={isSelected ? 2.5 : 1.8} />

@@ -437,9 +437,14 @@ export default function Navbar() {
               </nav>
 
 
-              <div className='mt-8'>
-                <DashboardSidebarContent  usingNavSidebar={true} />
-              </div>
+              {
+                user.role && (
+                  <div className='mt-8'>
+                    <DashboardSidebarContent usingNavSidebar={true} />
+                  </div>
+                )
+              }
+
 
 
               {/* Drawer Footer Actions */}
