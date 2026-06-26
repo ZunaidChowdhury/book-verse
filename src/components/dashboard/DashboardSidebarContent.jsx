@@ -27,6 +27,7 @@ export function DashboardSidebarContent({usingNavSidebar=false}) {
     const { data: session, isPending } = authClient.useSession();
     const user = session?.user;
 
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const { isDark } = useSelector((state) => state.theme);
     const pathname = usePathname();
 
@@ -78,7 +79,7 @@ export function DashboardSidebarContent({usingNavSidebar=false}) {
                                 ? 'bg-theme-primary text-white'
                                 : 'bg-theme-primary text-white'
                             : isDark
-                                ? 'text-text-primary hover:bg-theme-primary hover:text-white'
+                                ? 'text-text-primary hover:bg-theme-primary/30 hover:text-white'
                                 : 'text-text-primary hover:bg-theme-primary hover:text-white'
                             }`}
                     >

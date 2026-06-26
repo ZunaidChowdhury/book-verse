@@ -438,7 +438,7 @@ export default function Navbar() {
 
 
               {
-                user.role && (
+                user?.role && (
                   <div className='mt-8'>
                     <DashboardSidebarContent usingNavSidebar={true} />
                   </div>

@@ -98,14 +98,14 @@ export default function LogInForm() {
     const passwordInputClass = "w-full bg-foreground/[0.03] hover:bg-foreground/[0.06] border border-foreground/10 hover:border-foreground/20 focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)]/40 transition-all duration-200 rounded-md h-11 pl-10 pr-10 text-foreground placeholder:text-foreground/40 text-sm outline-none";
 
     return (
-        <div className={`flex-1 flex items-center justify-center px-4 py-12 transition-colors duration-300 ${isDark ? 'bg-theme-background' : 'bg-foreground'}`}>
+        <div className={`flex-1 flex items-center justify-center px-4 py-12 transition-colors duration-300 bg-background`}>
             {/* Decorative Blur Background (styled from theme) */}
             <div className="absolute -z-10 h-[380px] w-[380px] rounded-full bg-[var(--theme-primary)]/10 blur-[90px] pointer-events-none" />
 
             {/* Main Form Container Card with your standard dark-gradient theme architecture */}
             <div className={`w-full max-w-[440px] rounded-2xl border px-6 py-8 tablet:px-8 shadow-xl transition-all duration-300 ${isDark
-                    ? 'bg-gradient-to-b from-theme-background/40 to-theme-background/80 border-white/5'
-                    : 'bg-gradient-to-b from-foreground/5 to-foreground/10 border-black/5'
+                    ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-white/5'
+                    : 'bg-foreground border-black/5'
                 }`}>
 
                 {/* Header Section */}
@@ -234,7 +234,7 @@ export default function LogInForm() {
                     Don't have an account?{" "}
                     <Link
                         href={`/auth/register`}
-                        className="text-[var(--theme-primary)] hover:text-text-primary font-semibold transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
+                        className="ml-1 text-[var(--theme-primary)] hover:text-text-primary font-semibold transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
                     >
                         Create one
                     </Link>

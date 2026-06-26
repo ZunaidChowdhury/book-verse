@@ -282,14 +282,14 @@ export default function RegisterForm() {
   const passwordInputClass = "w-full h-11 pl-10 pr-10 rounded-lg bg-text-primary/5 border border-text-primary/15 text-text-primary placeholder-text-primary/45 text-sm focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)] focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-300";
 
   return (
-    <div className={`flex-1 flex items-center justify-center px-4 py-12 transition-colors duration-300 ${isDark ? 'bg-theme-background' : 'bg-foreground'}`}>
+    <div className={`flex-1 flex items-center justify-center px-4 py-12 transition-colors duration-300 bg-background`}>
       {/* Decorative Blur Background (styled from theme) */}
       <div className="absolute -z-10 h-[380px] w-[380px] rounded-full bg-[var(--theme-primary)]/10 blur-[90px] pointer-events-none" />
 
       {/* Main Form Container Card with standard dark-gradient theme architecture */}
       <div className={`w-full max-w-[780px] rounded-2xl border px-6 py-8 tablet:px-8 shadow-xl transition-all duration-300 ${isDark
-          ? 'bg-gradient-to-b from-theme-background/40 to-theme-background/80 border-white/5'
-          : 'bg-gradient-to-b from-foreground/5 to-foreground/10 border-black/5'
+          ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-white/5'
+          : 'bg-foreground border-black/5'
         }`}>
 
         {/* Header — full width */}
@@ -526,7 +526,7 @@ export default function RegisterForm() {
           Have an account?{" "}
           <Link
             href={`/auth/log-in`}
-            className="text-[var(--theme-primary)] hover:text-text-primary font-semibold transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
+            className="ml-1 text-[var(--theme-primary)] hover:text-text-primary font-semibold transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
           >
             Log in
           </Link>
