@@ -14,7 +14,11 @@ import {
 import { authClient, googleSignIn } from '@/lib/auth-client';
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { useSelector } from "react-redux";
+
 export default function LogInForm() {
+
+      const { isDark } = useSelector((state) => state.theme);
 
     const router = useRouter();
     const sp = useSearchParams();
@@ -94,19 +98,22 @@ export default function LogInForm() {
     const passwordInputClass = "w-full bg-foreground/[0.03] hover:bg-foreground/[0.06] border border-foreground/10 hover:border-foreground/20 focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)]/40 transition-all duration-200 rounded-md h-11 pl-10 pr-10 text-foreground placeholder:text-foreground/40 text-sm outline-none";
 
     return (
-        <div className="flex-1 flex items-center justify-center px-4 py-12 bg-background transition-colors duration-300">
+        <div className={`flex-1 flex items-center justify-center px-4 py-12 transition-colors duration-300 ${isDark ? 'bg-theme-background' : 'bg-foreground'}`}>
             {/* Decorative Blur Background (styled from theme) */}
             <div className="absolute -z-10 h-[380px] w-[380px] rounded-full bg-[var(--theme-primary)]/10 blur-[90px] pointer-events-none" />
 
-            {/* Main Form Container Card */}
-            <div className="w-full max-w-[440px] rounded-lg border border-foreground/5 bg-background/50 backdrop-blur-md px-6 py-8 tablet:px-8 shadow-xl transition-all duration-300">
+            {/* Main Form Container Card with your standard dark-gradient theme architecture */}
+            <div className={`w-full max-w-[440px] rounded-2xl border px-6 py-8 tablet:px-8 shadow-xl transition-all duration-300 ${isDark
+                    ? 'bg-gradient-to-b from-theme-background/40 to-theme-background/80 border-white/5'
+                    : 'bg-gradient-to-b from-foreground/5 to-foreground/10 border-black/5'
+                }`}>
 
                 {/* Header Section */}
                 <div className="mb-6">
-                    <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                    <h1 className="text-2xl font-bold tracking-tight text-text-primary">
                         Welcome back
                     </h1>
-                    <p className="mt-1.5 text-sm text-foreground/60">
+                    <p className="mt-1.5 text-sm text-text-primary/70">
                         to{" "}
                         <span className="text-[var(--theme-primary)] font-semibold">
                             BookVerse
@@ -119,20 +126,20 @@ export default function LogInForm() {
                     type="button"
                     variant="bordered"
                     fullWidth
-                    className="border border-foreground/15 dark:border-white/15 bg-transparent hover:bg-foreground/5 text-foreground/80 hover:text-foreground font-semibold h-11 rounded-md transition-all duration-200"
+                    className="w-full flex items-center justify-center gap-2.5 border border-text-primary/10 bg-text-primary/5 text-text-primary/80 hover:text-text-primary hover:bg-text-primary/10 font-semibold h-11 rounded-lg focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-200 cursor-pointer"
                     onClick={handleGoogleSignIn}
                 >
-                    <FcGoogle size={24} />
-                    Continue with Google
+                    <FcGoogle size={20} />
+                    <span>Continue with Google</span>
                 </Button>
 
                 {/* Divider */}
                 <div className="flex items-center gap-3 my-6">
-                    <div className="flex-1 h-[1px] bg-foreground/10" />
-                    <span className="text-xs font-semibold text-foreground/40 uppercase tracking-widest">
+                    <div className="flex-1 h-[1px] bg-text-primary/5" />
+                    <span className="text-xs font-semibold text-text-primary/40 uppercase tracking-widest">
                         or
                     </span>
-                    <div className="flex-1 h-[1px] bg-foreground/10" />
+                    <div className="flex-1 h-[1px] bg-text-primary/5" />
                 </div>
 
                 {/* Form Body */}
@@ -140,8 +147,8 @@ export default function LogInForm() {
 
                     {/* Form Level Error */}
                     {errors.form && (
-                        <div className="rounded-md border border-rose-200 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/30 px-3.5 py-2.5">
-                            <span className="text-rose-700 dark:text-rose-400 text-sm">{errors.form}</span>
+                        <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 px-3.5 py-2.5">
+                            <span className="text-rose-400 text-sm font-medium">{errors.form}</span>
                         </div>
                     )}
 
@@ -150,21 +157,21 @@ export default function LogInForm() {
                         isInvalid={!!errors.email}
                         className="flex flex-col gap-1.5"
                     >
-                        <Label className="text-foreground/80 text-sm font-medium">
+                        <Label className="text-text-primary/90 text-sm font-medium">
                             Email Address
                         </Label>
                         <div className="relative flex items-center">
-                            <Envelope className="absolute left-3 text-foreground/40 shrink-0" width={16} height={16} />
+                            <Envelope className="absolute left-3.5 text-text-primary/40 shrink-0" width={16} height={16} />
                             <Input
                                 type="email"
                                 placeholder="name@domain.com"
                                 value={form.email}
                                 onChange={(e) => handleChange("email", e.target.value)}
-                                className={inputClass}
+                                className="w-full h-11 pl-10 pr-4 rounded-lg bg-text-primary/5 border border-text-primary/10 text-text-primary placeholder-text-primary/40 text-sm focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)] focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-300"
                             />
                         </div>
                         {errors.email && (
-                            <span className="text-rose-500 text-xs mt-0.5">{errors.email}</span>
+                            <span className="text-rose-400 text-xs mt-0.5 font-medium">{errors.email}</span>
                         )}
                     </TextField>
 
@@ -174,29 +181,29 @@ export default function LogInForm() {
                         className="flex flex-col gap-1.5"
                     >
                         <div className="flex items-center justify-between">
-                            <Label className="text-foreground/80 text-sm font-medium">
+                            <Label className="text-text-primary/90 text-sm font-medium">
                                 Password
                             </Label>
                             <Link
                                 href="/auth/forgot-password"
-                                className="text-[var(--theme-primary)] hover:underline text-xs font-medium transition-all duration-150"
+                                className="text-[var(--theme-primary)] hover:text-text-primary transition-colors text-xs font-medium focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
                             >
                                 Forgot?
                             </Link>
                         </div>
                         <div className="relative flex items-center">
-                            <Lock className="absolute left-3 text-foreground/40 shrink-0" width={16} height={16} />
+                            <Lock className="absolute left-3.5 text-text-primary/40 shrink-0" width={16} height={16} />
                             <Input
                                 type={showPassword ? "text" : "password"}
                                 placeholder="••••••••"
                                 value={form.password}
                                 onChange={(e) => handleChange("password", e.target.value)}
-                                className={passwordInputClass}
+                                className="w-full h-11 pl-10 pr-10 rounded-lg bg-text-primary/5 border border-text-primary/10 text-text-primary placeholder-text-primary/40 text-sm focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)] focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] transition-all duration-300"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword((prev) => !prev)}
-                                className="absolute right-3 text-foreground/40 hover:text-foreground transition-colors focus:outline-none"
+                                className="absolute right-3 text-text-primary/40 hover:text-text-primary transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] cursor-pointer"
                                 aria-label={showPassword ? "Hide password" : "Show password"}
                             >
                                 {showPassword ? (
@@ -207,27 +214,27 @@ export default function LogInForm() {
                             </button>
                         </div>
                         {errors.password && (
-                            <span className="text-rose-500 text-xs mt-0.5">{errors.password}</span>
+                            <span className="text-rose-400 text-xs mt-0.5 font-medium">{errors.password}</span>
                         )}
                     </TextField>
 
-                    {/* Log In Action Button */}
+                    {/* Log In Action Button with full gradient layout configuration */}
                     <Button
                         id="login-submit"
                         type="submit"
                         fullWidth
-                        className="mt-2 h-11 bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all cursor-pointer rounded-md"
+                        className="mt-2 w-full h-11 bg-gradient-to-r from-[var(--theme-secondary-purple)] to-[var(--theme-primary)] hover:opacity-90 text-white font-bold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all duration-300 cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
                     >
                         Log In
                     </Button>
                 </form>
 
                 {/* Footer / Alternate actions */}
-                <p className="mt-6 text-center text-sm text-foreground/50">
+                <p className="mt-6 text-center text-sm text-text-primary/70">
                     Don't have an account?{" "}
                     <Link
                         href={`/auth/register`}
-                        className="text-[var(--theme-primary)] hover:underline font-semibold transition-all duration-150"
+                        className="text-[var(--theme-primary)] hover:text-text-primary font-semibold transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)]"
                     >
                         Create one
                     </Link>

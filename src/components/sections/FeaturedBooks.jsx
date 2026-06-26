@@ -34,7 +34,7 @@ const FeaturedBooks = ({ featuredBooks }) => {
   };
 
   return (
-    <div className='py-12 tablet:py-30 overflow-hidden bg-background'>
+    <div className='py-12 tablet:py-30 overflow-hidden bg-theme-background'>
       {/* container */}
       <div className='max-w-358 px-4 mx-auto'>
         <SectionHeading
@@ -42,6 +42,7 @@ const FeaturedBooks = ({ featuredBooks }) => {
           subTitle='FEATURED'
           actionTxtBtn={{ text: 'View All Books', url: '/all-books' }}
           classNames='pb-8 tablet:pb-16'
+          dark={true}
         />
         
         {/* Animated Grid Container */}

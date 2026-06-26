@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${lora.variable} ${plusJakarta.variable} font-sans h-full antialiased dark`}
     >
-      <body className="bg-background min-h-full flex flex-col text-foreground">
+      <body className="bg-background font-sans text-text-primary min-h-full flex flex-col ">
         <StoreProvider>
           <AuthInitializer>
             <ThemeProvider>

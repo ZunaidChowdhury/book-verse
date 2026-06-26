@@ -4,6 +4,9 @@ const initialState = {
     mode: (typeof window !== "undefined"
         ? localStorage.getItem("theme")
         : "light") || "light",
+    isDark: (typeof window !== "undefined"
+        ? localStorage.getItem("theme") === "dark"
+        : false)
 };
 
 const themeSlice = createSlice({
@@ -21,6 +24,7 @@ const themeSlice = createSlice({
         toggleTheme: (state) => {
             const newTheme = state.mode === "light" ? "dark" : state.mode === "dark" ? "light" : "light";
             state.mode = newTheme;
+            state.isDark = newTheme === "dark";
             if (typeof window !== "undefined") {
                 localStorage.setItem("theme", newTheme);
                 document.documentElement.classList.remove("light", "dark");

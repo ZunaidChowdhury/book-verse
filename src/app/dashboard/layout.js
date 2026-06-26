@@ -1,18 +1,27 @@
 'use client'
 
-import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+
 import { useSelector } from "react-redux";
 import { authClient } from "@/lib/auth-client";
+import { DashboardSidebarContent } from "@/components/dashboard/DashboardSidebarContent";
 
 const DashboardLayout = ({ children }) => {
     const { data: session } = authClient.useSession();
     const user = session?.user;
-    const { mode } = useSelector((state) => state.theme);
+    const { isDark } = useSelector((state) => state.theme);
 
     return (
-        <div className={`flex min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'}`}>
-            <DashboardSidebar userRole={user?.role || 'reader'} userName={user?.name} />
-            <div className={`flex-1 ${mode === 'dark' ? 'bg-black' : 'bg-white'}`}>{children}</div>
+        <div className={`flex min-h-screen bg-background`}>
+            {/* Desktop Sidebar */}
+            <aside
+                className={`hidden xl:flex flex-col w-64 shrink-0 border-r transition-all duration-200 p-6 ${isDark
+                    ? 'bg-foreground border-border-dark'
+                    : 'bg-white border-border-light'
+                    }`}
+            >
+                <DashboardSidebarContent />
+            </aside>
+            <div className={`flex-1 bg-background`}>{children}</div>
         </div>
     );
 };

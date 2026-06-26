@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
 
 export default function ReaderDashboardPage() {
-    const { mode } = useSelector((state) => state.theme);
+    const { isDark } = useSelector((state) => state.theme);
     const { data: session } = authClient.useSession();
     const user = session?.user;
 
@@ -42,14 +42,15 @@ export default function ReaderDashboardPage() {
     ];
 
     return (
-        <div className={`${mode === 'dark' ? 'bg-black' : 'bg-white'}`}>
+        <div className={`bg-background`}>
             <div className="p-4 sm:p-6 lg:p-8">
                     {/* Welcome Section */}
                     <div className="mb-12">
-                        <h1 className={`text-4xl sm:text-5xl font-bold mb-3 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
-                            Welcome back, {user?.name || 'Reader'}
+                        <h1 className={`text-4xl sm:text-5xl font-bold mb-3 text-text-primary`}>
+                            <span className='text-base '>Welcome back, </span> <br />
+                            <span className="text-theme-primary">{user?.name || 'Reader'}</span>
                         </h1>
-                        <p className={`text-lg ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                        <p className={`text-lg ${isDark ? 'text-text-secondary' : 'text-text-secondary'}`}>
                             Explore your library and discover new ebooks
                         </p>
                     </div>
@@ -63,31 +64,29 @@ export default function ReaderDashboardPage() {
                                     key={action.label}
                                     href={action.href}
                                     className={`group relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105 ${
-                                        mode === 'dark'
+                                        isDark
                                             ? 'bg-foreground border border-border-dark hover:border-theme-primary'
                                             : 'bg-background border border-border-light hover:border-theme-primary'
                                     }`}
                                 >
                                     {/* Background gradient effect */}
-                                    <div className={`absolute inset-0 bg-gradient-to-br ${action.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+                                    {/* <div className={`absolute inset-0 bg-gradient-to-br ${action.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div> */}
                                     
                                     {/* Content */}
                                     <div className="relative z-10">
                                         <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-4 ${action.bgColor}`}>
                                             <Icon size={28} />
                                         </div>
-                                        <h3 className={`text-lg font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                        <h3 className={`text-lg font-semibold ${isDark ? 'text-text-primary' : 'text-text-primary'}`}>
                                             {action.label}
                                         </h3>
-                                        <p className={`text-sm mt-2 ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                                        <p className={`text-sm mt-2 ${isDark ? 'text-text-secondary' : 'text-text-secondary'}`}>
                                             View and manage your {action.label.toLowerCase()}
                                         </p>
                                     </div>
 
                                     {/* Arrow indicator */}
-                                    <div className={`absolute bottom-4 right-4 transition-transform group-hover:translate-x-1 ${
-                                        mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'
-                                    }`}>
+                                    <div className={`absolute bottom-4 right-4 text-text-secondary transition-transform group-hover:translate-x-1 `}>
                                         →
                                     </div>
                                 </Link>
@@ -97,43 +96,43 @@ export default function ReaderDashboardPage() {
 
                     {/* Info Cards Section */}
                     <div className="mt-12">
-                        <h2 className={`text-2xl font-bold mb-6 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                        <h2 className={`text-2xl font-bold mb-6 text-text-primary`}>
                             Quick Stats
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             <div className={`p-6 rounded-lg border ${
-                                mode === 'dark'
+                                isDark
                                     ? 'bg-foreground border-border-dark'
                                     : 'bg-background border-border-light'
                             }`}>
-                                <p className={`text-sm font-medium ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'} mb-2`}>
+                                <p className={`text-sm font-medium text-text-primary mb-2`}>
                                     Books Purchased
                                 </p>
-                                <p className={`text-3xl font-bold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                <p className={`text-3xl font-bold text-text-primary`}>
                                     0
                                 </p>
                             </div>
                             <div className={`p-6 rounded-lg border ${
-                                mode === 'dark'
+                               isDark
                                     ? 'bg-foreground border-border-dark'
                                     : 'bg-background border-border-light'
                             }`}>
-                                <p className={`text-sm font-medium ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'} mb-2`}>
+                                <p className={`text-sm font-medium text-text-primary mb-2`}>
                                     Wishlist Items
                                 </p>
-                                <p className={`text-3xl font-bold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                <p className={`text-3xl font-bold text-text-primary`}>
                                     0
                                 </p>
                             </div>
                             <div className={`p-6 rounded-lg border ${
-                                mode === 'dark'
+                                isDark
                                     ? 'bg-foreground border-border-dark'
                                     : 'bg-background border-border-light'
                             }`}>
-                                <p className={`text-sm font-medium ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'} mb-2`}>
+                                <p className={`text-sm font-medium text-text-primary mb-2`}>
                                     Total Spent
                                 </p>
-                                <p className={`text-3xl font-bold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                <p className={`text-3xl font-bold text-text-primary`}>
                                     $0.00
                                 </p>
                             </div>

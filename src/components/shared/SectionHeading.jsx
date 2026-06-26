@@ -17,7 +17,7 @@ export default function SectionHeading({
     const ActionProperBtnIcon = actionProperBtn?.icon;
 
     return (
-        <div className={`flex flex-col sm:flex-row sm:items-end justify-between gap-6 ${classNames}`}>
+        <div className={`flex flex-col tablet:flex-row tablet:items-end justify-between gap-6 ${classNames}`}>
 
             {/* Left Content Area */}
             <div className="flex flex-col items-start max-w-3xl">
@@ -27,13 +27,13 @@ export default function SectionHeading({
                     </span>
                 )}
 
-                <h3 className={`text-2xl md:text-4xl font-serif font-bold tracking-tight mb-3 ${dark ? "text-white" : "text-foreground"
+                <h3 className={` text-2xl md:text-4xl font-serif font-bold tracking-tight mb-3 ${dark ? "text-white" : "text-text-primary"
                     }`}>
                     {title}
                 </h3>
 
                 {description && (
-                    <p className={`text-base md:text-lg font-light leading-relaxed ${dark ? "text-slate-400" : "text-foreground/60"
+                    <p className={`text-base md:text-lg font-light leading-relaxed ${dark ? "text-slate-400" : "text-text-secondary"
                         }`}>
                         {description}
                     </p>
@@ -41,9 +41,9 @@ export default function SectionHeading({
             </div>
 
             {/* Right Interactive Action Group */}
-            <div className="flex items-center gap-4 shrink-0">
+            <div className="hidden tablet:inline-block shrink-0">
                 {actionTxtBtn && (
-                    <Link href={actionTxtBtn.url} className="hidden tablet:inline-block">
+                    <Link href={actionTxtBtn.url} >
                         <Button
                             variant="light"
                             className="bg-transparent hover:bg-foreground/5 text-[var(--theme-primary)] font-semibold text-base transition-all rounded-md group px-3 h-11"
@@ -55,7 +55,7 @@ export default function SectionHeading({
                 )}
 
                 {actionProperBtn && (
-                    <Link href={actionProperBtn.url} className="hidden tablet:inline-block">
+                    <Link href={actionProperBtn.url} >
                         <Button
                             className="bg-gradient-to-r from-theme-secondary-purple via-theme-secondary-purple to-theme-primary hover:opacity-95 text-white font-semibold text-base h-11 px-5 rounded-md shadow-lg shadow-[#9945FF]/10 transition-all duration-300 cursor-pointer"
                         >
@@ -65,6 +65,7 @@ export default function SectionHeading({
                     </Link>
                 )}
             </div>
+
 
         </div>
     );
