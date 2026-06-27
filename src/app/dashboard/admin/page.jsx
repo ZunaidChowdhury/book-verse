@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { getDashboardAnalytics, getMonthlySalesData, getBooksByGenre } from '@/lib/api/admin';
 import { Users, BookOpen, TrendingUp, DollarSign } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
+// Ensure 'Cell' is explicitly imported along with your other Recharts elements
 import {
     ResponsiveContainer,
     BarChart,
@@ -19,16 +20,13 @@ import {
     Cell,
     Legend
 } from 'recharts';
+import DonutChart from '@/components/charts/DonutChart';
+import CustomBarChart from '@/components/charts/CustomBarChart';
+
 
 const chartColors = [
-    '#4F46E5',
-    '#16A34A',
-    '#9333EA',
-    '#EC4899',
-    '#F59E0B',
-    '#EF4444',
-    '#0284C7',
-    '#14B8A6'
+    '#4F46E5', '#16A34A', '#9333EA', '#EC4899',
+    '#F59E0B', '#EF4444', '#0284C7', '#14B8A6'
 ];
 
 export default function AdminDashboardPage() {
@@ -45,7 +43,7 @@ export default function AdminDashboardPage() {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                
+
                 const [analyticsData, salesData, genreData] = await Promise.all([
                     getDashboardAnalytics(),
                     getMonthlySalesData(),
@@ -124,16 +122,16 @@ export default function AdminDashboardPage() {
         <div className={`bg-background`}>
             <div className="p-4 sm:p-6 lg:p-8">
                 <div>
-                {/* Welcome Section */}
-                <div className="mb-12">
-                    <h1 className={`text-4xl sm:text-5xl font-bold mb-3 text-text-primary`}>
-                        <span className='text-xl mb-3'>Welcome back,</span> <br />
-                        <span>{user?.name || 'Admin'}</span>
-                    </h1>
-                    <p className={`text-lg ${isDark ? 'text-text-secondary' : 'text-text-secondary'}`}>
-                        Platform overview and management dashboard
-                    </p>
-                </div>
+                    {/* Welcome Section */}
+                    <div className="mb-12">
+                        <h1 className={`text-4xl sm:text-5xl font-bold mb-3 text-text-primary`}>
+                            <span className='text-xl mb-3'>Welcome back,</span> <br />
+                            <span>{user?.name || 'Admin'}</span>
+                        </h1>
+                        <p className={`text-lg ${isDark ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                            Platform overview and management dashboard
+                        </p>
+                    </div>
 
                     {/* Stats Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -142,11 +140,10 @@ export default function AdminDashboardPage() {
                             return (
                                 <div
                                     key={idx}
-                                    className={`p-6 rounded-lg border transition-all ${
-                                        isDark 
-                                            ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-border-dark hover:border-theme-primary' 
-                                            : 'bg-foreground border-border-light hover:border-theme-primary'
-                                    }`}
+                                    className={`p-6 rounded-lg border transition-all ${isDark
+                                        ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-border-dark hover:border-theme-primary'
+                                        : 'bg-foreground border-border-light hover:border-theme-primary'
+                                        }`}
                                 >
                                     <div className="flex items-start justify-between">
                                         <div>
@@ -169,85 +166,32 @@ export default function AdminDashboardPage() {
                     {/* Charts Section */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[320px]">
                         {/* Monthly Sales Chart */}
-                        <div className={`p-6 rounded-lg border ${
-                            isDark 
-                                ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-border-dark' 
-                                : 'bg-foreground border-border-light'
-                        }`}>
-                            <h2 className={`text-lg sm:text-xl font-bold mb-6 ${isDark ? 'text-text-primary' : 'text-text-primary'}`}>
-                                Monthly Sales
-                            </h2>
+                        <CustomBarChart
+                            title="Monthly Sales"
+                            data={monthlySales}
+                            dataKey="sales"
+                            xAxisKey="month"
+                            barColor="#4F46E5"
+                            isDark={isDark}
+                        />
 
-                            {monthlySales.length === 0 ? (
-                                <div className="text-center py-8">
-                                    <p className={isDark ? 'text-text-secondary' : 'text-text-secondary'}>
-                                        No sales data available
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="h-[320px]">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <BarChart data={monthlySales} margin={{ top: 20, right: 20, left: -12, bottom: 20 }}>
-                                            <CartesianGrid stroke={isDark ? '#1f2937' : '#e5e7eb'} strokeDasharray="3 3" />
-                                            <XAxis dataKey="month" tick={{ fill: isDark ? '#f8fafc' : '#0f172a', fontSize: 12 }} />
-                                            <YAxis tick={{ fill: isDark ? '#f8fafc' : '#0f172a', fontSize: 12 }} />
-                                            <Tooltip wrapperStyle={{ borderRadius: 12, fontSize: 13 }} />
-                                            <Bar dataKey="sales" fill="#4F46E5" radius={[8, 8, 0, 0]} />
-                                        </BarChart>
-                                    </ResponsiveContainer>
-                                </div>
-                            )}
-                        </div>
 
                         {/* Books by Genre Pie Chart */}
-                        <div className={`p-6 rounded-lg border ${
-                            isDark 
-                                ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-border-dark' 
-                                : 'bg-foreground border-border-light'
-                        }`}>
-                            <h2 className={`text-lg sm:text-xl font-bold mb-6 ${isDark ? 'text-text-primary' : 'text-text-primary'}`}>
-                                Ebooks by Genre
-                            </h2>
-
-                            {booksByGenre.length === 0 ? (
-                                <div className="text-center py-8">
-                                    <p className='text-text-secondary'>
-                                        No genre data available
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="h-[320px]">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <PieChart>
-                                            <Pie
-                                                data={booksByGenre}
-                                                dataKey="count"
-                                                nameKey="genre"
-                                                cx="50%"
-                                                cy="45%"
-                                                innerRadius={60}
-                                                outerRadius={100}
-                                                paddingAngle={2}
-                                            >
-                                                {booksByGenre.map((entry, index) => (
-                                                    <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
-                                                ))}
-                                            </Pie>
-                                            <Tooltip formatter={(value) => [`${value} books`, 'Books']} />
-                                            <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: 12, color: isDark ? '#f8fafc' : '#0f172a' }} />
-                                        </PieChart>
-                                    </ResponsiveContainer>
-                                </div>
-                            )}
-                        </div>
+                        <DonutChart
+                            title="Books by Genre"
+                            data={booksByGenre}
+                            dataKey="count"
+                            nameKey="genre"
+                            centerLabel="Total Books"
+                            isDark={isDark}
+                        />
                     </div>
 
                     {/* Summary Section */}
-                    <div className={`mt-6 p-6 rounded-lg border ${
-                        isDark 
-                            ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-border-dark' 
-                            : 'bg-foreground border-border-light'
-                    }`}>
+                    <div className={`mt-6 p-6 rounded-lg border ${isDark
+                        ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-border-dark'
+                        : 'bg-foreground border-border-light'
+                        }`}>
                         <h2 className={`text-lg sm:text-xl font-bold mb-4 ${isDark ? 'text-text-primary' : 'text-text-primary'}`}>
                             Summary
                         </h2>
@@ -273,5 +217,9 @@ export default function AdminDashboardPage() {
                 </div>
             </div>
         </div>
-)
+    )
 }
+
+
+
+
