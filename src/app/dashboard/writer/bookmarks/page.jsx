@@ -8,7 +8,7 @@ import BookCard from '@/components/cards/BookCard'
 import Link from 'next/link'
 
 export default function BookmarksPage() {
-    const { mode } = useSelector((state) => state.theme)
+    const { isDark } = useSelector((state) => state.theme)
     const [wishlistBooks, setWishlistBooks] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -36,15 +36,15 @@ export default function BookmarksPage() {
         book.writerName?.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
-    const bgClass = mode === 'dark' ? 'bg-background' : 'bg-background'
-    const cardBg = mode === 'dark' ? 'bg-foreground' : 'bg-white'
-    const borderClass = mode === 'dark' ? 'border-gray-700' : 'border-gray-200'
+    const bgClass = 'bg-background'
+    const cardBg = 'bg-foreground'
+    const borderClass = isDark ? 'border-border-dark' : 'border-border-light'
     const textPrimary = 'text-text-primary'
     const textSecondary = 'text-text-secondary'
-    const inputBg = mode === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'
+    const inputBg = isDark ? 'bg-foreground border-border-dark text-text-primary' : 'bg-foreground border-border-light text-text-primary'
 
     return (
-        <div className={`min-h-screen ${bgClass} p-4 sm:p-6 lg:p-8`}>
+        <div className={`min-h-screen ${bgClass} transition-colors p-4 sm:p-6 lg:p-8`}>
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
@@ -80,11 +80,11 @@ export default function BookmarksPage() {
 
                 {/* Loading State */}
                 {loading ? (
-                    <div className={`${cardBg} rounded-lg p-8 text-center`}>
+                    <div className={`${cardBg} rounded-lg p-8 border ${borderClass} text-center`}>
                         <p className={textSecondary}>Loading your bookmarks...</p>
                     </div>
                 ) : wishlistBooks.length === 0 ? (
-                    <div className={`${cardBg} rounded-lg p-12 text-center`}>
+                    <div className={`${cardBg} rounded-lg p-12 border ${borderClass} text-center`}>
                         <Bookmark size={48} className={`${textSecondary} mx-auto mb-4`} />
                         <p className={`${textSecondary} mb-4 text-lg`}>You haven't bookmarked any books yet.</p>
                         <Link href="/books">
@@ -94,7 +94,7 @@ export default function BookmarksPage() {
                         </Link>
                     </div>
                 ) : filteredBooks.length === 0 ? (
-                    <div className={`${cardBg} rounded-lg p-12 text-center`}>
+                    <div className={`${cardBg} rounded-lg p-12 border ${borderClass} text-center`}>
                         <Search size={48} className={`${textSecondary} mx-auto mb-4`} />
                         <p className={`${textSecondary} text-lg`}>No books match your search.</p>
                     </div>

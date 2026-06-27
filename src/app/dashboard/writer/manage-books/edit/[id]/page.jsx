@@ -9,7 +9,7 @@ import { updateBook } from '@/lib/actions/books'
 import { toast } from 'react-toastify'
 
 export default function EditBookPage() {
-    const { mode } = useSelector((state) => state.theme)
+    const { isDark } = useSelector((state) => state.theme)
     const router = useRouter()
     const params = useParams()
     const bookId = params.id
@@ -60,11 +60,9 @@ export default function EditBookPage() {
         }
     }
 
-    const bgClass = mode === 'dark' ? 'bg-black' : 'bg-white'
-
     if (loading) {
         return (
-            <div className={`min-h-screen ${bgClass} flex items-center justify-center p-4`}>
+            <div className={`min-h-screen bg-background transition-colors flex items-center justify-center p-4`}>
                 <p className="text-text-secondary">Loading book details...</p>
             </div>
         )
@@ -72,9 +70,9 @@ export default function EditBookPage() {
 
     if (error) {
         return (
-            <div className={`min-h-screen ${bgClass} flex items-center justify-center p-4`}>
+            <div className={`min-h-screen bg-background transition-colors flex items-center justify-center p-4`}>
                 <div className="text-center">
-                    <p className={`${mode === 'dark' ? 'text-red-400' : 'text-red-500'} mb-4`}>{error}</p>
+                    <p className="text-red-500 mb-4">{error}</p>
                     <button
                         onClick={() => router.back()}
                         className="bg-theme-primary hover:bg-theme-primary/90 text-white px-4 py-2 rounded-lg"
@@ -88,14 +86,14 @@ export default function EditBookPage() {
 
     if (!book) {
         return (
-            <div className={`min-h-screen ${bgClass} flex items-center justify-center p-4`}>
+            <div className={`min-h-screen bg-background transition-colors flex items-center justify-center p-4`}>
                 <p className="text-text-secondary">Book not found</p>
             </div>
         )
     }
 
     return (
-        <div className={`${mode === 'dark' ? 'bg-black' : 'bg-white'}`}>
+        <div className={`min-h-screen bg-background transition-colors`}>
             <AddBookForm
                 book={book}
                 bookContent={bookContent}

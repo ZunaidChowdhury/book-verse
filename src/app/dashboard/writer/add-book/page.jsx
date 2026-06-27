@@ -7,7 +7,7 @@ import AddBookForm from '@/components/dashboard/writer/AddBookForm';
 import { createBook } from '../../../../lib/actions/books';
 
 export default function AddBookPage() {
-    const { mode } = useSelector((state) => state.theme);
+    const { isDark } = useSelector((state) => state.theme);
     const router = useRouter();
 
     const handleAddBook = async (bookData) => {
@@ -24,7 +24,7 @@ export default function AddBookPage() {
     };
 
     return (
-        <div className={`${mode === 'dark' ? 'bg-black' : 'bg-white'}`}>
+        <div className={`min-h-screen bg-background transition-colors`}>
             <AddBookForm addBook={handleAddBook} />
         </div>
     );

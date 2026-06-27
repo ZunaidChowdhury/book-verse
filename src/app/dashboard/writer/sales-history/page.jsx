@@ -6,7 +6,7 @@ import { TrendingUp, Calendar } from 'lucide-react'
 import { getSalesHistory } from '@/lib/api/books'
 
 export default function SalesHistoryPage() {
-    const { mode } = useSelector((state) => state.theme)
+    const { isDark } = useSelector((state) => state.theme)
     const [salesData, setSalesData] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -44,13 +44,13 @@ export default function SalesHistoryPage() {
     const totalSales = salesData.reduce((sum, sale) => sum + (sale.amount || 0), 0)
     const totalTransactions = salesData.length
 
-    const bgClass = mode === 'dark' ? 'bg-background' : 'bg-background'
-    const cardBg = mode === 'dark' ? 'bg-foreground' : 'bg-white'
-    const borderClass = mode === 'dark' ? 'border-gray-700' : 'border-gray-200'
+    const bgClass = 'bg-background'
+    const cardBg = 'bg-foreground'
+    const borderClass = isDark ? 'border-border-dark' : 'border-border-light'
     const textPrimary = 'text-text-primary'
     const textSecondary = 'text-text-secondary'
-    const selectBg = mode === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'
-    const buttonHover = mode === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+    const selectBg = isDark ? 'bg-foreground border-border-dark text-text-primary' : 'bg-foreground border-border-light text-text-primary'
+    const buttonHover = isDark ? 'hover:bg-black/30' : 'hover:bg-gray-50'
 
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A'
@@ -63,7 +63,7 @@ export default function SalesHistoryPage() {
     }
 
     return (
-        <div className={`min-h-screen ${bgClass} p-4 sm:p-6 lg:p-8`}>
+        <div className={`min-h-screen ${bgClass} transition-colors p-4 sm:p-6 lg:p-8`}>
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
@@ -101,7 +101,7 @@ export default function SalesHistoryPage() {
                         <select
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value)}
-                            className={`${selectBg} border rounded-lg px-3 py-2 text-sm ${textPrimary} cursor-pointer`}
+                            className={`${selectBg} border rounded-lg px-3 py-2 text-sm text-text-primary cursor-pointer`}
                         >
                             <option value="date">Date (Newest)</option>
                             <option value="amount">Amount (Highest)</option>
@@ -119,37 +119,37 @@ export default function SalesHistoryPage() {
 
                 {/* Loading State */}
                 {loading ? (
-                    <div className={`${cardBg} rounded-lg p-8 text-center`}>
+                    <div className={`${cardBg} rounded-lg p-8 border ${borderClass} text-center`}>
                         <p className={textSecondary}>Loading sales history...</p>
                     </div>
                 ) : salesData.length === 0 ? (
-                    <div className={`${cardBg} rounded-lg p-12 text-center`}>
+                    <div className={`${cardBg} rounded-lg p-12 border ${borderClass} text-center`}>
                         <Calendar size={48} className={`${textSecondary} mx-auto mb-4`} />
                         <p className={`${textSecondary} mb-2 text-lg`}>No sales yet.</p>
                         <p className={textSecondary}>Your sales will appear here once readers purchase your books.</p>
                     </div>
                 ) : (
                     /* Desktop Table View */
-                    <div className="hidden md:block overflow-x-auto">
-                        <table className={`w-full border-collapse ${cardBg} rounded-lg overflow-hidden`}>
+                    <div className={`hidden md:block overflow-x-auto rounded-lg border ${borderClass}`}>
+                        <table className="w-full text-sm bg-foreground">
                             <thead>
-                                <tr className={`border-b ${borderClass} ${mode === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
-                                    <th className={`px-6 py-4 text-left text-sm font-semibold ${textPrimary}`}>Book Title</th>
-                                    <th className={`px-6 py-4 text-left text-sm font-semibold ${textPrimary}`}>Buyer Name</th>
-                                    <th className={`px-6 py-4 text-left text-sm font-semibold ${textPrimary}`}>Purchase Date</th>
-                                    <th className={`px-6 py-4 text-right text-sm font-semibold ${textPrimary}`}>Amount</th>
+                                <tr className={`border-b ${isDark ? 'border-border-dark bg-black/50' : 'border-border-light bg-gray-50'}`}>
+                                    <th className={`px-6 py-4 text-left font-semibold text-text-primary`}>Book Title</th>
+                                    <th className={`px-6 py-4 text-left font-semibold text-text-primary`}>Buyer Name</th>
+                                    <th className={`px-6 py-4 text-left font-semibold text-text-primary`}>Purchase Date</th>
+                                    <th className={`px-6 py-4 text-right font-semibold text-text-primary`}>Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {sortedData.map((sale, index) => (
                                     <tr key={index} className={`border-b ${borderClass} hover:${buttonHover} transition-colors`}>
-                                        <td className={`px-6 py-4 ${textPrimary} font-medium line-clamp-1`}>
+                                        <td className={`px-6 py-4 text-text-primary font-medium line-clamp-1`}>
                                             {sale.bookTitle || 'N/A'}
                                         </td>
-                                        <td className={`px-6 py-4 ${textPrimary}`}>
+                                        <td className={`px-6 py-4 text-text-primary`}>
                                             {sale.buyerName || 'Anonymous'}
                                         </td>
-                                        <td className={`px-6 py-4 ${textSecondary}`}>
+                                        <td className={`px-6 py-4 text-text-secondary`}>
                                             {formatDate(sale.purchaseDate)}
                                         </td>
                                         <td className={`px-6 py-4 text-right font-semibold text-theme-primary`}>

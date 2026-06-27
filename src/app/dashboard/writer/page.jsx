@@ -1,14 +1,48 @@
 'use client'
 
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { BookOpen, Plus, TrendingUp, Eye, BookMarked } from 'lucide-react';
+import { BookOpen, Plus, TrendingUp, BookMarked } from 'lucide-react';
 import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
+import { getWriterDashboard } from '@/lib/api/writers';
 
 export default function WriterDashboardPage() {
     const { isDark } = useSelector((state) => state.theme);
     const { data: session } = authClient.useSession();
     const user = session?.user;
+
+    const [stats, setStats] = useState({
+        totalBooks: 0,
+        publishedBooks: 0,
+        totalSales: 0,
+        totalRevenue: '0.00',
+        avgPrice: '0.00',
+    });
+    const [loadingStats, setLoadingStats] = useState(true);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                setLoadingStats(true);
+                const data = await getWriterDashboard();
+                if (data) {
+                    setStats({
+                        totalBooks: data.totalBooks || 0,
+                        publishedBooks: data.publishedBooks || 0,
+                        totalSales: data.totalSales || 0,
+                        totalRevenue: data.totalRevenue || '0.00',
+                        avgPrice: data.avgPrice || '0.00',
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to load writer dashboard stats:', err);
+            } finally {
+                setLoadingStats(false);
+            }
+        };
+        fetchStats();
+    }, []);
 
     const quickActions = [
         {
@@ -42,7 +76,7 @@ export default function WriterDashboardPage() {
     ];
 
     return (
-        <div className={`bg-background`}>
+        <div className={`min-h-screen bg-background transition-colors`}>
             <div className="p-4 sm:p-6 lg:p-8">
                     {/* Welcome Section */}
                     <div className="mb-12">
@@ -109,7 +143,7 @@ export default function WriterDashboardPage() {
                                     Published Ebooks
                                 </p>
                                 <p className={`text-3xl font-bold text-text-primary`}>
-                                    0
+                                    {loadingStats ? '...' : stats.publishedBooks}
                                 </p>
                             </div>
                             <div className={`p-6 rounded-lg border ${
@@ -121,7 +155,7 @@ export default function WriterDashboardPage() {
                                     Total Sales
                                 </p>
                                 <p className={`text-3xl font-bold text-text-primary`}>
-                                    0
+                                    {loadingStats ? '...' : stats.totalSales}
                                 </p>
                             </div>
                             <div className={`p-6 rounded-lg border ${
@@ -133,7 +167,7 @@ export default function WriterDashboardPage() {
                                     Total Revenue
                                 </p>
                                 <p className={`text-3xl font-bold text-text-primary`}>
-                                    $0.00
+                                    {loadingStats ? '...' : `$${stats.totalRevenue}`}
                                 </p>
                             </div>
                             <div className={`p-6 rounded-lg border ${
@@ -145,7 +179,7 @@ export default function WriterDashboardPage() {
                                     Avg Price
                                 </p>
                                 <p className={`text-3xl font-bold text-text-primary`}>
-                                    $0.00
+                                    {loadingStats ? '...' : `$${stats.avgPrice}`}
                                 </p>
                             </div>
                         </div>
