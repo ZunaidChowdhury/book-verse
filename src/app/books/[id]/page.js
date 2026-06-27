@@ -15,23 +15,36 @@ import PurchaseButton from '@/components/PurchaseButton';
 import BookDetailsActions from '@/components/BookDetailsActions';
 import { getUser } from '@/lib/core/session';
 import NotFound from '@/components/error-handling/NotFound';
+import DataLoadFailed from '@/components/error-handling/DataLoadFailed';
 
 
 const BookDetailsPage = async ({ params }) => {
     const { id } = await params;
 
-
-    // valid id?
-    if (isNaN(Number(id))) {
-        return <NotFound />
+    const isValidMongoId = /^[0-9a-fA-F]{24}$/.test(id);
+    if (!isValidMongoId) {
+        return <NotFound />;
     }
-    const book = await getBookById(id);
+
+    let book = null;
+    try {
+        book = await getBookById(id);
+    } catch (error) {
+        console.error("Database error fetching book:", error);
+        return <NotFound />;
+    }
 
     if (!book) {
-        return <NotFound />
+        return <NotFound />;
     }
 
-    const user = await getUser();
+    let user = null;
+    try {
+        user = await getUser();
+    } catch (error) {
+        console.error("Database error fetching user:", error);
+        return <DataLoadFailed />;
+    }
 
     let bookContent = null;
     let isPurchased = false;
@@ -136,7 +149,7 @@ const BookDetailsPage = async ({ params }) => {
                         </div>
 
                         {/* Price Box & Primary Payment Call-to-Action */}
-                        <div className="bg-gradient-to-r from-[#0f1930] to-[#13203d] p-6 rounded-2xl border border-slate-800/80 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                        <div className=" bg-gradient-to-r  from-[#0f1930] to-[#13203d] p-6 rounded-2xl border border-slate-800/80 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                             <div>
                                 <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Instant Access Price</p>
                                 <div className="flex items-baseline gap-2">

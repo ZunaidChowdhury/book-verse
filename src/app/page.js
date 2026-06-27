@@ -2,19 +2,13 @@ import Slider from "@/components/sections/Slider";
 import Slide1 from "@/components/slider/Slide1";
 import Slide2 from "@/components/slider/Slide2";
 import { getFeaturedBooks } from "@/lib/api/books";
-import { getProtectedMessage } from "@/lib/data";
-import { Button } from "@heroui/react";
-import Image from "next/image";
+
 import FeaturedBooks from "../components/sections/FeaturedBooks";
 import { getTopWriters } from "@/lib/api/writers";
 import TopWriters from "@/components/sections/TopWriters";
 import BookGenres from "@/components/sections/BookGenres";
 import Newsletter from "@/components/sections/Newsletter";
-import ErrorFallback from "@/components/error-handling/ErrorFallback";
-import MyCustomSpinner from "@/components/spinner/MyCustomSpinner";
-import DataLoadFailed from "@/components/error-handling/DataLoadFailed";
-import Forbidden from "@/components/error-handling/Forbidden";
-import Unauthorized from "@/components/error-handling/Unauthorized";
+
 
 
 export default async function Home() {
@@ -30,6 +24,7 @@ export default async function Home() {
       <TopWriters topWriters={topWriters} />
       <BookGenres />
       <Newsletter />
+      {/* <NotFound/> */}
             {/* <MyCustomSpinner /> */}
       {/* <ErrorFallback /> */}
       {/* <DataLoadFailed /> */}
