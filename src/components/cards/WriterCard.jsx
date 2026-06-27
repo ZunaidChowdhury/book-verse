@@ -88,7 +88,7 @@ export default function WriterCard({ writer, index, itemVariants }) {
                         </div>
 
                         {/* Stats Dashboard Grid (Small Info Cards) */}
-                        <div className="grid grid-cols-2 gap-2.5 mb-2 text-left">
+                        <div className="grid grid-cols-2 gap-2.5 mb-2 text-center">
                             <div className="p-3 rounded-xl bg-black/30 border border-white/5 flex flex-col justify-center">
                                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-0.5">Books</span>
                                 <span className="text-sm font-extrabold text-white tracking-tight">
@@ -107,7 +107,7 @@ export default function WriterCard({ writer, index, itemVariants }) {
                     {/* Card Footer Actions */}
                     <div className="flex flex-col gap-3 pt-4 border-t border-white/5 mt-auto">
                         {/* Accessible Profile Action Button using your gradient style configuration */}
-                        <Link href={`/writers/${writer._id}`} className="w-full block">
+                        <Link href={`/user/${writer._id}`} className="w-full block">
                             <Button
                                 size="sm"
                                 className="w-full bg-gradient-to-r from-theme-secondary-purple to-theme-primary hover:opacity-90 text-white text-sm font-bold rounded-lg h-10 shadow-md shadow-theme-primary/10 transition-all duration-300 group/btn cursor-pointer"

@@ -15,6 +15,7 @@ import { authClient, googleSignIn } from '@/lib/auth-client';
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 export default function LogInForm() {
 
@@ -85,10 +86,12 @@ export default function LogInForm() {
             // AuthInitializer will automatically sync the session to Redux
             // Just redirect to the intended page
             // console.log("Login successful, redirecting..., data: ", data);
+            toast.success("Login successful!");
             router.push(sp?.get("redirect") || `/dashboard/${data.user.role}`);
         }
 
         if (authError) {
+            toast.error("Authentication failed.");
             setErrors({ form: authError.message || "Authentication failed" });
         }
     }

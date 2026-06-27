@@ -70,9 +70,9 @@ export default function AdminDashboardPage() {
 
     if (loading) {
         return (
-            <div className={`${isDark ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
+            <div className={`bg-background p-4 sm:p-6 lg:p-8`}>
                 <div className="text-center py-12">
-                    <p className={`text-lg ${isDark ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <p className={`text-lg text-text-secondary`}>
                         Loading analytics...
                     </p>
                 </div>
@@ -167,7 +167,7 @@ export default function AdminDashboardPage() {
                     </div>
 
                     {/* Charts Section */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[320px]">
                         {/* Monthly Sales Chart */}
                         <div className={`p-6 rounded-lg border ${
                             isDark 

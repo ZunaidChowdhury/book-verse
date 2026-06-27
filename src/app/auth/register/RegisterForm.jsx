@@ -24,6 +24,7 @@ import { BiBookReader } from "react-icons/bi";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { LiaBookReaderSolid } from "react-icons/lia";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 // Password rule validation hook
 function usePasswordRules(password) {
@@ -174,7 +175,7 @@ export default function RegisterForm() {
 
   const sp = useSearchParams();
 
-  const redirectTo = sp?.get("redirect") || "/";
+  const redirectTo = sp?.get("redirect") || "/auth/log-in";
 
   const [form, setForm] = useState({
     fullName: "",
@@ -250,7 +251,7 @@ export default function RegisterForm() {
       setErrors(validationErrors);
       return;
     }
-    console.log("Successfully validated and submitted:", form);
+    // console.log("Successfully validated and submitted:", form);
 
     // submit logic here
     const { fullName, email, profileImageUrl, password, role } = form;
@@ -264,15 +265,17 @@ export default function RegisterForm() {
     });
 
     if (data) {
-      console.log("submitted data:", data);
+      // console.log("submitted data:", data);
       setErrors({});
-      await authClient.signOut();
+      // await authClient.signOut();
       // console.log('register success, user: ', data)
-      router.push(redirectTo);
+      toast.success("Account created successfully!");
+      router.push(`/dashboard/${data.user.role}`);
     }
 
     if (authError) {
       setErrors(authError);
+      toast.error("Registration failed. Please try again.");
     }
 
   }
