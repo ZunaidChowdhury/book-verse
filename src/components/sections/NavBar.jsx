@@ -15,6 +15,7 @@ import { toggleTheme } from "@/redux/slices/themeSlice";
 import { DashboardSidebarContent } from "../dashboard/DashboardSidebarContent";
 import { BookOpen, Home } from "lucide-react";
 import { CgProfile } from "react-icons/cg";
+import { toast } from "react-toastify";
 
 export default function Navbar() {
   const router = useRouter()
@@ -73,6 +74,7 @@ export default function Navbar() {
       fetchOptions: {
         onSuccess: () => {
           router.push("/auth/log-in");
+          toast.success("Logged out successfully.");
         },
       },
     });

@@ -269,8 +269,8 @@ export default function RegisterForm() {
       setErrors({});
       // await authClient.signOut();
       // console.log('register success, user: ', data)
-      toast.success("Account created successfully!");
       router.push(`/dashboard/${data.user.role}`);
+      toast.success("Account created successfully!");
     }
 
     if (authError) {

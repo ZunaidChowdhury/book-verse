@@ -91,8 +91,8 @@ export default function LogInForm() {
         }
 
         if (authError) {
-            toast.error("Authentication failed.");
             setErrors({ form: authError.message || "Authentication failed" });
+            toast.error("Authentication failed.");
         }
     }
 

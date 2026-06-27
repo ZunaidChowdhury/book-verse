@@ -20,6 +20,7 @@ const UserRoleSelect = () => {
             fetchOptions: {
                 onSuccess: () => {
                     router.push("/auth/log-in");
+                    toast.success("Done. Sign in to continue.");
                 },
             },
         });
@@ -33,8 +34,8 @@ const UserRoleSelect = () => {
             const res = await updateUserRole(data)
             if (res.modifiedCount > 0) {
                 handleLogOut()
-                router.push('/auth/log-in')
-                toast.success("Done. Sign in to continue.");
+                // router.push('/auth/log-in')
+
             }
             else toast.error("Failed to update.");
         } catch (error) {
