@@ -8,7 +8,7 @@ import BookCard from '@/components/cards/BookCard'
 import Link from 'next/link'
 
 export default function WishlistPage() {
-    const { mode } = useSelector((state) => state.theme)
+    const { isDark } = useSelector((state) => state.theme)
     const [wishlistBooks, setWishlistBooks] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -36,66 +36,70 @@ export default function WishlistPage() {
         book.writerName?.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
-    const bgClass = mode === 'dark' ? 'bg-background' : 'bg-background'
-    const cardBg = mode === 'dark' ? 'bg-foreground' : 'bg-white'
-    const textPrimary = 'text-text-primary'
-    const textSecondary = 'text-text-secondary'
-    const inputBg = mode === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'
-
     return (
-        <div className={`min-h-screen ${bgClass} p-4 sm:p-6 lg:p-8`}>
+        <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8 transition-colors">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
                         <Bookmark size={32} className="text-theme-primary" />
-                        <h1 className={`text-3xl sm:text-4xl font-bold ${textPrimary}`}>My Wishlist</h1>
+                        <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">My Wishlist</h1>
                     </div>
-                    <p className={`${textSecondary}`}>
+                    <p className="text-text-secondary">
                         {filteredBooks.length} book{filteredBooks.length !== 1 ? 's' : ''} saved for later
                     </p>
                 </div>
 
                 {/* Search Bar */}
                 <div className="mb-8">
-                    <div className={`relative flex items-center ${inputBg} border rounded-lg px-4 py-2`}>
-                        <Search size={20} className={textSecondary} />
+                    <div className={`relative flex items-center border rounded-lg px-4 py-2 transition-all ${
+                        isDark
+                            ? 'bg-foreground border-border-dark'
+                            : 'bg-foreground border-border-light'
+                    }`}>
+                        <Search size={20} className="text-text-secondary" />
                         <input
                             type="text"
                             placeholder="Search by title or author..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className={`flex-1 ml-3 bg-transparent outline-none ${textPrimary}`}
+                            className="flex-1 ml-3 bg-transparent outline-none text-text-primary placeholder:text-text-secondary"
                         />
                     </div>
                 </div>
 
                 {/* Error Message */}
                 {error && (
-                    <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                    <div className="mb-6 p-4 bg-red-100/20 border border-red-400/40 text-red-500 rounded-lg">
                         {error}
                     </div>
                 )}
 
                 {/* Loading State */}
                 {loading ? (
-                    <div className={`${cardBg} rounded-lg p-8 text-center`}>
-                        <p className={textSecondary}>Loading your wishlist...</p>
+                    <div className={`rounded-lg border p-8 text-center ${
+                        isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
+                    }`}>
+                        <p className="text-text-secondary">Loading your wishlist...</p>
                     </div>
                 ) : wishlistBooks.length === 0 ? (
-                    <div className={`${cardBg} rounded-lg p-12 text-center`}>
-                        <Bookmark size={48} className={`${textSecondary} mx-auto mb-4`} />
-                        <p className={`${textSecondary} mb-4 text-lg`}>You haven't added any books to your wishlist yet.</p>
+                    <div className={`rounded-lg border p-12 text-center ${
+                        isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
+                    }`}>
+                        <Bookmark size={48} className="text-text-secondary mx-auto mb-4" />
+                        <p className="text-text-secondary mb-4 text-lg">You haven&apos;t added any books to your wishlist yet.</p>
                         <Link href="/books">
-                            <button className="bg-theme-primary hover:bg-theme-primary/90 text-white font-semibold px-6 py-3 rounded-lg transition-colors inline-block">
+                            <button className="bg-theme-primary hover:opacity-90 text-white font-semibold px-6 py-3 rounded-lg transition-opacity inline-block">
                                 Explore Books
                             </button>
                         </Link>
                     </div>
                 ) : filteredBooks.length === 0 ? (
-                    <div className={`${cardBg} rounded-lg p-12 text-center`}>
-                        <Search size={48} className={`${textSecondary} mx-auto mb-4`} />
-                        <p className={`${textSecondary} text-lg`}>No books match your search.</p>
+                    <div className={`rounded-lg border p-12 text-center ${
+                        isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
+                    }`}>
+                        <Search size={48} className="text-text-secondary mx-auto mb-4" />
+                        <p className="text-text-secondary text-lg">No books match your search.</p>
                     </div>
                 ) : (
                     /* Gallery Grid using BookCard Component */

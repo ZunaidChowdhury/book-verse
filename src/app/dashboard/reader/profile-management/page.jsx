@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { Camera } from 'lucide-react';
 
 export default function ProfileManagementPage() {
-    const { mode } = useSelector((state) => state.theme);
+    const { isDark } = useSelector((state) => state.theme);
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -92,9 +92,9 @@ export default function ProfileManagementPage() {
 
     if (loading) {
         return (
-            <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
+            <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8 transition-colors">
                 <div className="text-center py-12">
-                    <p className={`text-lg ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <p className="text-lg text-text-secondary">
                         Loading profile...
                     </p>
                 </div>
@@ -104,7 +104,7 @@ export default function ProfileManagementPage() {
 
     if (error) {
         return (
-            <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
+            <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8 transition-colors">
                 <div className="text-center py-12">
                     <p className="text-lg text-red-500">{error}</p>
                 </div>
@@ -113,29 +113,31 @@ export default function ProfileManagementPage() {
     }
 
     return (
-        <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} transition-colors`}>
+        <div className="min-h-screen bg-background transition-colors">
             <div className="p-4 sm:p-6 lg:p-8 max-w-2xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className={`text-3xl sm:text-4xl font-bold mb-2 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                    <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-text-primary">
                         Profile Settings
                     </h1>
-                    <p className={`text-sm sm:text-base ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <p className="text-sm sm:text-base text-text-secondary">
                         Manage your reader profile
                     </p>
                 </div>
 
                 {/* Profile Card */}
                 <div className={`rounded-lg border p-6 sm:p-8 transition-all ${
-                    mode === 'dark' 
-                        ? 'bg-foreground border-border-dark' 
-                        : 'bg-background border-border-light'
+                    isDark
+                        ? 'bg-foreground border-border-dark'
+                        : 'bg-foreground border-border-light'
                 }`}>
                     {/* Profile Image Section */}
-                    <div className="flex flex-col sm:flex-row gap-6 mb-8 pb-8 border-b border-border-dark">
+                    <div className={`flex flex-col sm:flex-row gap-6 mb-8 pb-8 border-b ${
+                        isDark ? 'border-border-dark' : 'border-border-light'
+                    }`}>
                         <div className="relative">
                             <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-theme-primary flex items-center justify-center ${
-                                mode === 'dark' ? 'bg-black/50' : 'bg-gray-100'
+                                isDark ? 'bg-black/30' : 'bg-black/5'
                             }`}>
                                 {formData.image ? (
                                     <Image
@@ -164,13 +166,13 @@ export default function ProfileManagementPage() {
                         </div>
 
                         <div className="flex-1">
-                            <p className={`text-sm ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'} mb-2`}>
+                            <p className="text-sm text-text-secondary mb-2">
                                 Profile Picture
                             </p>
-                            <p className={`text-base sm:text-lg font-semibold mb-2 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                            <p className="text-base sm:text-lg font-semibold mb-2 text-text-primary">
                                 {formData.name || 'Reader'}
                             </p>
-                            <p className={`text-sm ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                            <p className="text-sm text-text-secondary">
                                 {formData.email}
                             </p>
                         </div>
@@ -180,7 +182,7 @@ export default function ProfileManagementPage() {
                     <div className="space-y-6">
                         {/* Name */}
                         <div>
-                            <label className={`block text-sm font-semibold mb-2 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                            <label className="block text-sm font-semibold mb-2 text-text-primary">
                                 Name
                             </label>
                             <input
@@ -191,19 +193,19 @@ export default function ProfileManagementPage() {
                                 disabled={!editing}
                                 className={`w-full px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${
                                     editing
-                                        ? mode === 'dark'
-                                            ? 'bg-black/50 border-border-dark text-text-primary focus:border-theme-primary outline-none'
+                                        ? isDark
+                                            ? 'bg-black/30 border-border-dark text-text-primary focus:border-theme-primary outline-none'
                                             : 'bg-white border-border-light text-text-primary focus:border-theme-primary outline-none'
-                                        : mode === 'dark'
-                                            ? 'bg-foreground border-border-dark text-text-primary cursor-not-allowed'
-                                            : 'bg-gray-50 border-border-light text-text-primary cursor-not-allowed'
+                                        : isDark
+                                            ? 'bg-black/10 border-border-dark text-text-primary cursor-not-allowed'
+                                            : 'bg-black/5 border-border-light text-text-primary cursor-not-allowed'
                                 }`}
                             />
                         </div>
 
                         {/* Email (Read-only) */}
                         <div>
-                            <label className={`block text-sm font-semibold mb-2 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                            <label className="block text-sm font-semibold mb-2 text-text-primary">
                                 Email
                             </label>
                             <input
@@ -211,19 +213,19 @@ export default function ProfileManagementPage() {
                                 value={formData.email}
                                 disabled
                                 className={`w-full px-4 py-2 rounded-lg border text-sm sm:text-base ${
-                                    mode === 'dark'
-                                        ? 'bg-foreground border-border-dark text-text-secondary cursor-not-allowed'
-                                        : 'bg-gray-50 border-border-light text-text-secondary cursor-not-allowed'
+                                    isDark
+                                        ? 'bg-black/10 border-border-dark text-text-secondary cursor-not-allowed'
+                                        : 'bg-black/5 border-border-light text-text-secondary cursor-not-allowed'
                                 }`}
                             />
-                            <p className={`text-xs mt-1 ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                            <p className="text-xs mt-1 text-text-secondary">
                                 Email cannot be changed
                             </p>
                         </div>
 
                         {/* Bio */}
                         <div>
-                            <label className={`block text-sm font-semibold mb-2 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                            <label className="block text-sm font-semibold mb-2 text-text-primary">
                                 Bio (Optional)
                             </label>
                             <textarea
@@ -235,19 +237,21 @@ export default function ProfileManagementPage() {
                                 placeholder="Tell us about yourself..."
                                 className={`w-full px-4 py-2 rounded-lg border transition-all text-sm sm:text-base resize-none ${
                                     editing
-                                        ? mode === 'dark'
-                                            ? 'bg-black/50 border-border-dark text-text-primary focus:border-theme-primary outline-none'
-                                            : 'bg-white border-border-light text-text-primary focus:border-theme-primary outline-none'
-                                        : mode === 'dark'
-                                            ? 'bg-foreground border-border-dark text-text-primary cursor-not-allowed'
-                                            : 'bg-gray-50 border-border-light text-text-primary cursor-not-allowed'
+                                        ? isDark
+                                            ? 'bg-black/30 border-border-dark text-text-primary focus:border-theme-primary outline-none placeholder:text-text-secondary'
+                                            : 'bg-white border-border-light text-text-primary focus:border-theme-primary outline-none placeholder:text-text-secondary'
+                                        : isDark
+                                            ? 'bg-black/10 border-border-dark text-text-primary cursor-not-allowed'
+                                            : 'bg-black/5 border-border-light text-text-primary cursor-not-allowed'
                                 }`}
                             />
                         </div>
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-3 mt-8 pt-8 border-t border-border-dark">
+                    <div className={`flex gap-3 mt-8 pt-8 border-t ${
+                        isDark ? 'border-border-dark' : 'border-border-light'
+                    }`}>
                         {!editing ? (
                             <button
                                 onClick={() => setEditing(true)}
@@ -268,10 +272,10 @@ export default function ProfileManagementPage() {
                                         });
                                     }}
                                     disabled={uploading}
-                                    className={`flex-1 px-6 py-2 rounded-lg font-medium text-sm sm:text-base transition-all ${
-                                        mode === 'dark'
-                                            ? 'bg-foreground border border-border-dark text-text-primary hover:border-theme-primary'
-                                            : 'bg-gray-100 border border-border-light text-text-primary hover:border-theme-primary'
+                                    className={`flex-1 px-6 py-2 rounded-lg font-medium text-sm sm:text-base transition-all border text-text-primary ${
+                                        isDark
+                                            ? 'bg-black/10 border-border-dark hover:border-theme-primary'
+                                            : 'bg-black/5 border-border-light hover:border-theme-primary'
                                     }`}
                                 >
                                     Cancel

@@ -134,7 +134,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
 
     const router = useRouter()
     const isUpdateMode = !!book
-    const inputStyle = mode === 'dark' 
+    const inputStyle = mode === 'dark'
         ? 'focus:outline-none focus:ring-2 focus:ring-theme-primary focus:border-transparent bg-black border-border-dark text-text-primary placeholder:text-text-secondary'
         : 'focus:outline-none focus:ring-2 focus:ring-theme-primary focus:border-transparent bg-white border-border-light text-text-primary placeholder:text-text-secondary'
     const cardBorderClass = mode === 'dark' ? 'border-border-dark bg-foreground' : 'border-border-light bg-background'
@@ -319,16 +319,16 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
         } catch (err) {
             setError(err.message || 'Failed to save book. Please try again.')
         } finally {
-                if (!formData.yearOfPublishing || isNaN(formData.yearOfPublishing)) {
-                    setError('Valid Year of Publishing is required')
-                    setLoading(false)
-                    return
-                }
-                if (!formData.content || !formData.content.trim()) {
-                    setError('Content is required')
-                    setLoading(false)
-                    return
-                }
+            if (!formData.yearOfPublishing || isNaN(formData.yearOfPublishing)) {
+                setError('Valid Year of Publishing is required')
+                setLoading(false)
+                return
+            }
+            if (!formData.content || !formData.content.trim()) {
+                setError('Content is required')
+                setLoading(false)
+                return
+            }
 
             setLoading(false)
         }
@@ -553,7 +553,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                             {/* Price */}
                             <div>
                                 <label className={`block text-sm font-semibold mb-2 ${labelTextClass}`}>
-                                    Price (৳) <span className="text-red-500">*</span>
+                                    Price ($) <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="number"

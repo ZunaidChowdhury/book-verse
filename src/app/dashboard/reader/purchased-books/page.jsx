@@ -9,7 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function PurchasedBooksPage() {
-    const { mode } = useSelector((state) => state.theme);
+    const { isDark } = useSelector((state) => state.theme);
     const [books, setBooks] = useState([]);
     const [filteredBooks, setFilteredBooks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ export default function PurchasedBooksPage() {
     }, []);
 
     useEffect(() => {
-        const filtered = books.filter(book => 
+        const filtered = books.filter(book =>
             book.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             book.author?.toLowerCase().includes(searchTerm.toLowerCase())
         );
@@ -45,9 +45,9 @@ export default function PurchasedBooksPage() {
 
     if (loading) {
         return (
-            <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
+            <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8 transition-colors">
                 <div className="text-center py-12">
-                    <p className={`text-lg ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <p className="text-lg text-text-secondary">
                         Loading your library...
                     </p>
                 </div>
@@ -57,7 +57,7 @@ export default function PurchasedBooksPage() {
 
     if (error) {
         return (
-            <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
+            <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8 transition-colors">
                 <div className="text-center py-12">
                     <p className="text-lg text-red-500">{error}</p>
                 </div>
@@ -66,14 +66,14 @@ export default function PurchasedBooksPage() {
     }
 
     return (
-        <div className={`min-h-screen ${mode === 'dark' ? 'bg-black' : 'bg-white'} transition-colors`}>
+        <div className="min-h-screen bg-background transition-colors">
             <div className="p-4 sm:p-6 lg:p-8">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className={`text-3xl sm:text-4xl font-bold mb-2 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                    <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-text-primary">
                         My Library
                     </h1>
-                    <p className={`text-sm sm:text-base ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <p className="text-sm sm:text-base text-text-secondary">
                         Access all your purchased ebooks
                     </p>
                 </div>
@@ -81,39 +81,37 @@ export default function PurchasedBooksPage() {
                 {/* Search Bar */}
                 <div className="mb-8">
                     <div className={`flex items-center gap-2 px-4 py-3 rounded-lg border transition-all ${
-                        mode === 'dark' 
-                            ? 'bg-foreground border-border-dark' 
-                            : 'bg-background border-border-light'
+                        isDark
+                            ? 'bg-foreground border-border-dark'
+                            : 'bg-foreground border-border-light'
                     }`}>
-                        <Search size={20} className={mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'} />
+                        <Search size={20} className="text-text-secondary" />
                         <input
                             type="text"
                             placeholder="Search by title or author..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className={`flex-1 outline-none text-sm sm:text-base ${
-                                mode === 'dark'
-                                    ? 'bg-foreground text-text-primary placeholder-text-secondary'
-                                    : 'bg-background text-text-primary placeholder-text-secondary'
-                            }`}
+                            className={`flex-1 outline-none text-sm sm:text-base bg-transparent text-text-primary placeholder:text-text-secondary`}
                         />
                     </div>
                 </div>
 
                 {/* Books Count */}
                 <div className="mb-6">
-                    <p className={`text-sm ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <p className="text-sm text-text-secondary">
                         Showing {filteredBooks.length} of {books.length} book{books.length !== 1 ? 's' : ''}
                     </p>
                 </div>
 
                 {filteredBooks.length === 0 ? (
-                    <div className={`text-center py-16 rounded-lg ${mode === 'dark' ? 'bg-foreground' : 'bg-background'}`}>
-                        <p className={`text-lg mb-4 ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                    <div className={`text-center py-16 rounded-lg border ${
+                        isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
+                    }`}>
+                        <p className="text-lg mb-4 text-text-secondary">
                             {books.length === 0 ? 'No books purchased yet' : 'No books match your search'}
                         </p>
                         {books.length === 0 && (
-                            <Link 
+                            <Link
                                 href="/explore"
                                 className="inline-block px-6 py-2 bg-theme-primary text-white rounded-lg hover:opacity-90 transition-opacity"
                             >
@@ -124,16 +122,18 @@ export default function PurchasedBooksPage() {
                 ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
                         {filteredBooks.map((book) => (
-                            <Link 
+                            <Link
                                 key={book._id}
                                 href={`/books/${book._id}`}
-                                className={`group rounded-lg overflow-hidden transition-all transform hover:scale-105 ${
-                                    mode === 'dark' ? 'bg-foreground' : 'bg-background'
+                                className={`group rounded-lg overflow-hidden transition-all transform hover:scale-105 border ${
+                                    isDark
+                                        ? 'bg-foreground border-border-dark hover:border-theme-primary'
+                                        : 'bg-foreground border-border-light hover:border-theme-primary'
                                 }`}
                             >
                                 {/* Book Cover */}
-                                <div className={`relative aspect-[3/4] overflow-hidden rounded-lg mb-3 border ${
-                                    mode === 'dark' ? 'border-border-dark' : 'border-border-light'
+                                <div className={`relative aspect-[3/4] overflow-hidden rounded-t-lg ${
+                                    isDark ? 'border-b border-border-dark' : 'border-b border-border-light'
                                 }`}>
                                     {book.coverImage ? (
                                         <Image
@@ -144,25 +144,25 @@ export default function PurchasedBooksPage() {
                                         />
                                     ) : (
                                         <div className={`w-full h-full flex items-center justify-center ${
-                                            mode === 'dark' ? 'bg-black/50' : 'bg-gray-200'
+                                            isDark ? 'bg-black/30' : 'bg-black/5'
                                         }`}>
-                                            <span className={`text-2xl ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
-                                                📚
-                                            </span>
+                                            <span className="text-2xl text-text-secondary">📚</span>
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Book Info */}
-                                <div className="px-2">
-                                    <h3 className={`font-semibold text-xs sm:text-sm line-clamp-2 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                <div className="px-2 py-3">
+                                    <h3 className="font-semibold text-xs sm:text-sm line-clamp-2 text-text-primary">
                                         {book.title}
                                     </h3>
-                                    <p className={`text-xs line-clamp-1 mt-1 ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                                    <p className="text-xs line-clamp-1 mt-1 text-text-secondary">
                                         {book.author}
                                     </p>
-                                    <div className="flex justify-between items-center mt-2 pt-2 border-t border-border-dark">
-                                        <span className={`font-semibold text-xs sm:text-sm ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                    <div className={`flex justify-between items-center mt-2 pt-2 border-t ${
+                                        isDark ? 'border-border-dark' : 'border-border-light'
+                                    }`}>
+                                        <span className="font-semibold text-xs sm:text-sm text-text-primary">
                                             ${book.price?.toFixed(2) || '0.00'}
                                         </span>
                                     </div>
