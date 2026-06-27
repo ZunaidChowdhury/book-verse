@@ -10,6 +10,11 @@ import { getTopWriters } from "@/lib/api/writers";
 import TopWriters from "@/components/sections/TopWriters";
 import BookGenres from "@/components/sections/BookGenres";
 import Newsletter from "@/components/sections/Newsletter";
+import ErrorFallback from "@/components/error-handling/ErrorFallback";
+import MyCustomSpinner from "@/components/spinner/MyCustomSpinner";
+import DataLoadFailed from "@/components/error-handling/DataLoadFailed";
+import Forbidden from "@/components/error-handling/Forbidden";
+import Unauthorized from "@/components/error-handling/Unauthorized";
 
 
 export default async function Home() {
@@ -25,6 +30,13 @@ export default async function Home() {
       <TopWriters topWriters={topWriters} />
       <BookGenres />
       <Newsletter />
+            {/* <MyCustomSpinner /> */}
+      {/* <ErrorFallback /> */}
+      {/* <DataLoadFailed /> */}
+      {/* <Forbidden />
+      <Unauthorized /> */}
+
+
       
 
       {/* <Image
@@ -35,3 +47,10 @@ export default async function Home() {
     </div>
   );
 }
+
+
+
+
+
+
+

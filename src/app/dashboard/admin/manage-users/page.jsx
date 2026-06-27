@@ -254,7 +254,7 @@ export default function ManageUsersPage() {
                                     key={user._id}
                                     className={`p-4 rounded-lg border transition-all ${isDark
                                             ? 'bg-foreground border-border-dark'
-                                            : 'bg-background border-border-light'
+                                            : 'bg-foreground border-border-light'
                                         }`}
                                 >
                                     <div className="flex justify-between items-start mb-4">

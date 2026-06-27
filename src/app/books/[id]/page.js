@@ -14,13 +14,25 @@ import { getBookById, getBookContent, checkIfPurchased } from '@/lib/api/books';
 import PurchaseButton from '@/components/PurchaseButton';
 import BookDetailsActions from '@/components/BookDetailsActions';
 import { getUser } from '@/lib/core/session';
+import NotFound from '@/components/error-handling/NotFound';
 
 
 const BookDetailsPage = async ({ params }) => {
     const { id } = await params;
+
+
+    // valid id?
+    if (isNaN(Number(id))) {
+        return <NotFound />
+    }
     const book = await getBookById(id);
+
+    if (!book) {
+        return <NotFound />
+    }
+
     const user = await getUser();
-    
+
     let bookContent = null;
     let isPurchased = false;
 
@@ -39,7 +51,7 @@ const BookDetailsPage = async ({ params }) => {
         }
     }
 
-    console.log('Book Details Page: ', book)
+    // console.log('Book Details Page: ', book)
 
     const formatDate = (dateStr) => {
         return new Date(dateStr).toLocaleDateString('en-US', {

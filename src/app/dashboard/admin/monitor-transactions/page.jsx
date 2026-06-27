@@ -243,16 +243,16 @@ export default function MonitorTransactionsPage() {
                                     className={`p-4 rounded-lg border transition-all ${
                                         isDark
                                             ? 'bg-foreground border-border-dark'
-                                            : 'bg-background border-border-light'
+                                            : 'bg-foreground border-border-light'
                                     }`}
                                 >
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <p className="text-xs font-mono text-text-secondary">
+                                            <p className="text-xs font-mono text-text-primary">
                                                 ID: {transaction._id?.toString().slice(0, 12)}...
                                             </p>
-                                            <p className="text-xs text-text-secondary mt-1">
-                                                {transaction.buyerEmail || transaction.writerEmail || 'N/A'}
+                                            <p className="text-xs text-text-primary mt-1">
+                                                {transaction.userEmail || 'N/A'}
                                             </p>
                                         </div>
                                         <span className={`px-2 py-1 rounded text-xs font-medium ${getTypeColor(transaction.type)}`}>
@@ -260,11 +260,11 @@ export default function MonitorTransactionsPage() {
                                         </span>
                                     </div>
                                     <div className={`flex justify-between items-end pt-3 border-t ${isDark ? 'border-border-dark' : 'border-border-light'}`}>
-                                        <p className="text-xs text-text-secondary">
-                                            {formatDate(transaction.paymentDate)}
+                                        <p className="text-xs text-text-primary">
+                                            {formatDate(transaction.purchasedAt)}
                                         </p>
                                         <p className="text-lg font-semibold text-text-primary">
-                                            ${transaction.amount?.toFixed(2) || '0.00'}
+                                            ${transaction.amountPaid?.toFixed(2) || '0.00'}
                                         </p>
                                     </div>
                                 </div>

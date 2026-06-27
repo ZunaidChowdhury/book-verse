@@ -11,7 +11,6 @@ import { toast } from 'react-toastify'
 
 export default function ManageBooksPage() {
     const { mode } = useSelector((state) => state.theme)
-    const router = useRouter()
     const [books, setBooks] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -126,7 +125,7 @@ export default function ManageBooksPage() {
                     <div className="hidden md:block overflow-x-auto">
                         <table className={`w-full border-collapse ${cardBg} rounded-lg overflow-hidden`}>
                             <thead>
-                                <tr className={`border-b ${borderClass} ${mode === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
+                                <tr className={`border-b ${borderClass} ${mode === 'dark' ? 'border-border-dark bg-black/50' : 'border-border-light bg-gray-50'}`}>
                                     <th className={`px-6 py-4 text-left text-sm font-semibold ${textPrimary}`}>Title</th>
                                     <th className={`px-6 py-4 text-left text-sm font-semibold ${textPrimary}`}>Price</th>
                                     <th className={`px-6 py-4 text-left text-sm font-semibold ${textPrimary}`}>Status</th>
@@ -140,12 +139,13 @@ export default function ManageBooksPage() {
                                         <td className={`px-6 py-4 ${textPrimary}`}>
                                             <div className="flex items-center gap-3">
                                                 {book.image && (
-                                                    <img src={book.image} alt={book.title} className="w-10 h-14 object-cover rounded" />
+                                                    <Link href={`/books/${book._id}`}>
+                                                        <img src={book.image} alt={book.title} className="w-10 h-14 object-cover rounded" />
+                                                    </Link>
                                                 )}
-                                                <div>
+                                                <Link href={`/books/${book._id}`}>
                                                     <p className="font-medium line-clamp-1">{book.title}</p>
-                                                    <p className={`text-sm ${textSecondary}`}>{book.author}</p>
-                                                </div>
+                                                </Link>
                                             </div>
                                         </td>
                                         <td className={`px-6 py-4 ${textPrimary}`}>
@@ -153,8 +153,8 @@ export default function ManageBooksPage() {
                                         </td>
                                         <td className={`px-6 py-4`}>
                                             <span className={`px-3 py-1 rounded-full text-sm font-medium ${book.visibility === 'publish'
-                                                    ? 'bg-green-100 text-green-800'
-                                                    : 'bg-yellow-100 text-yellow-800'
+                                                ? 'bg-green-500 text-white'
+                                                : 'bg-yellow-500 text-black'
                                                 }`}>
                                                 {book.visibility === 'publish' ? 'Published' : 'Private'}
                                             </span>
@@ -167,7 +167,7 @@ export default function ManageBooksPage() {
                                                 <button
                                                     onClick={() => toggleVisibility(book)}
                                                     disabled={togglingId === book._id}
-                                                    className={`p-2 rounded transition-colors ${buttonHover} ${togglingId === book._id ? 'opacity-50' : ''}`}
+                                                    className={`cursor-pointer p-2 rounded transition-colors ${buttonHover} ${togglingId === book._id ? 'opacity-50' : ''}`}
                                                     title={book.visibility === 'publish' ? 'Private' : 'Publish'}
                                                 >
                                                     {book.visibility === 'publish' ? (
@@ -177,14 +177,14 @@ export default function ManageBooksPage() {
                                                     )}
                                                 </button>
                                                 <Link href={`/dashboard/writer/manage-books/edit/${book._id}`}>
-                                                    <button className={`p-2 rounded transition-colors ${buttonHover}`} title="Edit">
+                                                    <button className={`cursor-pointer p-2 rounded transition-colors ${buttonHover}`} title="Edit">
                                                         <Pencil size={18} className="text-theme-secondary-purple" />
                                                     </button>
                                                 </Link>
                                                 <button
                                                     onClick={() => handleDelete(book._id)}
                                                     disabled={deletingId === book._id}
-                                                    className={`p-2 rounded transition-colors ${buttonHover} ${deletingId === book._id ? 'opacity-50' : ''}`}
+                                                    className={`cursor-pointer  p-2 rounded transition-colors ${buttonHover} ${deletingId === book._id ? 'opacity-50' : ''}`}
                                                     title="Delete"
                                                 >
                                                     <Trash2 size={18} className="text-red-500" />
@@ -204,18 +204,22 @@ export default function ManageBooksPage() {
                         <div key={book._id} className={`${cardBg} rounded-lg p-4 border ${borderClass}`}>
                             <div className="flex gap-3 mb-3">
                                 {book.image && (
-                                    <img src={book.image} alt={book.title} className="w-12 h-16 object-cover rounded" />
+                                    <Link href={`/books/${book._id}`}>
+                                        <img src={book.image} alt={book.title} className="w-12 h-16 object-cover rounded" />
+                                    </Link>
                                 )}
                                 <div className="flex-1">
-                                    <h3 className={`font-semibold ${textPrimary} line-clamp-1`}>{book.title}</h3>
-                                    <p className={`text-sm ${textSecondary}`}>{book.author}</p>
+                                    <Link href={`/books/${book._id}`}>
+                                        <h3 className={`font-semibold ${textPrimary} line-clamp-1`}>{book.title}</h3>
+                                    </Link>
+                                    {/* <p className={`text-sm ${textSecondary}`}>{book.author}</p> */}
                                     <p className={`text-sm ${textPrimary} font-medium mt-1`}>${parseFloat(book.price).toFixed(2)}</p>
                                 </div>
                             </div>
                             <div className="flex gap-2 justify-between items-center mb-3">
                                 <span className={`px-2 py-1 rounded text-xs font-medium ${book.visibility === 'publish'
-                                        ? 'bg-green-100 text-green-800'
-                                        : 'bg-yellow-100 text-yellow-800'
+                                    ? 'bg-green-500 text-white'
+                                    : 'bg-yellow-500 text-black'
                                     }`}>
                                     {book.visibility === 'publish' ? 'Published' : 'Private'}
                                 </span>
@@ -225,7 +229,7 @@ export default function ManageBooksPage() {
                                 <button
                                     onClick={() => toggleVisibility(book)}
                                     disabled={togglingId === book._id}
-                                    className={`flex-1 p-2 rounded flex items-center justify-center gap-1 transition-colors ${buttonHover} text-sm ${togglingId === book._id ? 'opacity-50' : ''}`}
+                                    className={`cursor-pointer flex-1 p-2 rounded flex items-center justify-center gap-1 transition-colors ${buttonHover} text-sm ${togglingId === book._id ? 'opacity-50' : ''}`}
                                 >
                                     {book.visibility === 'publish' ? (
                                         <>
@@ -240,7 +244,7 @@ export default function ManageBooksPage() {
                                     )}
                                 </button>
                                 <Link href={`/dashboard/writer/manage-books/edit/${book._id}`} className="flex-1">
-                                    <button className={`w-full p-2 rounded flex items-center justify-center gap-1 transition-colors ${buttonHover} text-sm`}>
+                                    <button className={`cursor-pointer w-full p-2 rounded flex items-center justify-center gap-1 transition-colors ${buttonHover} text-sm`}>
                                         <Pencil size={16} />
                                         <span>Edit</span>
                                     </button>
@@ -248,7 +252,7 @@ export default function ManageBooksPage() {
                                 <button
                                     onClick={() => handleDelete(book._id)}
                                     disabled={deletingId === book._id}
-                                    className={`flex-1 p-2 rounded flex items-center justify-center gap-1 transition-colors ${buttonHover} text-sm text-red-500 ${deletingId === book._id ? 'opacity-50' : ''}`}
+                                    className={`cursor-pointer  flex-1 p-2 rounded flex items-center justify-center gap-1 transition-colors ${buttonHover} text-sm text-red-500 ${deletingId === book._id ? 'opacity-50' : ''}`}
                                 >
                                     <Trash2 size={16} />
                                     <span>Delete</span>

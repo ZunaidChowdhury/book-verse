@@ -277,7 +277,7 @@ export default function ManageBooksPage() {
                                                     {book.title}
                                                 </h3>
                                             </Link>
-                                            <p className={`text-xs text-text-secondary'}`}>
+                                            <p className={`text-xs text-text-primary mnt-1'}`}>
                                                 By {book.writerName || 'N/A'}
                                             </p>
                                         </div>
@@ -287,8 +287,8 @@ export default function ManageBooksPage() {
                                             ${book.price?.toFixed(2) || '0.00'}
                                         </span>
                                         <span className={`text-xs px-2 py-1 rounded ${book.visibility === 'publish'
-                                            ? 'bg-green-100/60 text-green-600'
-                                            : 'bg-yellow-100/60 text-yellow-600'
+                                            ? 'bg-green-500 text-white'
+                                            : 'bg-yellow-500 text-black'
                                             }`}>
                                             {book.visibility === 'publish' ? 'Published' : 'Unpublished'}
                                         </span>
@@ -297,7 +297,7 @@ export default function ManageBooksPage() {
                                         <button
                                             onClick={() => toggleVisibility(book)}
                                             disabled={togglingId === book._id}
-                                            className="cursor-pointer flex-1 px-3 py-2 hover:bg-theme-primary/20 rounded transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50"
+                                            className="cursor-pointer flex-1 px-3 py-2 bg-yellow-500/30 hover:bg-yellow-500 rounded transition-colors text-sm text-text-primary flex items-center justify-center gap-2 disabled:opacity-50"
                                         >
                                             {book.visibility === 'publish' ? (
                                                 <>

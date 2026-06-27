@@ -6,28 +6,11 @@ import { toast } from 'react-toastify';
 import { getDashboardAnalytics, getMonthlySalesData, getBooksByGenre } from '@/lib/api/admin';
 import { Users, BookOpen, TrendingUp, DollarSign } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
-// Ensure 'Cell' is explicitly imported along with your other Recharts elements
-import {
-    ResponsiveContainer,
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    PieChart,
-    Pie,
-    Cell,
-    Legend
-} from 'recharts';
+
 import DonutChart from '@/components/charts/DonutChart';
 import CustomBarChart from '@/components/charts/CustomBarChart';
 
 
-const chartColors = [
-    '#4F46E5', '#16A34A', '#9333EA', '#EC4899',
-    '#F59E0B', '#EF4444', '#0284C7', '#14B8A6'
-];
 
 export default function AdminDashboardPage() {
     const { isDark } = useSelector((state) => state.theme);
@@ -115,8 +98,6 @@ export default function AdminDashboardPage() {
         }
     ];
 
-    const maxSalesValue = Math.max(...monthlySales.map(m => m.sales || 0), 1);
-    const genreTotal = booksByGenre.reduce((sum, item) => sum + (item.count || 0), 0);
 
     return (
         <div className={`bg-background`}>

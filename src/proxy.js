@@ -24,7 +24,7 @@ export async function proxy(request) {
     // private routes [only authenticated users]
     const isProtectedRoute = pathname.startsWith("/dashboard") ||
                              pathname.startsWith("/auth/social-login") ||
-                             pathname.startsWith("/auth/user");
+                             pathname.startsWith("/user");
     // pathname.startsWith("/auth/register") ||
 
     if (isProtectedRoute && !session) {

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
 
 export default function WriterDashboardPage() {
-    const { mode } = useSelector((state) => state.theme);
+    const { isDark } = useSelector((state) => state.theme);
     const { data: session } = authClient.useSession();
     const user = session?.user;
 
@@ -42,14 +42,15 @@ export default function WriterDashboardPage() {
     ];
 
     return (
-        <div className={`${mode === 'dark' ? 'bg-black' : 'bg-white'}`}>
+        <div className={`bg-background`}>
             <div className="p-4 sm:p-6 lg:p-8">
                     {/* Welcome Section */}
                     <div className="mb-12">
-                        <h1 className={`text-4xl sm:text-5xl font-bold mb-3 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
-                            Welcome back, {user?.name || 'Writer'}
+                        <h1 className={`text-4xl sm:text-5xl font-bold mb-3 text-text-primary`}>
+                            <span className='text-xl mb-3'>Welcome back,</span> <br />
+                            <span>{user?.name || 'Writer'}</span>
                         </h1>
-                        <p className={`text-lg ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                        <p className={`text-lg text-text-secondary`}>
                             Manage your ebooks and track your sales
                         </p>
                     </div>
@@ -63,9 +64,9 @@ export default function WriterDashboardPage() {
                                     key={action.label}
                                     href={action.href}
                                     className={`group relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105 ${
-                                        mode === 'dark'
+                                        isDark
                                             ? 'bg-foreground border border-border-dark hover:border-theme-primary'
-                                            : 'bg-background border border-border-light hover:border-theme-primary'
+                                            : 'bg-foreground border border-border-light hover:border-theme-primary'
                                     }`}
                                 >
                                     {/* Background gradient effect */}
@@ -76,18 +77,16 @@ export default function WriterDashboardPage() {
                                         <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-4 ${action.bgColor}`}>
                                             <Icon size={28} />
                                         </div>
-                                        <h3 className={`text-lg font-semibold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                        <h3 className={`text-lg font-semibold text-text-primary`}>
                                             {action.label}
                                         </h3>
-                                        <p className={`text-sm mt-2 ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                                        <p className={`text-sm mt-2 text-text-secondary`}>
                                             Manage your {action.label.toLowerCase()}
                                         </p>
                                     </div>
 
                                     {/* Arrow indicator */}
-                                    <div className={`absolute bottom-4 right-4 transition-transform group-hover:translate-x-1 ${
-                                        mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'
-                                    }`}>
+                                    <div className={`absolute bottom-4 right-4 transition-transform group-hover:translate-x-1 text-text-secondary`}>
                                         →
                                     </div>
                                 </Link>
@@ -97,55 +96,55 @@ export default function WriterDashboardPage() {
 
                     {/* Info Cards Section */}
                     <div className="mt-12">
-                        <h2 className={`text-2xl font-bold mb-6 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                        <h2 className={`text-2xl font-bold mb-6 text-text-primary`}>
                             Publishing Stats
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             <div className={`p-6 rounded-lg border ${
-                                mode === 'dark'
+                                isDark
                                     ? 'bg-foreground border-border-dark'
-                                    : 'bg-background border-border-light'
+                                    : 'bg-foreground border-border-light'
                             }`}>
-                                <p className={`text-sm font-medium ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'} mb-2`}>
+                                <p className={`text-sm font-medium text-text-secondary mb-2`}>
                                     Published Ebooks
                                 </p>
-                                <p className={`text-3xl font-bold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                <p className={`text-3xl font-bold text-text-primary`}>
                                     0
                                 </p>
                             </div>
                             <div className={`p-6 rounded-lg border ${
-                                mode === 'dark'
+                                isDark
                                     ? 'bg-foreground border-border-dark'
-                                    : 'bg-background border-border-light'
+                                    : 'bg-foreground border-border-light'
                             }`}>
-                                <p className={`text-sm font-medium ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'} mb-2`}>
+                                <p className={`text-sm font-medium text-text-secondary mb-2`}>
                                     Total Sales
                                 </p>
-                                <p className={`text-3xl font-bold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                <p className={`text-3xl font-bold text-text-primary`}>
                                     0
                                 </p>
                             </div>
                             <div className={`p-6 rounded-lg border ${
-                                mode === 'dark'
+                                isDark
                                     ? 'bg-foreground border-border-dark'
-                                    : 'bg-background border-border-light'
+                                    : 'bg-foreground border-border-light'
                             }`}>
-                                <p className={`text-sm font-medium ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'} mb-2`}>
+                                <p className={`text-sm font-medium text-text-secondary mb-2`}>
                                     Total Revenue
                                 </p>
-                                <p className={`text-3xl font-bold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                <p className={`text-3xl font-bold text-text-primary`}>
                                     $0.00
                                 </p>
                             </div>
                             <div className={`p-6 rounded-lg border ${
-                                mode === 'dark'
+                                isDark
                                     ? 'bg-foreground border-border-dark'
-                                    : 'bg-background border-border-light'
+                                    : 'bg-foreground border-border-light'
                             }`}>
-                                <p className={`text-sm font-medium ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'} mb-2`}>
+                                <p className={`text-sm font-medium text-text-secondary mb-2`}>
                                     Avg Price
                                 </p>
-                                <p className={`text-3xl font-bold ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                                <p className={`text-3xl font-bold text-text-primary`}>
                                     $0.00
                                 </p>
                             </div>
@@ -154,15 +153,15 @@ export default function WriterDashboardPage() {
 
                     {/* Recent Activity */}
                     <div className="mt-12">
-                        <h2 className={`text-2xl font-bold mb-6 ${mode === 'dark' ? 'text-text-primary' : 'text-text-primary'}`}>
+                        <h2 className={`text-2xl font-bold mb-6 text-text-primary`}>
                             Quick Tips
                         </h2>
                         <div className={`p-6 rounded-lg border ${
-                            mode === 'dark'
+                            isDark
                                 ? 'bg-foreground border-border-dark'
-                                : 'bg-background border-border-light'
+                                : 'bg-foreground border-border-light'
                         }`}>
-                            <ul className={`space-y-3 ${mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'}`}>
+                            <ul className={`space-y-3 text-text-secondary`}>
                                 <li className="flex items-start gap-3">
                                     <span className="text-theme-primary mt-1">✓</span>
                                     <span>Write engaging book descriptions to attract more readers</span>
