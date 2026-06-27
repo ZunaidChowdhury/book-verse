@@ -68,9 +68,9 @@ export default function MonitorTransactionsPage() {
     };
 
     const getTypeColor = (type) => {
-        if (type === 'purchase') return 'bg-green-100/20 text-green-600';
-        if (type === 'publishing-fee') return 'bg-blue-100/20 text-blue-600';
-        if (type === 'refund') return 'bg-red-100/20 text-red-600';
+        if (type === 'purchase') return 'bg-green-500 text-white';
+        if (type === 'publishing-fee') return 'bg-blue-500 text-white';
+        if (type === 'refund') return 'bg-red-500 text-white';
         return 'bg-gray-100/20 text-gray-600';
     };
 
@@ -212,7 +212,7 @@ export default function MonitorTransactionsPage() {
                                 <tbody>
                                     {processedTransactions.map((transaction) => (
                                         <tr key={transaction._id} className={`border-b ${isDark ? 'border-border-dark hover:bg-black/30' : 'border-border-light hover:bg-gray-50'} transition-colors`}>
-                                            <td className="px-4 py-3 text-xs sm:text-sm font-mono text-text-secondary">
+                                            <td className="px-4 py-3 text-xs sm:text-sm font-mono text-text-primary">
                                                 {transaction._id?.toString().slice(0, 8)}...
                                             </td>
                                             <td className="px-4 py-3">
@@ -220,13 +220,13 @@ export default function MonitorTransactionsPage() {
                                                     {transaction.type === 'publishing-fee' ? 'Publishing Fee' : transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
                                                 </span>
                                             </td>
-                                            <td className="px-4 py-3 text-xs sm:text-sm text-text-secondary">
+                                            <td className="px-4 py-3 text-xs sm:text-sm text-text-primary">
                                                 {transaction.userEmail || transaction.writerEmail || 'N/A'}
                                             </td>
                                             <td className="px-4 py-3 font-semibold text-text-primary">
                                                 ${transaction.amountPaid?.toFixed(2) || '0.00'}
                                             </td>
-                                            <td className="px-4 py-3 text-xs sm:text-sm text-text-secondary">
+                                            <td className="px-4 py-3 text-xs sm:text-sm text-text-primary">
                                                 {formatDate(transaction.purchasedAt)}
                                             </td>
                                         </tr>

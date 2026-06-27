@@ -7,6 +7,8 @@ import { Trash2, Edit2, ChevronDown } from 'lucide-react';
 import { getAllUsers, updateUserRole, deleteUser } from '@/lib/api/admin';
 import Link from 'next/link';
 
+import { Button, Modal } from "@heroui/react";
+
 export default function ManageUsersPage() {
     const { isDark } = useSelector((state) => state.theme);
     const [users, setUsers] = useState([]);
@@ -15,6 +17,7 @@ export default function ManageUsersPage() {
     const [editingId, setEditingId] = useState(null);
     const [selectedRole, setSelectedRole] = useState({});
     const [sortBy, setSortBy] = useState('name-az');
+    const [userToDelete, setUserToDelete] = useState(null);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -52,11 +55,12 @@ export default function ManageUsersPage() {
     };
 
     const handleDeleteUser = async (userId) => {
-        if (!confirm('Are you sure you want to delete this user?')) return;
+        // if (!confirm('Are you sure you want to delete this user?')) return;
 
         try {
             await deleteUser(userId);
             setUsers(users.filter(u => u._id !== userId));
+            setUserToDelete(null)
             toast.success('User deleted successfully');
         } catch (err) {
             toast.error('Failed to delete user');
@@ -124,11 +128,10 @@ export default function ManageUsersPage() {
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
-                        className={`px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${
-                            isDark
+                        className={`px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${isDark
                                 ? 'bg-foreground border-border-dark text-text-primary'
                                 : 'bg-foreground border-border-light text-text-primary'
-                        }`}
+                            }`}
                     >
                         <option value="name-az">Name: A-Z</option>
                         <option value="name-za">Name: Z-A</option>
@@ -180,24 +183,22 @@ export default function ManageUsersPage() {
                                                     <select
                                                         value={selectedRole[user._id] || user.role}
                                                         onChange={(e) => setSelectedRole(prev => ({ ...prev, [user._id]: e.target.value }))}
-                                                        className={`px-2 py-1 rounded text-sm border ${
-                                                            isDark
+                                                        className={`px-2 py-1 rounded text-sm border ${isDark
                                                                 ? 'bg-black/50 border-border-dark text-text-primary'
                                                                 : 'bg-white border-border-light text-text-primary'
-                                                        }`}
+                                                            }`}
                                                     >
                                                         <option value="reader">Reader</option>
                                                         <option value="writer">Writer</option>
                                                         <option value="admin">Admin</option>
                                                     </select>
                                                 ) : (
-                                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                                        user.role === 'admin'
-                                                            ? 'bg-red-100/20 text-red-600'
+                                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.role === 'admin'
+                                                            ? 'bg-green-500 text-white'
                                                             : user.role === 'writer'
-                                                                ? 'bg-blue-100/20 text-blue-600'
-                                                                : 'bg-green-100/20 text-green-600'
-                                                    }`}>
+                                                                ? 'bg-yellow-500 text-black'
+                                                                : 'bg-blue-500 text-white'
+                                                        }`}>
                                                         {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                                                     </span>
                                                 )}
@@ -207,17 +208,16 @@ export default function ManageUsersPage() {
                                                     <>
                                                         <button
                                                             onClick={() => handleUpdateRole(user._id, selectedRole[user._id])}
-                                                            className="px-3 py-1 bg-theme-primary text-white rounded text-sm hover:opacity-90"
+                                                            className="cursor-pointer px-3 py-1 bg-theme-primary text-white rounded text-sm hover:opacity-90"
                                                         >
                                                             Save
                                                         </button>
                                                         <button
                                                             onClick={() => setEditingId(null)}
-                                                            className={`px-3 py-1 rounded text-sm ${
-                                                                isDark
+                                                            className={`cursor-pointer px-3 py-1 rounded text-sm ${isDark
                                                                     ? 'bg-foreground border border-border-dark text-text-primary'
                                                                     : 'bg-gray-100 border border-border-light text-text-primary'
-                                                            }`}
+                                                                }`}
                                                         >
                                                             Cancel
                                                         </button>
@@ -226,14 +226,14 @@ export default function ManageUsersPage() {
                                                     <>
                                                         <button
                                                             onClick={() => setEditingId(user._id)}
-                                                            className="p-2 text-text-primary  hover:bg-theme-primary/20 rounded transition-colors"
+                                                            className="cursor-pointer p-2 text-text-primary  hover:bg-theme-primary/20 rounded transition-colors"
                                                             title="Edit role"
                                                         >
                                                             <Edit2 size={16} />
                                                         </button>
                                                         <button
-                                                            onClick={() => handleDeleteUser(user._id)}
-                                                            className="p-2 hover:bg-red-500/20 rounded transition-colors text-red-500"
+                                                            onClick={() => setUserToDelete(user)}
+                                                            className="cursor-pointer p-2 hover:bg-red-500/20 rounded transition-colors text-red-500"
                                                             title="Delete user"
                                                         >
                                                             <Trash2 size={16} />
@@ -250,13 +250,12 @@ export default function ManageUsersPage() {
                         {/* Mobile Card View */}
                         <div className="md:hidden grid grid-cols-1 gap-4">
                             {sortedUsers.map((user) => (
-                                <div 
+                                <div
                                     key={user._id}
-                                    className={`p-4 rounded-lg border transition-all ${
-                                        isDark 
-                                            ? 'bg-foreground border-border-dark' 
+                                    className={`p-4 rounded-lg border transition-all ${isDark
+                                            ? 'bg-foreground border-border-dark'
                                             : 'bg-background border-border-light'
-                                    }`}
+                                        }`}
                                 >
                                     <div className="flex justify-between items-start mb-4">
                                         <div>
@@ -275,11 +274,10 @@ export default function ManageUsersPage() {
                                         <select
                                             value={selectedRole[user._id] || user.role}
                                             onChange={(e) => setSelectedRole(prev => ({ ...prev, [user._id]: e.target.value }))}
-                                            className={`w-full px-2 py-1 rounded border text-sm ${
-                                                isDark
+                                            className={`w-full px-2 py-1 rounded border text-sm ${isDark
                                                     ? 'bg-black/50 border-border-dark text-text-primary'
                                                     : 'bg-white border-border-light text-text-primary'
-                                            }`}
+                                                }`}
                                         >
                                             <option value="reader">Reader</option>
                                             <option value="writer">Writer</option>
@@ -289,13 +287,13 @@ export default function ManageUsersPage() {
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => handleUpdateRole(user._id, selectedRole[user._id])}
-                                            className="flex-1 px-3 py-2 bg-theme-primary text-white rounded text-sm hover:opacity-90"
+                                            className="cursor-pointer flex-1 px-3 py-2 bg-theme-primary text-white rounded text-sm hover:opacity-90"
                                         >
                                             Save
                                         </button>
                                         <button
-                                            onClick={() => handleDeleteUser(user._id)}
-                                            className="px-3 py-2 hover:bg-red-500/20 rounded transition-colors text-red-500"
+                                            onClick={() => setUserToDelete(user)}
+                                            className="cursor-pointer px-3 py-2 hover:bg-red-500/20 rounded transition-colors text-red-500"
                                         >
                                             <Trash2 size={16} />
                                         </button>
@@ -306,6 +304,39 @@ export default function ManageUsersPage() {
                     </>
                 )}
             </div>
+
+            <Modal isOpen={!!userToDelete} onClose={() => setUserToDelete(null)}>
+                <Modal.Backdrop className="backdrop-blur-sm bg-black/40">
+                    <Modal.Container>
+                        <Modal.Dialog className={`sm:max-w-[400px] bg-foreground border ${isDark ? 'border-theme-primary/30' : 'border-black/30'}`}>
+                            <Modal.CloseTrigger onClick={() => setUserToDelete(null)} />
+                            <Modal.Header>
+                                <Modal.Icon className="bg-red-500/10 text-red-500">
+                                    <Trash2 className="size-5" />
+                                </Modal.Icon>
+                                <Modal.Heading className='text-text-primary'>Confirm Deletion</Modal.Heading>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <p className="text-sm text-text-primary">
+                                    Are you sure you want to permanently delete <strong className="text-text-primary">"{userToDelete?.name}"</strong>? This action cannot be undone.
+                                </p>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setUserToDelete(null)}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    className="bg-red-500 text-white hover:bg-red-600"
+                                    onClick={() => handleDeleteUser(userToDelete?._id)}
+                                >
+                                    Delete
+                                </Button>
+                            </Modal.Footer>
+                        </Modal.Dialog>
+                    </Modal.Container>
+                </Modal.Backdrop>
+            </Modal>
+
         </div>
     );
 }
