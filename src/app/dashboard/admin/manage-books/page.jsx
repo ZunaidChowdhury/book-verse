@@ -9,6 +9,8 @@ import { updateBook } from '@/lib/actions/books';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { Button, Modal } from "@heroui/react";
+
 export default function ManageBooksPage() {
     const { isDark } = useSelector((state) => state.theme);
     const [books, setBooks] = useState([]);
@@ -16,6 +18,7 @@ export default function ManageBooksPage() {
     const [error, setError] = useState(null);
     const [sortBy, setSortBy] = useState('date-desc');
     const [togglingId, setTogglingId] = useState(null);
+    const [bookToDelete, setBookToDelete] = useState(null);
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -56,12 +59,13 @@ export default function ManageBooksPage() {
     };
 
     const handleDeleteBook = async (bookId) => {
-        if (!confirm('Are you sure you want to delete this book?')) return;
+        // if (!confirm('Are you sure you want to delete this book?')) return;
 
         try {
             await deleteBookAdmin(bookId);
             setBooks(books.filter(b => b._id !== bookId));
             toast.success('Book deleted successfully');
+            setBookToDelete(null); // Clear state to close modal
         } catch (err) {
             toast.error('Failed to delete book');
         }
@@ -131,8 +135,8 @@ export default function ManageBooksPage() {
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
                         className={`px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${isDark
-                                ? 'bg-foreground border-border-dark text-text-primary'
-                                : 'bg-foreground border-border-light text-text-primary'
+                            ? 'bg-foreground border-border-dark text-text-primary'
+                            : 'bg-foreground border-border-light text-text-primary'
                             }`}
                     >
                         <option value="date-desc">Latest First</option>
@@ -180,13 +184,13 @@ export default function ManageBooksPage() {
                                                 <div className="flex gap-3 items-center">
                                                     {book.image ? (
                                                         <Link href={`/books/${book._id}`} >
-                                                        <Image
-                                                            src={book.image}
-                                                            alt={book.title}
-                                                            width={40}
-                                                            height={50}
-                                                            className="rounded object-cover"
-                                                        />
+                                                            <Image
+                                                                src={book.image}
+                                                                alt={book.title}
+                                                                width={40}
+                                                                height={50}
+                                                                className="rounded object-cover"
+                                                            />
                                                         </Link>
                                                     ) : (
                                                         <div className={`w-10 h-12 rounded flex items-center justify-center text-lg ${isDark ? 'bg-black/50' : 'bg-gray-200'
@@ -207,8 +211,8 @@ export default function ManageBooksPage() {
                                             </td>
                                             <td className="px-4 py-3">
                                                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${book.visibility === 'publish'
-                                                        ? 'bg-green-500 text-text-primary'
-                                                        : 'bg-yellow-500 text-text-primary'
+                                                    ? 'bg-green-500 text-text-primary'
+                                                    : 'bg-yellow-500 text-text-primary'
                                                     }`}>
                                                     {book.visibility === 'publish' ? 'Published' : 'Unpublished'}
                                                 </span>
@@ -227,7 +231,7 @@ export default function ManageBooksPage() {
                                                     )}
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDeleteBook(book._id)}
+                                                    onClick={() => setBookToDelete(book)}
                                                     className="cursor-pointer p-2 hover:bg-red-500/20 rounded transition-colors text-red-500"
                                                     title="Delete book"
                                                 >
@@ -246,21 +250,21 @@ export default function ManageBooksPage() {
                                 <div
                                     key={book._id}
                                     className={`p-4 rounded-lg border transition-all ${isDark
-                                            ? 'bg-foreground border-border-dark'
-                                            : 'bg-foreground border-border-light'
+                                        ? 'bg-foreground border-border-dark'
+                                        : 'bg-foreground border-border-light'
                                         }`}
                                 >
                                     <div className="flex gap-3 mb-4">
                                         {book.image ? (
                                             <Link href={`/books/${book._id}`} >
-                                            <Image
-                                                // 1. Checks if image exists and starts with http or a leading slash
-                                                src={book?.image}
-                                                alt={book?.title || "Book cover"}
-                                                width={40}
-                                                height={50}
-                                                className="rounded object-cover"
-                                            /> </Link>
+                                                <Image
+                                                    // 1. Checks if image exists and starts with http or a leading slash
+                                                    src={book?.image}
+                                                    alt={book?.title || "Book cover"}
+                                                    width={40}
+                                                    height={50}
+                                                    className="rounded object-cover"
+                                                /> </Link>
                                         ) : (
                                             <div className={`w-10 h-12 rounded flex items-center justify-center text-lg ${isDark ? 'bg-black/50' : 'bg-gray-200'
                                                 }`}>
@@ -283,8 +287,8 @@ export default function ManageBooksPage() {
                                             ${book.price?.toFixed(2) || '0.00'}
                                         </span>
                                         <span className={`text-xs px-2 py-1 rounded ${book.visibility === 'publish'
-                                                ? 'bg-green-100/60 text-green-600'
-                                                : 'bg-yellow-100/60 text-yellow-600'
+                                            ? 'bg-green-100/60 text-green-600'
+                                            : 'bg-yellow-100/60 text-yellow-600'
                                             }`}>
                                             {book.visibility === 'publish' ? 'Published' : 'Unpublished'}
                                         </span>
@@ -308,7 +312,7 @@ export default function ManageBooksPage() {
                                             )}
                                         </button>
                                         <button
-                                            onClick={() => handleDeleteBook(book._id)}
+                                            onClick={() => setBookToDelete(book)}
                                             className="cursor-pointer px-3 py-2 hover:bg-red-500/20 rounded transition-colors text-red-500"
                                         >
                                             <Trash2 size={16} />
@@ -320,6 +324,39 @@ export default function ManageBooksPage() {
                     </>
                 )}
             </div>
+
+            {/* Controlled Delete Confirmation Modal */}
+            <Modal isOpen={!!bookToDelete} onClose={() => setBookToDelete(null)}>
+                <Modal.Backdrop className="backdrop-blur-sm bg-black/40">
+                    <Modal.Container>
+                        <Modal.Dialog className={`sm:max-w-[400px] bg-foreground border ${isDark ? 'border-theme-primary/30' : 'border-black/30'}`}>
+                            <Modal.CloseTrigger onClick={() => setBookToDelete(null)} />
+                            <Modal.Header>
+                                <Modal.Icon className="bg-red-500/10 text-red-500">
+                                    <Trash2 className="size-5" />
+                                </Modal.Icon>
+                                <Modal.Heading className='text-text-primary'>Confirm Deletion</Modal.Heading>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <p className="text-sm text-text-primary">
+                                    Are you sure you want to permanently delete <strong className="text-text-primary">"{bookToDelete?.title}"</strong>? This action cannot be undone.
+                                </p>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setBookToDelete(null)}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    className="bg-red-500 text-white hover:bg-red-600"
+                                    onClick={() => handleDeleteBook(bookToDelete?._id)}
+                                >
+                                    Delete
+                                </Button>
+                            </Modal.Footer>
+                        </Modal.Dialog>
+                    </Modal.Container>
+                </Modal.Backdrop>
+            </Modal>
         </div>
     );
 }
