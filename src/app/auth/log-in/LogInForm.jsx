@@ -86,8 +86,8 @@ export default function LogInForm() {
             // AuthInitializer will automatically sync the session to Redux
             // Just redirect to the intended page
             // console.log("Login successful, redirecting..., data: ", data);
-            toast.success("Login successful!");
             router.push(sp?.get("redirect") || `/dashboard/${data.user.role}`);
+            toast.success("Login successful!");
         }
 
         if (authError) {
