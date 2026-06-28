@@ -23,7 +23,7 @@ export default function DataLoadFailed({
     };
 
     return (
-        <div className="w-full min-h-screen flex items-center justify-center p-6 text-center">
+        <div className="w-full py-30 flex items-center justify-center p-6 text-center">
             <div className={`w-full max-w-[400px] p-8 rounded-xl border shadow-md transition-all duration-300 ${
                 isDark 
                     ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-white/5' 
