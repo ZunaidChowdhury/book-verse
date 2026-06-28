@@ -121,12 +121,12 @@ export default function BooksFilterLayout({ children, pagination }) {
             />
 
             {/* Filters and Books Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-[288px_1fr]  gap-8">
                 {/* Filters Sidebar */}
                 <FiltersSidebar
                     selectedGenres={selectedGenres}
                     onGenreChange={setSelectedGenres}
-                    selectedAvailability={selectedAvailability}
+                    selectedAvailability={selectedAvailability}                
                     onAvailabilityChange={setSelectedAvailability}
                     minPrice={minPrice}
                     maxPrice={maxPrice}
@@ -141,7 +141,7 @@ export default function BooksFilterLayout({ children, pagination }) {
                 />
 
                 {/* Books Grid */}
-                <div className="lg:col-span-3 space-y-8">
+                <div >
                     {children}
 
                     {/* Pagination */}

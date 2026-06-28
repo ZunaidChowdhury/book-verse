@@ -6,6 +6,7 @@ import { Bookmark, Search } from 'lucide-react'
 import { getWishlist } from '@/lib/api/books'
 import BookCard from '@/components/cards/BookCard'
 import Link from 'next/link'
+import { motion } from 'framer-motion';
 
 export default function WishlistPage() {
     const { isDark } = useSelector((state) => state.theme)
@@ -13,6 +14,7 @@ export default function WishlistPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [searchTerm, setSearchTerm] = useState('')
+    
 
     useEffect(() => {
         const fetchWishlist = async () => {
@@ -36,6 +38,17 @@ export default function WishlistPage() {
         book.writerName?.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
+        const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.08,
+                delayChildren: 0.1,
+            },
+        },
+    };
+
     return (
         <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8 transition-colors">
             <div className="max-w-7xl mx-auto">
@@ -52,11 +65,10 @@ export default function WishlistPage() {
 
                 {/* Search Bar */}
                 <div className="mb-8">
-                    <div className={`relative flex items-center border rounded-lg px-4 py-2 transition-all ${
-                        isDark
+                    <div className={`relative flex items-center border rounded-lg px-4 py-2 transition-all ${isDark
                             ? 'bg-foreground border-border-dark'
                             : 'bg-foreground border-border-light'
-                    }`}>
+                        }`}>
                         <Search size={20} className="text-text-secondary" />
                         <input
                             type="text"
@@ -77,15 +89,13 @@ export default function WishlistPage() {
 
                 {/* Loading State */}
                 {loading ? (
-                    <div className={`rounded-lg border p-8 text-center ${
-                        isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
-                    }`}>
+                    <div className={`rounded-lg border p-8 text-center ${isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
+                        }`}>
                         <p className="text-text-secondary">Loading your wishlist...</p>
                     </div>
                 ) : wishlistBooks.length === 0 ? (
-                    <div className={`rounded-lg border p-12 text-center ${
-                        isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
-                    }`}>
+                    <div className={`rounded-lg border p-12 text-center ${isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
+                        }`}>
                         <Bookmark size={48} className="text-text-secondary mx-auto mb-4" />
                         <p className="text-text-secondary mb-4 text-lg">You haven&apos;t added any books to your wishlist yet.</p>
                         <Link href="/books">
@@ -95,19 +105,24 @@ export default function WishlistPage() {
                         </Link>
                     </div>
                 ) : filteredBooks.length === 0 ? (
-                    <div className={`rounded-lg border p-12 text-center ${
-                        isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
-                    }`}>
+                    <div className={`rounded-lg border p-12 text-center ${isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
+                        }`}>
                         <Search size={48} className="text-text-secondary mx-auto mb-4" />
                         <p className="text-text-secondary text-lg">No books match your search.</p>
                     </div>
                 ) : (
                     /* Gallery Grid using BookCard Component */
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-80px" }}
+                        className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8'
+                    >
                         {filteredBooks.map((book) => (
                             <BookCard key={book._id} book={book} />
                         ))}
-                    </div>
+                    </motion.div>
                 )}
             </div>
         </div>

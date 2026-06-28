@@ -42,23 +42,23 @@ const UserProfileCard = ({user}) => {
     const roleConfig = {
         reader: {
             label: "Reader",
-            bg: "bg-blue-500/10",
-            text: "text-blue-400",
-            border: "border-blue-500/20",
+            bg: "bg-blue-500",
+            text: "text-text-primary",
+            border: "border-blue-500",
             icon: FiBookOpen,
         },
         writer: {
             label: "Writer",
-            bg: "bg-amber-500/10",
-            text: "text-amber-400",
-            border: "border-amber-500/20",
+            bg: "bg-amber-500",
+            text: "text-text-primary",
+            border: "border-amber-500",
             icon: FiEdit3,
         },
         admin: {
             label: "Admin",
-            bg: "bg-green-500/10",
-            text: "text-white",
-            border: "border-green-500/20",
+            bg: "bg-green-500",
+            text: "text-text-primary",
+            border: "border-green-500",
             icon: FiShield,
         },
     };

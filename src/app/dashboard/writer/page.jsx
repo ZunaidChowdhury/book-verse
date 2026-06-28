@@ -35,8 +35,9 @@ export default function WriterDashboardPage() {
                         avgPrice: data.avgPrice || '0.00',
                     });
                 }
+                // console.log('writer/dashboard stats:', data);
             } catch (err) {
-                console.error('Failed to load writer dashboard stats:', err);
+                // console.error('Failed to load writer dashboard stats:', err);
             } finally {
                 setLoadingStats(false);
             }

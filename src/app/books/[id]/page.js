@@ -16,12 +16,22 @@ import BookDetailsActions from '@/components/BookDetailsActions';
 import { getUser } from '@/lib/core/session';
 import NotFound from '@/components/error-handling/NotFound';
 import DataLoadFailed from '@/components/error-handling/DataLoadFailed';
+import Fireworks from '@/components/Fireworks';
+import PaymentSuccessful from '@/components/PaymentSuccessful';
 
 
-const BookDetailsPage = async ({ params }) => {
-    const { id } = await params;
+const BookDetailsPage = async ({ params, searchParams }) => {
+
+    const [resolvedParams, resolvedSearchParams] = await Promise.all([
+        params,
+        searchParams,
+    ]);
+
+    const { id } = resolvedParams;
+    const paymentStatus = resolvedSearchParams.status;
 
     const isValidMongoId = /^[0-9a-fA-F]{24}$/.test(id);
+
     if (!isValidMongoId) {
         return <NotFound />;
     }
@@ -76,12 +86,13 @@ const BookDetailsPage = async ({ params }) => {
 
     return (
         <div className="min-h-screen bg-[#0a0f1d] text-slate-100 font-sans selection:bg-purple-500/30">
+            {paymentStatus === 'success' && <Fireworks />}
             {/* Background Decorative Cosmic Glows */}
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />            
 
             {/* Top Navigation Bar */}
-            <header className="border-b border-slate-800/60 bg-[#0c1324]/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4">
+            <header className="border-b border-slate-800/60 bg-[#0c1324]/80 backdrop-blur-md sticky top-20 z-48 px-6 py-4">
                 <div className="max-w-6xl mx-auto flex items-center justify-between">
                     <a href="/books" className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors group">
                         <FaChevronLeft className="group-hover:-translate-x-0.5 transition-transform" />
@@ -90,6 +101,8 @@ const BookDetailsPage = async ({ params }) => {
                     <div className="text-xs text-slate-500 font-mono">ID: {book._id}</div>
                 </div>
             </header>
+
+            {paymentStatus === 'success' && <PaymentSuccessful />}
 
             <main className="max-w-6xl mx-auto px-6 py-12 relative z-10">
                 {/* Responsive Desktop Two-Column Layout Grid */}

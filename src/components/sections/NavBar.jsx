@@ -205,7 +205,8 @@ export default function Navbar() {
             {/* Right Section: Utilities & Authentication */}
             <div className="flex items-center gap-3">
               {/* Theme Switcher */}
-              <Tooltip content={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}>
+              <div className='hidden tablet:inline'>
+              <Tooltip  content={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}>
                 <button
                   onClick={() => dispatch(toggleTheme())}
                   className="flex h-9 w-9 items-center justify-center rounded-md border border-text-primary/5 bg-text-primary/5 text-text-primary/70 transition-all hover:bg-text-primary/10 hover:text-text-primary focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] "
@@ -237,14 +238,16 @@ export default function Navbar() {
                   </AnimatePresence>
                 </button>
               </Tooltip>
+              </div>
 
+              
               {/* Guest / Authenticated View */}
               {!user ? (
                 <div className="flex items-center gap-2">
                   <Link href={`/auth/log-in`}>
                     <Button
                       variant="light"
-                      className="border border-text-primary/10 bg-transparent hover:bg-text-primary/5 text-text-primary/80 hover:text-text-primary font-medium text-sm transition-all rounded-md"
+                      className="hidden tablet:inline border border-text-primary/10 bg-transparent hover:bg-text-primary/5 text-text-primary/80 hover:text-text-primary font-medium text-sm transition-all rounded-md"
                     // onPress={() => setIsAuthenticated(true)}
                     >
                       Log In
@@ -252,7 +255,7 @@ export default function Navbar() {
                   </Link>
                   <Link href={`/auth/register`}>
                     <Button
-                      className="bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all cursor-pointer rounded-md"
+                      className="hidden tablet:inline bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white font-semibold text-sm shadow-lg shadow-[var(--theme-primary)]/20 transition-all cursor-pointer rounded-md"
                     // onPress={() => setIsAuthenticated(true)}
                     >
                       Register

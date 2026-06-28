@@ -24,7 +24,7 @@ export default function ManageBooksPage() {
             try {
                 setLoading(true)
                 const data = await getWriterBooks()
-                console.log('/manage-books/fetch: ', data)
+                // console.log('/manage-books/fetch: ', data)
                 // Ensure data is an array
                 const booksArray = Array.isArray(data) ? data : []
                 setBooks(booksArray)

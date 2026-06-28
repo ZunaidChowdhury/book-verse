@@ -89,7 +89,7 @@ export default function Pagination({
                                         min-w-10 h-10 px-3 rounded-lg font-semibold transition-all
                                         ${
                                             currentPage === page
-                                                ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg hover:shadow-blue-500/50'
+                                                ? 'bg-theme-primary text-white shadow-lg hover:shadow-blue-500/50'
                                                 : 'bg-slate-800/50 border border-slate-600/50 text-slate-300 hover:border-blue-500/50 hover:text-blue-400'
                                         }
                                         disabled:opacity-50 disabled:cursor-not-allowed

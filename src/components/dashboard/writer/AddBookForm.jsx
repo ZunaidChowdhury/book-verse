@@ -135,13 +135,12 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
     const router = useRouter()
     const isUpdateMode = !!book
     const inputStyle = mode === 'dark'
-        ? 'focus:outline-none focus:ring-2 focus:ring-theme-primary focus:border-transparent bg-black border-border-dark text-text-primary placeholder:text-text-secondary'
-        : 'focus:outline-none focus:ring-2 focus:ring-theme-primary focus:border-transparent bg-white border-border-light text-text-primary placeholder:text-text-secondary'
+        ? 'focus:outline-none focus:ring-2 focus:ring-theme-primary focus:border-transparent bg-backround border-border-dark text-text-primary placeholder:text-text-secondary'
+        : 'focus:outline-none focus:ring-2 focus:ring-theme-primary focus:border-transparent bg-backround border-border-light text-text-primary placeholder:text-text-secondary'
     const cardBorderClass = mode === 'dark' ? 'border-border-dark bg-foreground' : 'border-border-light bg-background'
     const sectionTextClass = mode === 'dark' ? 'text-text-secondary' : 'text-text-secondary'
     const labelTextClass = mode === 'dark' ? 'text-text-primary' : 'text-text-primary'
-    const pageBgClass = mode === 'dark' ? 'bg-black text-text-primary' : 'bg-white text-text-primary'
-
+    const pageBgClass = 'bg-background text-text-primary' 
     const [formData, setFormData] = useState({
         title: '',
         description: '',

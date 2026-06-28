@@ -20,18 +20,7 @@ const FeaturedBooks = ({ featuredBooks }) => {
     },
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 35 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-        damping: 18,
-      },
-    },
-  };
+
 
   return (
     <div className='py-12 tablet:py-30 overflow-hidden bg-theme-background'>
@@ -53,15 +42,7 @@ const FeaturedBooks = ({ featuredBooks }) => {
           viewport={{ once: true, margin: "-80px" }}
           className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'
         >
-          {featuredBooks.map((book) => (
-            <motion.div
-              key={book._id || book.title}
-              variants={itemVariants}
-              className="w-full"
-            >
-              <BookCard book={book} />
-            </motion.div>
-          ))}
+          {featuredBooks.map((book) => <BookCard key={book._id} book={book} />)}
         </motion.div>
       </div>
     </div>

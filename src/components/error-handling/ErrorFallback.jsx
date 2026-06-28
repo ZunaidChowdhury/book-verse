@@ -4,19 +4,19 @@ import React from 'react';
 import { AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from '@heroui/react';
 import { useSelector } from "react-redux";
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 export default function ErrorFallback({ error, resetErrorBoundary }) {
-    const router = useRouter();
+    // const router = useRouter();
     const { isDark } = useSelector((state) => state.theme);
 
     const handleReload = () => {
-        router.refresh();
-        // if (typeof resetErrorBoundary === 'function') {
-        //     resetErrorBoundary();
-        // } else {
-        //     window.location.reload();
-        // }
+        // window.location.reload();
+        if (typeof resetErrorBoundary === 'function') {
+            resetErrorBoundary();
+        } else {
+            window.location.reload();
+        }
     };
 
     return (
@@ -42,7 +42,7 @@ export default function ErrorFallback({ error, resetErrorBoundary }) {
 
                     {/* Optional: Error message printing for development environment staging loops */}
                     {process.env.NODE_ENV === 'development' && error && (
-                        <div className="mt-3 p-3 rounded-md bg-red-500/5 border border-red-500/10 text-left overflow-x-auto max-w-full">
+                        <div className="text-center mt-3 p-3 rounded-md bg-red-500/5 border border-red-500/10  overflow-x-auto max-w-full">
                             <code className="text-xs font-mono text-red-400 block whitespace-pre">
                                 {error.message || String(error)}
                             </code>

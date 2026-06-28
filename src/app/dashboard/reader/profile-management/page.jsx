@@ -165,10 +165,7 @@ export default function ProfileManagementPage() {
                             )}
                         </div>
 
-                        <div className="flex-1">
-                            <p className="text-sm text-text-secondary mb-2">
-                                Profile Picture
-                            </p>
+                        <div className="flex-1 flex flex-col items-start justify-center ">
                             <p className="text-base sm:text-lg font-semibold mb-2 text-text-primary">
                                 {formData.name || 'Reader'}
                             </p>
@@ -218,7 +215,7 @@ export default function ProfileManagementPage() {
                                         : 'bg-black/5 border-border-light text-text-secondary cursor-not-allowed'
                                 }`}
                             />
-                            <p className="text-xs mt-1 text-text-secondary">
+                            <p className="text-xs mt-1 text-text-secondary pl-2 pt-2">
                                 Email cannot be changed
                             </p>
                         </div>

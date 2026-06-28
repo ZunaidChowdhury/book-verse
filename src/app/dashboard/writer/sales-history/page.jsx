@@ -17,11 +17,11 @@ export default function SalesHistoryPage() {
             try {
                 setLoading(true)
                 const data = await getSalesHistory()
-                console.log('Fetched sales history data:', data)
+                // console.log('Fetched sales history data:', data)
                 setSalesData(data)
             } catch (err) {
                 setError(err.message || 'Failed to fetch sales history')
-                console.error('Error fetching sales history:', err)
+                // console.error('Error fetching sales history:', err)
             } finally {
                 setLoading(false)
             }
@@ -41,7 +41,7 @@ export default function SalesHistoryPage() {
         return 0
     })
 
-    const totalSales = salesData.reduce((sum, sale) => sum + (sale.amount || 0), 0)
+    const totalSales = salesData.reduce((sum, sale) => sum + (sale.amountPaid || 0), 0)
     const totalTransactions = salesData.length
 
     const bgClass = 'bg-background'
@@ -135,7 +135,7 @@ export default function SalesHistoryPage() {
                             <thead>
                                 <tr className={`border-b ${isDark ? 'border-border-dark bg-black/50' : 'border-border-light bg-gray-50'}`}>
                                     <th className={`px-6 py-4 text-left font-semibold text-text-primary`}>Book Title</th>
-                                    <th className={`px-6 py-4 text-left font-semibold text-text-primary`}>Buyer Name</th>
+                                    <th className={`px-6 py-4 text-left font-semibold text-text-primary`}>Reader Name</th>
                                     <th className={`px-6 py-4 text-left font-semibold text-text-primary`}>Purchase Date</th>
                                     <th className={`px-6 py-4 text-right font-semibold text-text-primary`}>Amount</th>
                                 </tr>
@@ -147,13 +147,13 @@ export default function SalesHistoryPage() {
                                             {sale.bookTitle || 'N/A'}
                                         </td>
                                         <td className={`px-6 py-4 text-text-primary`}>
-                                            {sale.buyerName || 'Anonymous'}
+                                            {sale.userName || 'Anonymous'}
                                         </td>
                                         <td className={`px-6 py-4 text-text-secondary`}>
-                                            {formatDate(sale.purchaseDate)}
+                                            {formatDate(sale.purchasedAt)}
                                         </td>
                                         <td className={`px-6 py-4 text-right font-semibold text-theme-primary`}>
-                                            ${parseFloat(sale.amount || 0).toFixed(2)}
+                                            ${parseFloat(sale.amountPaid || 0).toFixed(2)}
                                         </td>
                                     </tr>
                                 ))}

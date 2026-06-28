@@ -77,8 +77,8 @@ export default function ReaderDashboardPage() {
                     {/* Welcome Section */}
                     <div className="mb-12">
                         <h1 className={`text-4xl sm:text-5xl font-bold mb-3 text-text-primary`}>
-                            <span className='text-base'>Welcome back, </span> <br />
-                            <span className="text-theme-primary">{user?.name || 'Reader'}</span>
+                            <span className='text-base text-text-secondary'>Welcome back, </span> <br />
+                            <span className="text-text-primary">{user?.name || 'Reader'}</span>
                         </h1>
                         <p className={`text-lg text-text-secondary`}>
                             Explore your library and discover new ebooks
@@ -135,7 +135,7 @@ export default function ReaderDashboardPage() {
                                     ? 'bg-foreground border-border-dark'
                                     : 'bg-foreground border-border-light'
                             }`}>
-                                <p className="text-sm font-medium text-text-secondary mb-2">
+                                <p className="text-sm font-medium text-text-primary mb-2">
                                     Books Purchased
                                 </p>
                                 <p className="text-3xl font-bold text-text-primary">

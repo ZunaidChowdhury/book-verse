@@ -34,7 +34,7 @@ const BooksPage = async ({ searchParams }) => {
                     {/* Book Grid */}
                     {
                         books && (
-                            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8'>
+                            <div className='grid grid-cols-1 desktop:grid-cols-2 xl:grid-cols-3 gap-8'>
                                 {
                                     books.length > 0 ? (
                                         books.map((book) => (

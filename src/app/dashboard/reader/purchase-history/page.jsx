@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { getPurchaseHistory } from '@/lib/api/readers';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function PurchaseHistoryPage() {
     const { isDark } = useSelector((state) => state.theme);
@@ -19,6 +20,7 @@ export default function PurchaseHistoryPage() {
                 setLoading(true);
                 const data = await getPurchaseHistory();
                 const purchaseArray = Array.isArray(data) ? data : [];
+                console.log('Fetched purchase history data:', data);
                 setPurchases(purchaseArray);
             } catch (err) {
                 setError('Failed to load purchase history');
@@ -95,18 +97,17 @@ export default function PurchaseHistoryPage() {
                 {/* Sort Dropdown */}
                 <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
                     <div className="text-sm sm:text-base">
-                        <span className="text-text-secondary">
+                        <span className="text-text-primary">
                             Total: {purchases.length} purchase{purchases.length !== 1 ? 's' : ''}
                         </span>
                     </div>
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
-                        className={`px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${
-                            isDark
+                        className={`px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${isDark
                                 ? 'bg-foreground border-border-dark text-text-primary'
                                 : 'bg-foreground border-border-light text-text-primary'
-                        }`}
+                            }`}
                     >
                         <option value="date-desc">Latest First</option>
                         <option value="date-asc">Oldest First</option>
@@ -117,9 +118,8 @@ export default function PurchaseHistoryPage() {
                 </div>
 
                 {purchases.length === 0 ? (
-                    <div className={`text-center py-16 rounded-lg border ${
-                        isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
-                    }`}>
+                    <div className={`text-center py-16 rounded-lg border ${isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
+                        }`}>
                         <p className="text-lg mb-4 text-text-secondary">
                             No purchases yet
                         </p>
@@ -133,21 +133,18 @@ export default function PurchaseHistoryPage() {
                 ) : (
                     <>
                         {/* Desktop Table View */}
-                        <div className={`hidden md:block overflow-x-auto rounded-lg border ${
-                            isDark ? 'border-border-dark' : 'border-border-light'
-                        }`}>
-                            <table className={`w-full text-sm ${
-                                isDark ? 'bg-foreground' : 'bg-foreground'
+                        <div className={`hidden md:block overflow-x-auto rounded-lg border ${isDark ? 'border-border-dark' : 'border-border-light'
                             }`}>
+                            <table className={`w-full text-sm ${isDark ? 'bg-foreground' : 'bg-foreground'
+                                }`}>
                                 <thead>
-                                    <tr className={`border-b ${
-                                        isDark ? 'border-border-dark bg-black/20' : 'border-border-light bg-black/5'
-                                    }`}>
+                                    <tr className={`border-b ${isDark ? 'border-border-dark bg-black/20' : 'border-border-light bg-black/5'
+                                        }`}>
                                         <th className="px-4 py-3 text-left font-semibold text-text-primary">
                                             Title
                                         </th>
                                         <th className="px-4 py-3 text-left font-semibold text-text-primary">
-                                            Author
+                                            Writer
                                         </th>
                                         <th className="px-4 py-3 text-left font-semibold text-text-primary">
                                             Price
@@ -162,30 +159,45 @@ export default function PurchaseHistoryPage() {
                                 </thead>
                                 <tbody>
                                     {sortedPurchases.map((purchase) => (
-                                        <tr key={purchase._id} className={`border-b transition-colors ${
-                                            isDark
+                                        <tr key={purchase._id} className={`border-b transition-colors ${isDark
                                                 ? 'border-border-dark hover:bg-black/20'
                                                 : 'border-border-light hover:bg-black/5'
-                                        }`}>
+                                            }`}>
                                             <td className="px-4 py-3 font-medium text-text-primary">
-                                                {purchase.title}
+                                                <div className="flex gap-3 items-center">
+                                                    {
+                                                        purchase?.image && (
+                                                            <Link href={`/books/${purchase.bookId}`} >
+                                                                <Image
+                                                                    src={purchase.image}
+                                                                    alt={purchase.bookTitle}
+                                                                    width={40}
+                                                                    height={50}
+                                                                    className="rounded object-cover"
+                                                                />
+                                                            </Link>
+                                                        )
+                                                    }
+                                                    <Link href={`/books/${purchase.bookId}`} className="hover:underline">
+                                                        {purchase.bookTitle}
+                                                    </Link>
+                                                </div>
                                             </td>
-                                            <td className="px-4 py-3 text-text-secondary">
-                                                {purchase.author || 'N/A'}
+                                            <td className="px-4 py-3 text-text-primary">
+                                                {purchase.writerName || 'N/A'}
                                             </td>
                                             <td className="px-4 py-3 font-semibold text-text-primary">
-                                                ${purchase.price?.toFixed(2) || '0.00'}
+                                                ${purchase.amountPaid?.toFixed(2) || '0.00'}
                                             </td>
-                                            <td className="px-4 py-3 text-text-secondary">
-                                                {formatDate(purchase.purchaseDate)}
+                                            <td className="px-4 py-3 text-text-primary">
+                                                {formatDate(purchase.purchasedAt)}
                                             </td>
                                             <td className="px-4 py-3">
-                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                                    purchase.isPublished
-                                                        ? 'bg-green-100/20 text-green-600'
-                                                        : 'bg-yellow-100/20 text-yellow-600'
-                                                }`}>
-                                                    {purchase.isPublished ? 'Published' : 'Unpublished'}
+                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${purchase.visibility === 'publish'
+                                                        ? 'bg-green-500 text-white'
+                                                        : 'bg-yellow-500 text-white'
+                                                    }`}>
+                                                    {purchase.visibility === 'publish' ? 'Published' : 'Unpublished'}
                                                 </span>
                                             </td>
                                         </tr>
@@ -199,32 +211,30 @@ export default function PurchaseHistoryPage() {
                             {sortedPurchases.map((purchase) => (
                                 <div
                                     key={purchase._id}
-                                    className={`p-4 rounded-lg border transition-all ${
-                                        isDark
+                                    className={`p-4 rounded-lg border transition-all ${isDark
                                             ? 'bg-foreground border-border-dark hover:border-theme-primary'
                                             : 'bg-foreground border-border-light hover:border-theme-primary'
-                                    }`}
+                                        }`}
                                 >
                                     <h3 className="font-semibold mb-2 text-sm sm:text-base text-text-primary">
-                                        {purchase.title}
+                                        {purchase.bookTitle}
                                     </h3>
-                                    <p className="text-xs sm:text-sm mb-3 text-text-secondary">
-                                        By {purchase.author || 'N/A'}
+                                    <p className="text-xs sm:text-sm mb-3 text-text-primary">
+                                        By {purchase.writerName || 'N/A'}
                                     </p>
                                     <div className="flex justify-between items-center mb-3">
                                         <span className="font-semibold text-text-primary">
-                                            ${purchase.price?.toFixed(2) || '0.00'}
+                                            ${purchase.amountPaid?.toFixed(2) || '0.00'}
                                         </span>
-                                        <span className={`text-xs px-2 py-1 rounded ${
-                                            purchase.isPublished
-                                                ? 'bg-green-100/20 text-green-600'
-                                                : 'bg-yellow-100/20 text-yellow-600'
-                                        }`}>
-                                            {purchase.isPublished ? 'Published' : 'Unpublished'}
+                                        <span className={`text-xs px-2 py-1 rounded ${purchase.visibility === 'publish'
+                                                ? 'bg-green-500 text-white'
+                                                : 'bg-yellow-500 text-white'
+                                            }`}>
+                                            {purchase.visibility === 'publish' ? 'Published' : 'Unpublished'}
                                         </span>
                                     </div>
-                                    <p className="text-xs text-text-secondary">
-                                        {formatDate(purchase.purchaseDate)}
+                                    <p className="text-xs text-text-primary">
+                                        {formatDate(purchase.purchasedAt)}
                                     </p>
                                 </div>
                             ))}
