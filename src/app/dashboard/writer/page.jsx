@@ -26,6 +26,7 @@ export default function WriterDashboardPage() {
             try {
                 setLoadingStats(true);
                 const data = await getWriterDashboard();
+                console.log('writer/dashboard stats:', data);
                 if (data) {
                     setStats({
                         totalBooks: data.totalBooks || 0,

@@ -5,16 +5,37 @@ import { MdClose } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 
 const GENRES = [
-    'Fantasy',
-    'Science Fiction',
-    'Mystery',
-    'Romance',
-    'Thriller',
-    'Biography',
-    'Self-Help',
-    'History',
-    'Fiction',
-    'Non-Fiction',
+    "Adventure",
+    "Ancient Civilizations",
+    "Archaeology",
+    "Biography",
+    "Cosmic Horror",
+    "Crime",
+    "Cyberpunk",
+    "Detective Fiction",
+    "Fantasy",
+    "Fiction",
+    "History",
+    "Horror",
+    "Leadership",
+    "Military Strategy",
+    "Mystery",
+    "Non-Fiction",
+    "Personal Development",
+    "Psychology",
+    "Relationships",
+    "Romance",
+    "Sci-Fi",
+    "Science",
+    "Science Fiction",
+    "Self Development",
+    "Self-Help",
+    "Space Opera",
+    "Steampunk",
+    "Supernatural",
+    "Technology",
+    "Thriller",
+    "Time Travel"
 ];
 
 const AVAILABILITY_OPTIONS = [
@@ -66,6 +87,56 @@ export default function FiltersSidebar({
                     <span className="w-1 h-6 bg-gradient-to-b from-blue-400 to-purple-400 rounded"></span>
                     Filters
                 </h3>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 flex-col">
+                    <button
+                        onClick={onApplyFilters}
+                        disabled={isPending}
+                        className="w-full px-4 py-3 bg-theme-primary hover:theme-primary-purple disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-blue-500/50 disabled:opacity-50"
+                    >
+                        {isPending ? '⏳ Applying...' : 'Apply Filters'}
+                    </button>
+
+                    {hasActiveFilters && (
+                        <button
+                            onClick={onClearFilters}
+                            disabled={isPending}
+                            className={`w-full px-4 py-3 ${isDark ? 'bg-foreground border border-border-dark text-text-primary' : 'bg-foreground border border-border-light text-text-primary'} font-semibold rounded-lg transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2`}
+                            title="Clear all filters"
+                        >
+                            <MdClose size={18} />
+                            Clear Filters
+                        </button>
+                    )}
+                </div>
+
+                {/* Selected Genres Display */}
+                {selectedGenres.size > 0 && (
+                    <div className={`mb-6 pb-6 border-b ${isDark ? 'border-border-dark' : 'border-border-light'}`}>
+                        <label className="mt-3 block text-sm font-semibold text-text-secondary mb-3">Selected Genres</label>
+                        <div className="flex flex-wrap gap-2">
+                            {Array.from(selectedGenres).map((genre) => (
+                                <div
+                                    key={genre}
+                                    className="inline-flex text-text-primary items-center gap-2 bg-gradient-to-r from-purple-600/20 to-purple-500/10 border border-purple-500/50 text-purple-200 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-purple-600/30 transition-colors group"
+                                >
+                                    <span>{genre}</span>
+                                    <button
+                                        onClick={() => {
+                                            const updated = new Set(selectedGenres);
+                                            updated.delete(genre);
+                                            onGenreChange(updated);
+                                        }}
+                                        className="opacity-60 group-hover:opacity-100 transition-opacity"
+                                    >
+                                        <MdClose size={14} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* Genre Filter */}
                 <div className="mb-6">
@@ -183,55 +254,9 @@ export default function FiltersSidebar({
                     </div>
                 </div>
 
-                {/* Selected Genres Display */}
-                {selectedGenres.size > 0 && (
-                    <div className={`mb-6 pb-6 border-b ${isDark ? 'border-border-dark' : 'border-border-light'}`}>
-                        <label className="block text-sm font-semibold text-text-secondary mb-3">Selected Genres</label>
-                        <div className="flex flex-wrap gap-2">
-                            {Array.from(selectedGenres).map((genre) => (
-                                <div
-                                    key={genre}
-                                    className="inline-flex text-text-primary items-center gap-2 bg-gradient-to-r from-purple-600/20 to-purple-500/10 border border-purple-500/50 text-purple-200 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-purple-600/30 transition-colors group"
-                                >
-                                    <span>{genre}</span>
-                                    <button
-                                        onClick={() => {
-                                            const updated = new Set(selectedGenres);
-                                            updated.delete(genre);
-                                            onGenreChange(updated);
-                                        }}
-                                        className="opacity-60 group-hover:opacity-100 transition-opacity"
-                                    >
-                                        <MdClose size={14} />
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
 
-                {/* Action Buttons */}
-                <div className="flex gap-3 flex-col">
-                    <button
-                        onClick={onApplyFilters}
-                        disabled={isPending}
-                        className="w-full px-4 py-3 bg-theme-primary hover:theme-primary-purple disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-blue-500/50 disabled:opacity-50"
-                    >
-                        {isPending ? '⏳ Applying...' : 'Apply Filters'}
-                    </button>
 
-                    {hasActiveFilters && (
-                        <button
-                            onClick={onClearFilters}
-                            disabled={isPending}
-                            className={`w-full px-4 py-3 ${isDark ? 'bg-foreground border border-border-dark text-text-primary' : 'bg-foreground border border-border-light text-text-primary'} font-semibold rounded-lg transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2`}
-                            title="Clear all filters"
-                        >
-                            <MdClose size={18} />
-                            Clear Filters
-                        </button>
-                    )}
-                </div>
+
             </div>
         </div>
     );
