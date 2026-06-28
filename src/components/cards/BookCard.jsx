@@ -7,9 +7,14 @@ import { motion } from 'framer-motion';
 import { Button } from '@heroui/react';
 import { FiStar, FiArrowRight, FiHeart } from 'react-icons/fi';
 import { addToWishlist, removeFromWishlist, checkIfWishlisted } from '@/lib/api/books';
+import { authClient } from '@/lib/auth-client';
 
 const BookCard = ({ book }) => {
     if (!book) return null;
+
+    const { data } = authClient.useSession()
+    const user = data?.user;
+
 
     const [isWishlisted, setIsWishlisted] = useState(false);
     const [isLoadingWishlist, setIsLoadingWishlist] = useState(false);
@@ -43,8 +48,8 @@ const BookCard = ({ book }) => {
             }
         };
 
-        checkWishlist();
-    }, [_id]);
+        user && checkWishlist();
+    }, [user, _id]);
 
     // Safe pricing handling
     const displayPrice = typeof price === 'number'

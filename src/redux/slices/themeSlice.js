@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     mode: (typeof window !== "undefined"
         ? localStorage.getItem("theme")
-        : "light") || "light",
+        : "dark") || "dark",
     isDark: (typeof window !== "undefined"
         ? localStorage.getItem("theme") === "dark"
         : false)

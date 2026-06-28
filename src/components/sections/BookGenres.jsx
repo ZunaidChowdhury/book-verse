@@ -94,7 +94,7 @@ export const genresData = [
 export default function BookGenres() {
       const { isDark } = useSelector((state) => state.theme);
     return (
-        <div className='py-12 tablet:py-30 overflow-hidden bg-background'>
+        <div className='py-12 tablet:py-30 overflow-hidden bg-theme-background'>
             {/* Root Layout boundary container matching your exact 1400px specification */}
             <div className='mx-auto max-w-[1400px] px-4 tablet:px-6 desktop:px-8'>
 
@@ -103,6 +103,7 @@ export default function BookGenres() {
                     subTitle='GENRES'
                     actionTxtBtn={{ text: 'View All', url: '/all-categories' }}
                     classNames='pb-8 tablet:pb-16'
+                              dark={true}
                 />
 
                 {/* Responsive Grid System mirroring your standard design framework layout */}
@@ -125,10 +126,10 @@ export default function BookGenres() {
                             >
                                 <Link
                                     href={`/books?genres=${genre.slug}&limit=9`}
-                                    className={`rounded-lg group relative flex h-24 items-center gap-4 border p-5 transition-all duration-300 shadow-sm  focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] overflow-hidden
+                                    className={`bg-[#111836] rounded-lg group relative flex h-24 items-center gap-4 border p-5 transition-all duration-300 shadow-sm  focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] overflow-hidden
                   ${isDark
-                                            ? 'bg-theme-background/80 border-white/5 hover:border-[var(--theme-primary)]/45'
-                                            : 'bg-white border-black/5 hover:border-[var(--theme-primary)]/30'
+                                            ? ' border-white/5 hover:border-[var(--theme-primary)]/45'
+                                            : ' border-black/5 hover:border-[var(--theme-primary)]/30'
                                         }`}
                                     aria-label={`Explore books in the ${genre.name} category`}
                                 >
@@ -141,7 +142,7 @@ export default function BookGenres() {
                                     {/* 2. Text layout wrapper featuring adaptive dark/light typography scaling */}
                                     <div className="overflow-hidden flex-1">
                                         <span className={`block truncate text-base font-bold tracking-tight transition-colors duration-200 group-hover:text-[var(--theme-primary)]
-                    ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    text-white`}>
                                             {genre.name}
                                         </span>
                                         {/* <span className={`block text-[11px] font-semibold uppercase tracking-wider mt-0.5

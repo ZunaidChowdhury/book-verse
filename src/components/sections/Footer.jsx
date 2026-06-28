@@ -39,16 +39,11 @@ export default function Footer() {
     return (
         <footer className="w-full bg-[#050811] text-white border-t border-white/5">
             {/* Top Links Section */}
-            <div className="mx-auto max-w-[1400px] py-12 tablet:py-16 px-4 tablet:px-6 desktop:px-8">
-                {/* 
-                  - Mobile: 1 Column grid (stacked)
-                  - Tablet: 2 Column grid 
-                  - Desktop: Clean 12-Column grid system
-                */}
-                <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-12 gap-y-10 gap-x-6 tablet:gap-x-8">
+            <div className="mx-auto max-w-[1400px] py-16 px-4 tablet:px-6 desktop:px-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-6">
 
                     {/* COLUMN 1: BRANDING & SOCIAL MEDIA MATRIX */}
-                    <div className="tablet:col-span-2 desktop:col-span-4 flex flex-col items-start gap-4">
+                    <div className="sm:col-span-2 lg:col-span-4 flex flex-col items-start gap-4">
                         <div className="flex items-center gap-3">
                             <div className="relative w-8 h-8 flex items-center justify-center">
                                 <Image
@@ -65,7 +60,7 @@ export default function Footer() {
                             </span>
                         </div>
 
-                        <p className="text-sm text-slate-400 font-light leading-relaxed max-w-sm desktop:max-w-xs">
+                        <p className="text-sm text-slate-400 font-light leading-relaxed max-w-xs">
                             A global digital library platform built for sharing, reading, publishing, and securely listing independent eBooks.
                         </p>
 
@@ -101,7 +96,7 @@ export default function Footer() {
                     </div>
 
                     {/* COLUMN 2: CONTACT INFORMATION */}
-                    <div className="tablet:col-span-1 desktop:col-span-3 flex flex-col items-start gap-4">
+                    <div className="col-span-1 lg:col-span-3 flex flex-col items-start gap-4">
                         <h4 className="text-sm font-bold text-white tracking-wide">
                             Contact Info
                         </h4>
@@ -115,20 +110,20 @@ export default function Footer() {
                             </a>
                             <a
                                 href="tel:+8801234567890"
-                                className="flex items-center gap-3 hover:text-white transition-colors duration-200 w-full min-w-0"
+                                className="flex items-center gap-3 hover:text-white transition-colors duration-200"
                             >
                                 <FiPhone className="w-4 h-4 text-slate-400 shrink-0" />
-                                <span className="truncate">+880 1234-567890</span>
+                                <span>+880 1234-567890</span>
                             </a>
-                            <div className="flex items-start gap-3 w-full min-w-0">
+                            <div className="flex items-start gap-3">
                                 <FiMapPin className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
-                                <span className="leading-tight text-slate-400 font-light">45 Library Lane, Shahbagh, Dhaka</span>
+                                <span className="leading-tight">45 Library Lane, Shahbagh, Dhaka</span>
                             </div>
                         </div>
                     </div>
 
                     {/* COLUMN 3: QUICK LINKS */}
-                    <div className="tablet:col-span-1 desktop:col-span-2 flex flex-col items-start gap-4">
+                    <div className="col-span-1 lg:col-span-2 flex flex-col items-start gap-4">
                         <h4 className="text-sm font-bold text-white tracking-wide">
                             {footerLinks.quickLinks.title}
                         </h4>
@@ -146,7 +141,7 @@ export default function Footer() {
                     </div>
 
                     {/* COLUMN 4: PLATFORM SUPPORT */}
-                    <div className="tablet:col-span-1 desktop:col-span-2 flex flex-col items-start gap-4">
+                    <div className="col-span-1 lg:col-span-2 flex flex-col items-start gap-4">
                         <h4 className="text-sm font-bold text-white tracking-wide">
                             {footerLinks.support.title}
                         </h4>
@@ -164,7 +159,7 @@ export default function Footer() {
                     </div>
 
                     {/* COLUMN 5: LEGAL COMPLIANCE */}
-                    <div className="tablet:col-span-1 desktop:col-span-1 flex flex-col items-start gap-4 min-w-[120px]">
+                    <div className="col-span-1 lg:col-span-1 flex flex-col items-start gap-4 min-w-[140px]">
                         <h4 className="text-sm font-bold text-white tracking-wide">
                             {footerLinks.legal.title}
                         </h4>
@@ -184,17 +179,12 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* Bottom Copyright Sub-bar */}
-            <div className="w-full bg-[#03050a] border-t border-white/[0.03] py-5 px-4">
-                <div className="mx-auto max-w-[1400px] flex flex-col tablet:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-light">
-                    <p>© {new Date().getFullYear()} BookVerse. All rights reserved.</p>
-                    <div className="flex items-center gap-6">
-                        <Link href="/privacy" className="hover:text-slate-300 transition-colors">Privacy Policy</Link>
-                        <Link href="/terms" className="hover:text-slate-300 transition-colors">Terms of Service</Link>
-                    </div>
-                </div>
+            {/* NEW: Bottom Copyright Sub-bar matching image exactly */}
+            <div className="w-full bg-[#03050a] border-t border-white/[0.03] py-4 text-center">
+                <p className="text-xs text-slate-500 font-light tracking-wide">
+                    © {currentYear} BookVerse. All rights reserved.
+                </p>
             </div>
         </footer>
-
     );
 }

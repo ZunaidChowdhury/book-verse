@@ -12,8 +12,9 @@ import Newsletter from "@/components/sections/Newsletter";
 
 
 export default async function Home() {
-  const featuredBooks = await getFeaturedBooks();
-  const topWriters = await getTopWriters();
+  const [featuredBooks, topWriters] = await Promise.all([getFeaturedBooks(), getTopWriters()]);
+  // const featuredBooks = await getFeaturedBooks();
+  // const topWriters = await getTopWriters();
   // console.log('topWriters: ', topWriters);
   // const protectedMessage = await getProtectedMessage();
   // console.log('client/jwttest/protectedMessage: ', protectedMessage)

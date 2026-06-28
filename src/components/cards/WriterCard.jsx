@@ -49,7 +49,7 @@ export default function WriterCard({ writer, index, itemVariants }) {
                         {writer.name}
                     </h3>
                     {/* Blue verification check icon from layout image */}
-                    <CheckCircle2 className="h-6 w-6 text-white fill-blue-500 stroke-[3] shrink-0" />
+                    <CheckCircle2 className="h-5 w-5 text-white fill-blue-500 stroke-[3] shrink-0" />
                 </div>
 
                 {/* Writer Role Header */}
@@ -104,7 +104,7 @@ export default function WriterCard({ writer, index, itemVariants }) {
                         <span className={`text-base font-extrabold tracking-tight
               ${isDark ? 'text-white' : 'text-slate-900'}`}
                         >
-                            {writer.booksPublished || '31'}
+                            {writer.booksCount || '31'}
                         </span>
                         <span className="text-[11px] font-semibold text-slate-400 mt-0.5">
                             Books
