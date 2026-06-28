@@ -8,6 +8,8 @@ import { getTopWriters } from "@/lib/api/writers";
 import TopWriters from "@/components/sections/TopWriters";
 import BookGenres from "@/components/sections/BookGenres";
 import Newsletter from "@/components/sections/Newsletter";
+import MyCustomSpinner from "@/components/spinner/MyCustomSpinner";
+import DataLoadFailed from "@/components/error-handling/DataLoadFailed";
 
 
 
