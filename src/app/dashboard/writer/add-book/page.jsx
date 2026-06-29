@@ -14,11 +14,11 @@ export default function AddBookPage() {
         try {
 
             const res = await createBook(bookData)
-            console.log('Book added successfully:', res);
+            // console.log('Book added successfully:', res);
             toast.success('Book added successfully!');
             router.push('/dashboard/writer/manage-books');
         } catch (error) {
-            console.error('Error adding book:', error);
+            // console.error('Error adding book:', error);
             toast.error(error.message || 'Failed to add book');
         }
     };

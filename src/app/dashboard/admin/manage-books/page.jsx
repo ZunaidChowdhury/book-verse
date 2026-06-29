@@ -44,7 +44,7 @@ export default function ManageBooksPage() {
         try {
             setTogglingId(book._id);
             const newStatus = book.visibility === 'publish' ? 'private' : 'publish';
-            console.log('Toggling visibility for book:', book.title, 'to:', newStatus);
+            // console.log('Toggling visibility for book:', book.title, 'to:', newStatus);
             await updateBook(book._id, { visibility: newStatus });
 
             // Update local state
@@ -53,7 +53,7 @@ export default function ManageBooksPage() {
             ));
             toast.success(`Book ${newStatus === 'publish' ? 'published' : 'unpublished'} successfully`);
         } catch (err) {
-            console.error('Error toggling visibility:', err);
+            // console.error('Error toggling visibility:', err);
             toast.error('Failed to toggle visibility');
         } finally {
             setTogglingId(null);
