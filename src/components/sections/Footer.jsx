@@ -137,9 +137,9 @@ export default function Footer() {
                             aria-label="Quick Links Navigation"
                             className="flex flex-col gap-3 text-sm text-slate-400 font-light mt-1"
                         >
-                            {footerLinks.quickLinks.items.map((link) => (
+                            {footerLinks.quickLinks.items.map((link, i) => (
                                 <Link
-                                    key={link.href}
+                                    key={i}
                                     href={link.href}
                                     className="hover:text-white transition-colors duration-200"
                                 >
@@ -158,9 +158,9 @@ export default function Footer() {
                             aria-label="Support Navigation"
                             className="flex flex-col gap-3 text-sm text-slate-400 font-light mt-1"
                         >
-                            {footerLinks.support.items.map((link) => (
+                            {footerLinks.support.items.map((link, i) => (
                                 <Link
-                                    key={link.href}
+                                    key={i}
                                     href={link.href}
                                     className="hover:text-white transition-colors duration-200"
                                 >
@@ -179,9 +179,9 @@ export default function Footer() {
                             aria-label="Legal Navigation"
                             className="flex flex-col gap-3 text-sm text-slate-400 font-light mt-1"
                         >
-                            {footerLinks.legal.items.map((link) => (
+                            {footerLinks.legal.items.map((link, i) => (
                                 <Link
-                                    key={link.href}
+                                    key={i}
                                     href={link.href}
                                     className="hover:text-white transition-colors duration-200"
                                 >

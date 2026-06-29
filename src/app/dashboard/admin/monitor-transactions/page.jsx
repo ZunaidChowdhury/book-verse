@@ -55,7 +55,7 @@ export default function MonitorTransactionsPage() {
 
     const processedTransactions = getSortedAndFilteredTransactions();
 
-    const totalRevenue = transactions.reduce((sum, t) => sum + (t.amount || 0), 0);
+    const totalRevenue = transactions.reduce((sum, t) => sum + (t.amountPaid || 0), 0);
     const totalTransactions = transactions.length;
     const avgTransaction = totalTransactions > 0 ? totalRevenue / totalTransactions : 0;
 
