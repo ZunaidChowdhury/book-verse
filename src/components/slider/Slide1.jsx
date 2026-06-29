@@ -32,7 +32,7 @@ export default function Slide1({ isDarkMode }) {
     ];
 
     return (
-        <section className={`relative w-full min-h-auto tablet:min-h-[calc(100vh-5rem)] overflow-hidden flex items-start tablet:items-center transition-all duration-300 ${isDarkMode
+        <section className={`relative w-full min-h-auto tablet:min-h-[calc(100vh-5rem)] overflow-hidden flex items-start tablet:items-center transition-colors duration-300 ${isDarkMode
                 ? 'bg-gradient-to-b from-[#111836] to-[#0b0f24] border-b border-white/5 text-white'
                 : 'bg-gradient-to-br from-foreground via-foreground/95 to-[var(--theme-primary)]/5 text-text-primary border-b border-black/5'
             }`}>

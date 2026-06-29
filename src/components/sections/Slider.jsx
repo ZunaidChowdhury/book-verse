@@ -104,12 +104,13 @@ export default function Slider({ slides, isDarkMode }) {
             animate="center"
             exit="exit"
             transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.25 },
+              x: { type: "tween", ease: [0.25, 1, 0.5, 1], duration: 0.8 },
+              opacity: { ease: "linear", duration: 0.6 },
             }}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={1}
+            style={{ willChange: "transform, opacity" }}
             onDragEnd={(e, { offset, velocity }) => {
               const swipe = swipePower(offset.x, velocity.x);
 
