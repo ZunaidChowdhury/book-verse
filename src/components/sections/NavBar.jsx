@@ -21,7 +21,6 @@ export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname();
   const { isDark } = useSelector((state) => state.theme);
-  console.log('navbar/isDark: ', isDark)
   const dispatch = useDispatch();
 
   // Get session from better-auth

@@ -14,7 +14,7 @@ export const authHeader = async () => {
 }
 
 export const serverFetch = async (path) => {
-    console.log('client/serverFetch/ path: ', path)
+    // console.log('client/serverFetch/ path: ', path)
     const res = await fetch(`${baseUrl}/api${path}`, {
         headers: {
             ... await authHeader()
@@ -25,7 +25,7 @@ export const serverFetch = async (path) => {
 }
 
 export const serverMutation = async (path, data, method = 'POST') => {
-    console.log(`client/serverMutation/path: ${path}, data: ${data}, method: ${method}`)
+    // console.log(`client/serverMutation/path: ${path}, data: ${data}, method: ${method}`)
     const res = await fetch(`${baseUrl}/api${path}`, {
         method: method,
         headers: {

@@ -11,7 +11,6 @@ const cardTransition = { type: 'spring', stiffness: 300, damping: 20 };
 
 export default function WriterCard({ writer, index, itemVariants }) {
     const { isDark } = useSelector((state) => state.theme);
-    console.log('writerCard/isDark: ', isDark)
 
     return (
         <motion.div

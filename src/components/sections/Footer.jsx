@@ -13,25 +13,25 @@ export default function Footer() {
         quickLinks: {
             title: "Quick Links",
             items: [
-                { label: "Home", href: "/" },
-                { label: "All Ebooks", href: "/browse" },
-                { label: "About Us", href: "/about" },
+                { label: "Home", href: "#" },
+                { label: "All Ebooks", href: "#" },
+                { label: "About Us", href: "#" },
             ],
         },
         support: {
             title: "Support",
             items: [
-                { label: "Help Center", href: "/help" },
-                { label: "How It Works", href: "/how-it-works" },
-                { label: "FAQs", href: "/faqs" },
-                { label: "Refund Policy", href: "/refund-policy" },
+                { label: "Help Center", href: "#" },
+                { label: "How It Works", href: "#" },
+                { label: "FAQs", href: "#" },
+                { label: "Refund Policy", href: "#" },
             ],
         },
         legal: {
             title: "Legal",
             items: [
-                { label: "Terms & Conditions", href: "/terms" },
-                { label: "Privacy Policy", href: "/privacy" },
+                { label: "Terms & Conditions", href: "#" },
+                { label: "Privacy Policy", href: "#" },
             ],
         },
     };
