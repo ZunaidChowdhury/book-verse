@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { getReaderProfile, updateReaderProfile } from '@/lib/api/readers';
 import Image from 'next/image';
 import { Camera } from 'lucide-react';
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
 
 export default function ProfileManagementPage() {
     const { isDark } = useSelector((state) => state.theme);
@@ -92,12 +93,8 @@ export default function ProfileManagementPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8 transition-colors">
-                <div className="text-center py-12">
-                    <p className="text-lg text-text-secondary">
-                        Loading profile...
-                    </p>
-                </div>
+            <div className={`my-30`}>
+                <MyCustomSpinner />
             </div>
         );
     }

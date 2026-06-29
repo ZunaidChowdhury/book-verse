@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { getPurchaseHistory } from '@/lib/api/readers';
 import Link from 'next/link';
 import Image from 'next/image';
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
 
 export default function PurchaseHistoryPage() {
     const { isDark } = useSelector((state) => state.theme);
@@ -61,12 +62,8 @@ export default function PurchaseHistoryPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8 transition-colors">
-                <div className="text-center py-12">
-                    <p className="text-lg text-text-secondary">
-                        Loading purchase history...
-                    </p>
-                </div>
+            <div className={`my-30`}>
+                <MyCustomSpinner />
             </div>
         );
     }
@@ -105,8 +102,8 @@ export default function PurchaseHistoryPage() {
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
                         className={`px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${isDark
-                                ? 'bg-foreground border-border-dark text-text-primary'
-                                : 'bg-foreground border-border-light text-text-primary'
+                            ? 'bg-foreground border-border-dark text-text-primary'
+                            : 'bg-foreground border-border-light text-text-primary'
                             }`}
                     >
                         <option value="date-desc">Latest First</option>
@@ -160,8 +157,8 @@ export default function PurchaseHistoryPage() {
                                 <tbody>
                                     {sortedPurchases.map((purchase) => (
                                         <tr key={purchase._id} className={`border-b transition-colors ${isDark
-                                                ? 'border-border-dark hover:bg-black/20'
-                                                : 'border-border-light hover:bg-black/5'
+                                            ? 'border-border-dark hover:bg-black/20'
+                                            : 'border-border-light hover:bg-black/5'
                                             }`}>
                                             <td className="px-4 py-3 font-medium text-text-primary">
                                                 <div className="flex gap-3 items-center">
@@ -194,8 +191,8 @@ export default function PurchaseHistoryPage() {
                                             </td>
                                             <td className="px-4 py-3">
                                                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${purchase.visibility === 'publish'
-                                                        ? 'bg-green-500 text-white'
-                                                        : 'bg-yellow-500 text-white'
+                                                    ? 'bg-green-500 text-white'
+                                                    : 'bg-yellow-500 text-white'
                                                     }`}>
                                                     {purchase.visibility === 'publish' ? 'Published' : 'Unpublished'}
                                                 </span>
@@ -212,8 +209,8 @@ export default function PurchaseHistoryPage() {
                                 <div
                                     key={purchase._id}
                                     className={`p-4 rounded-lg border transition-all ${isDark
-                                            ? 'bg-foreground border-border-dark hover:border-theme-primary'
-                                            : 'bg-foreground border-border-light hover:border-theme-primary'
+                                        ? 'bg-foreground border-border-dark hover:border-theme-primary'
+                                        : 'bg-foreground border-border-light hover:border-theme-primary'
                                         }`}
                                 >
                                     <h3 className="font-semibold mb-2 text-sm sm:text-base text-text-primary">
@@ -227,8 +224,8 @@ export default function PurchaseHistoryPage() {
                                             ${purchase.amountPaid?.toFixed(2) || '0.00'}
                                         </span>
                                         <span className={`text-xs px-2 py-1 rounded ${purchase.visibility === 'publish'
-                                                ? 'bg-green-500 text-white'
-                                                : 'bg-yellow-500 text-white'
+                                            ? 'bg-green-500 text-white'
+                                            : 'bg-yellow-500 text-white'
                                             }`}>
                                             {purchase.visibility === 'publish' ? 'Published' : 'Unpublished'}
                                         </span>

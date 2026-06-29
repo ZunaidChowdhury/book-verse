@@ -48,7 +48,7 @@ export default function GroundedHero({ isDarkMode }) {
 
                         {/* Interactive Call-To-Action Button Links */}
                         <div className="mt-8 flex flex-col tablet:flex-row items-center gap-4 w-full tablet:w-auto">
-                            <Link href="/browse-ebooks" className="w-full tablet:w-auto">
+                            <Link href="/books" className="w-full tablet:w-auto">
                                 <Button
                                     className="w-full tablet:w-auto bg-gradient-to-r from-[var(--theme-secondary-purple)] to-[var(--theme-primary)] hover:opacity-95 text-white font-bold text-sm h-12 px-6 rounded-md shadow-lg shadow-[var(--theme-primary)]/20 transition-all duration-300 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] cursor-pointer group/btn"
                                 >

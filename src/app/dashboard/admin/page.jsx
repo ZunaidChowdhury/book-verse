@@ -10,6 +10,7 @@ import { authClient } from '@/lib/auth-client';
 import DonutChart from '@/components/charts/DonutChart';
 import CustomBarChart from '@/components/charts/CustomBarChart';
 
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
 
 
 export default function AdminDashboardPage() {
@@ -51,12 +52,8 @@ export default function AdminDashboardPage() {
 
     if (loading) {
         return (
-            <div className={`bg-background p-4 sm:p-6 lg:p-8`}>
-                <div className="text-center py-12">
-                    <p className={`text-lg text-text-secondary`}>
-                        Loading analytics...
-                    </p>
-                </div>
+            <div className={`my-30`}>
+                <MyCustomSpinner text='Loading analytics...' />
             </div>
         );
     }

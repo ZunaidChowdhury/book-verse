@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
 const variants = {
   enter: (direction) => ({
@@ -28,6 +29,11 @@ const swipePower = (offset, velocity) => {
 
 export default function Slider({ slides, isDarkMode }) {
   const [[page, direction], setPage] = useState([0, 0]);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Fallback to redux theme if isDarkMode is not provided explicitly
+  const { isDark } = useSelector((state) => state.theme);
+  const activeIsDarkMode = isDarkMode !== undefined ? isDarkMode : isDark;
 
   // Prevent crashes if slides array is unpopulated or empty
   if (!slides || slides.length === 0) {
@@ -40,21 +46,55 @@ export default function Slider({ slides, isDarkMode }) {
     setPage([page + newDirection, newDirection]);
   }, [page]);
 
-  // Slider timing mechanism: changes page targets every 7 seconds
+  // Slider timing mechanism: changes page targets every 7 seconds when not paused
   useEffect(() => {
+    if (isPaused) return;
+
     const timer = setInterval(() => {
       paginate(1);
     }, 7000);
     return () => clearInterval(timer);
+  }, [paginate, isPaused]);
+
+  // Handle keyboard navigation (ArrowLeft & ArrowRight)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Don't trigger if user is typing in inputs or textareas
+      const active = document.activeElement;
+      if (
+        active &&
+        (active.tagName === "INPUT" ||
+          active.tagName === "TEXTAREA" ||
+          active.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (e.key === "ArrowLeft") {
+        paginate(-1);
+      } else if (e.key === "ArrowRight") {
+        paginate(1);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [paginate]);
 
   const ActiveSlide = slides[slideIndex];
 
   return (
-    <div className={`relative w-full min-h-auto tablet:min-h-[calc(100vh-5rem)] overflow-hidden transition-colors duration-300 ${isDarkMode ? "bg-theme-background" : "bg-foreground"
-      }`}>
+    <div
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
+      className={`relative w-full min-h-auto tablet:min-h-[calc(100vh-5rem)] overflow-hidden transition-colors duration-300 ${
+        activeIsDarkMode ? "bg-theme-background" : "bg-foreground"
+      }`}
+    >
       {/* Slider Core Stage View */}
-      <div className="relative w-full min-h-auto tablet:min-h-[calc(100vh-5rem)] flex items-start tablet:items-center">
+      <div className="grid grid-cols-1 grid-rows-1 w-full min-h-auto tablet:min-h-[calc(100vh-5rem)] items-start tablet:items-center overflow-hidden">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={page}
@@ -73,30 +113,31 @@ export default function Slider({ slides, isDarkMode }) {
             onDragEnd={(e, { offset, velocity }) => {
               const swipe = swipePower(offset.x, velocity.x);
 
-              if (swipe < -swipeConfidenceThreshold) {
+              // Paginate if swipe power exceeds threshold or drag distance is substantial (100px)
+              if (swipe < -swipeConfidenceThreshold || offset.x < -100) {
                 paginate(1);
-              } else if (swipe > swipeConfidenceThreshold) {
+              } else if (swipe > swipeConfidenceThreshold || offset.x > 100) {
                 paginate(-1);
               }
             }}
-            className="relative w-full"
+            className="col-start-1 row-start-1 w-full"
           >
             {/* Inject active contextual props downward into slides dynamically */}
-            <ActiveSlide isDarkMode={isDarkMode} />
+            <ActiveSlide isDarkMode={activeIsDarkMode} />
           </motion.div>
         </AnimatePresence>
       </div>
 
       {/* Navigation Arrow Elements Container */}
       <div className="absolute top-1/2 -translate-y-1/2 left-4 right-4 tablet:left-6 tablet:right-6 desktop:left-8 desktop:right-8 z-20 flex justify-between pointer-events-none">
-
         {/* Left Navigation Arrow */}
         <button
           onClick={() => paginate(-1)}
-          className={`w-10 h-10 tablet:w-12 tablet:h-12 rounded-full border transition-all duration-300 flex items-center justify-center backdrop-blur-md cursor-pointer group pointer-events-auto active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] tablet:absolute tablet:left-0 tablet:-translate-y-1/2 ${isDarkMode
+          className={`w-10 h-10 tablet:w-12 tablet:h-12 rounded-full border transition-all duration-300 flex items-center justify-center backdrop-blur-md cursor-pointer group pointer-events-auto active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] tablet:absolute tablet:left-0 tablet:-translate-y-1/2 ${
+            activeIsDarkMode
               ? "bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-theme-primary/50 hover:shadow-[0_0_15px_rgba(78,103,252,0.3)]"
               : "bg-black/5 border-black/10 text-text-primary hover:bg-black/10 hover:border-theme-primary/50 hover:shadow-[0_0_15px_rgba(78,103,252,0.15)]"
-            }`}
+          }`}
           aria-label="Previous Slide"
         >
           <FiChevronLeft className="w-5 h-5 tablet:w-6 tablet:h-6 transition-transform group-hover:-translate-x-0.5" />
@@ -105,15 +146,15 @@ export default function Slider({ slides, isDarkMode }) {
         {/* Right Navigation Arrow */}
         <button
           onClick={() => paginate(1)}
-          className={`w-10 h-10 tablet:w-12 tablet:h-12 rounded-full border transition-all duration-300 flex items-center justify-center backdrop-blur-md cursor-pointer group pointer-events-auto active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] tablet:absolute tablet:right-0 tablet:-translate-y-1/2 ${isDarkMode
+          className={`w-10 h-10 tablet:w-12 tablet:h-12 rounded-full border transition-all duration-300 flex items-center justify-center backdrop-blur-md cursor-pointer group pointer-events-auto active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] tablet:absolute tablet:right-0 tablet:-translate-y-1/2 ${
+            activeIsDarkMode
               ? "bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-theme-primary/50 hover:shadow-[0_0_15px_rgba(78,103,252,0.3)]"
               : "bg-black/5 border-black/10 text-text-primary hover:bg-black/10 hover:border-theme-primary/50 hover:shadow-[0_0_15px_rgba(78,103,252,0.15)]"
-            }`}
+          }`}
           aria-label="Next Slide"
         >
           <FiChevronRight className="w-5 h-5 tablet:w-6 tablet:h-6 transition-transform group-hover:translate-x-0.5" />
         </button>
-
       </div>
 
       {/* Horizontal Indicator Dots Row */}
@@ -127,14 +168,15 @@ export default function Slider({ slides, isDarkMode }) {
                 setPage([page + diff, diff > 0 ? 1 : -1]);
               }
             }}
-            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] ${index === slideIndex
-                ? isDarkMode
+            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--theme-primary)] ${
+              index === slideIndex
+                ? activeIsDarkMode
                   ? "w-8 tablet:w-10 bg-white shadow-[0_0_8px_rgba(255,255,255,0.6)]"
                   : "w-8 tablet:w-10 bg-text-primary shadow-[0_0_8px_rgba(0,0,0,0.2)]"
-                : isDarkMode
-                  ? "w-4 tablet:w-5 bg-white/30 hover:bg-white/60"
-                  : "w-4 tablet:w-5 bg-text-primary/20 hover:bg-text-primary/50"
-              }`}
+                : activeIsDarkMode
+                ? "w-4 tablet:w-5 bg-white/30 hover:bg-white/60"
+                : "w-4 tablet:w-5 bg-text-primary/20 hover:bg-text-primary/50"
+            }`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}

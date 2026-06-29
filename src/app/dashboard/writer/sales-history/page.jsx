@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { TrendingUp, Calendar } from 'lucide-react'
 import { getSalesHistory } from '@/lib/api/books'
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
 
 export default function SalesHistoryPage() {
     const { isDark } = useSelector((state) => state.theme)
@@ -63,8 +64,8 @@ export default function SalesHistoryPage() {
     }
 
     return (
-        <div className={`min-h-screen ${bgClass} transition-colors p-4 sm:p-6 lg:p-8`}>
-            <div className="max-w-7xl mx-auto">
+        <div className={`min-h-screen ${bgClass} transition-colors `}>
+            <div className="p-4 sm:p-6 lg:p-8">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
@@ -119,9 +120,10 @@ export default function SalesHistoryPage() {
 
                 {/* Loading State */}
                 {loading ? (
-                    <div className={`${cardBg} rounded-lg p-8 border ${borderClass} text-center`}>
-                        <p className={textSecondary}>Loading sales history...</p>
-                    </div>
+                    
+            <div className={`my-30`}>
+                <MyCustomSpinner />
+            </div>
                 ) : salesData.length === 0 ? (
                     <div className={`${cardBg} rounded-lg p-12 border ${borderClass} text-center`}>
                         <Calendar size={48} className={`${textSecondary} mx-auto mb-4`} />

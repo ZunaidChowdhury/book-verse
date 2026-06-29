@@ -7,6 +7,7 @@ import { getWishlist } from '@/lib/api/books'
 import BookCard from '@/components/cards/BookCard'
 import Link from 'next/link'
 import { motion } from 'framer-motion';
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
 
 export default function WishlistPage() {
     const { isDark } = useSelector((state) => state.theme)
@@ -50,8 +51,8 @@ export default function WishlistPage() {
     };
 
     return (
-        <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8 transition-colors">
-            <div className="max-w-7xl mx-auto">
+        <div className="min-h-screen bg-background  transition-colors">
+            <div className="p-4 sm:p-6 lg:p-8">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
@@ -82,7 +83,7 @@ export default function WishlistPage() {
 
                 {/* Error Message */}
                 {error && (
-                    <div className="mb-6 p-4 bg-red-100/20 border border-red-400/40 text-red-500 rounded-lg">
+                    <div className="text-center mb-6 p-4 bg-red-100/20 border border-red-400/40 text-red-500 rounded-lg">
                         {error}
                     </div>
                 )}
@@ -91,7 +92,8 @@ export default function WishlistPage() {
                 {loading ? (
                     <div className={`rounded-lg border p-8 text-center ${isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
                         }`}>
-                        <p className="text-text-secondary">Loading your wishlist...</p>
+                        {/* <p className="text-text-secondary">Loading your wishlist...</p> */}
+                        <MyCustomSpinner />
                     </div>
                 ) : wishlistBooks.length === 0 ? (
                     <div className={`rounded-lg border p-12 text-center ${isDark ? 'bg-foreground border-border-dark' : 'bg-foreground border-border-light'
@@ -117,7 +119,7 @@ export default function WishlistPage() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, margin: "-80px" }}
-                        className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8'
+                        className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'
                     >
                         {filteredBooks.map((book) => (
                             <BookCard key={book._id} book={book} />

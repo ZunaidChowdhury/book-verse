@@ -8,6 +8,8 @@ import { getBookById, getBookContent } from '@/lib/api/books'
 import { updateBook } from '@/lib/actions/books'
 import { toast } from 'react-toastify'
 
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
+
 export default function EditBookPage() {
     const { isDark } = useSelector((state) => state.theme)
     const router = useRouter()
@@ -62,8 +64,8 @@ export default function EditBookPage() {
 
     if (loading) {
         return (
-            <div className={`min-h-screen bg-background transition-colors flex items-center justify-center p-4`}>
-                <p className="text-text-secondary">Loading book details...</p>
+            <div className={`my-30`}>
+                <MyCustomSpinner />
             </div>
         )
     }

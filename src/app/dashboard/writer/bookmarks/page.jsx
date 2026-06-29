@@ -7,6 +7,8 @@ import { getWishlist } from '@/lib/api/books'
 import BookCard from '@/components/cards/BookCard'
 import Link from 'next/link'
 
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
+
 export default function BookmarksPage() {
     const { isDark } = useSelector((state) => state.theme)
     const [wishlistBooks, setWishlistBooks] = useState([])
@@ -44,8 +46,8 @@ export default function BookmarksPage() {
     const inputBg = isDark ? 'bg-foreground border-border-dark text-text-primary' : 'bg-foreground border-border-light text-text-primary'
 
     return (
-        <div className={`min-h-screen ${bgClass} transition-colors p-4 sm:p-6 lg:p-8`}>
-            <div className="max-w-7xl mx-auto">
+        <div className={`min-h-screen ${bgClass} transition-colors `}>
+            <div className="p-4 sm:p-6 lg:p-8">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
@@ -80,8 +82,8 @@ export default function BookmarksPage() {
 
                 {/* Loading State */}
                 {loading ? (
-                    <div className={`${cardBg} rounded-lg p-8 border ${borderClass} text-center`}>
-                        <p className={textSecondary}>Loading your bookmarks...</p>
+                    <div className={`my-30`}>
+                        <MyCustomSpinner />
                     </div>
                 ) : wishlistBooks.length === 0 ? (
                     <div className={`${cardBg} rounded-lg p-12 border ${borderClass} text-center`}>
