@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { getAllTransactions } from '@/lib/api/admin';
 
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
+
 export default function MonitorTransactionsPage() {
     const { isDark } = useSelector((state) => state.theme);
     const [transactions, setTransactions] = useState([]);
@@ -33,7 +35,7 @@ export default function MonitorTransactionsPage() {
 
     const getSortedAndFilteredTransactions = () => {
         let filtered = [...transactions];
-        
+
         if (filterType !== 'all') {
             filtered = filtered.filter(t => t.type === filterType);
         }
@@ -47,7 +49,7 @@ export default function MonitorTransactionsPage() {
         } else if (sortBy === 'amount-low') {
             filtered.sort((a, b) => a.amount - b.amount);
         }
-        
+
         return filtered;
     };
 
@@ -58,9 +60,9 @@ export default function MonitorTransactionsPage() {
     const avgTransaction = totalTransactions > 0 ? totalRevenue / totalTransactions : 0;
 
     const formatDate = (date) => {
-        return new Date(date).toLocaleDateString('en-US', { 
-            month: 'short', 
-            day: 'numeric', 
+        return new Date(date).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
             year: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
@@ -76,12 +78,8 @@ export default function MonitorTransactionsPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8">
-                <div className="text-center py-12">
-                    <p className="text-lg text-text-secondary">
-                        Loading transactions...
-                    </p>
-                </div>
+            <div className={`my-30`}>
+                <MyCustomSpinner text='Loading transactions...' />
             </div>
         );
     }
@@ -146,11 +144,10 @@ export default function MonitorTransactionsPage() {
                         <select
                             value={filterType}
                             onChange={(e) => setFilterType(e.target.value)}
-                            className={`text-text-primary w-full px-4 py-2 rounded-lg border transition-all text-sm ${
-                                isDark
+                            className={`text-text-primary w-full px-4 py-2 rounded-lg border transition-all text-sm ${isDark
                                     ? 'bg-foreground border-border-dark '
                                     : 'bg-foreground border-border-light'
-                            }`}
+                                }`}
                         >
                             <option value="all">All Types</option>
                             <option value="purchase">Purchase</option>
@@ -165,11 +162,10 @@ export default function MonitorTransactionsPage() {
                         <select
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value)}
-                            className={`text-text-primary w-full px-4 py-2 rounded-lg border transition-all text-sm ${
-                                isDark
+                            className={`text-text-primary w-full px-4 py-2 rounded-lg border transition-all text-sm ${isDark
                                     ? 'bg-foreground border-border-dark '
                                     : 'bg-foreground border-border-light'
-                            }`}
+                                }`}
                         >
                             <option value="date-desc">Latest First</option>
                             <option value="date-asc">Oldest First</option>
@@ -238,13 +234,12 @@ export default function MonitorTransactionsPage() {
                         {/* Mobile Card View */}
                         <div className="md:hidden grid grid-cols-1 gap-4">
                             {processedTransactions.map((transaction) => (
-                                <div 
+                                <div
                                     key={transaction._id}
-                                    className={`p-4 rounded-lg border transition-all ${
-                                        isDark
+                                    className={`p-4 rounded-lg border transition-all ${isDark
                                             ? 'bg-foreground border-border-dark'
                                             : 'bg-foreground border-border-light'
-                                    }`}
+                                        }`}
                                 >
                                     <div className="flex justify-between items-start mb-3">
                                         <div>

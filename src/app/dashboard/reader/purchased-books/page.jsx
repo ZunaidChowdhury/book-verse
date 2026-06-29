@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import BookCard from '@/components/cards/BookCard';
 // import BookCard from '@/components/cards/BookCard';
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
 
 export default function PurchasedBooksPage() {
     const { isDark } = useSelector((state) => state.theme);
@@ -47,12 +48,8 @@ export default function PurchasedBooksPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8 transition-colors">
-                <div className="text-center py-12">
-                    <p className="text-lg text-text-secondary">
-                        Loading your library...
-                    </p>
-                </div>
+            <div className={`my-30`}>
+                <MyCustomSpinner />
             </div>
         );
     }
@@ -94,8 +91,8 @@ export default function PurchasedBooksPage() {
                 {/* Search Bar */}
                 <div className="mb-8">
                     <div className={`flex items-center gap-2 px-4 py-3 rounded-lg border transition-all ${isDark
-                            ? 'bg-foreground border-border-dark'
-                            : 'bg-foreground border-border-light'
+                        ? 'bg-foreground border-border-dark'
+                        : 'bg-foreground border-border-light'
                         }`}>
                         <Search size={20} className="text-text-secondary" />
                         <input
@@ -136,7 +133,7 @@ export default function PurchasedBooksPage() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, margin: "-80px" }}
-                        className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8'
+                        className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'
                     >
                         {filteredBooks.map((book) => <BookCard key={book._id} book={book} />)}
                     </motion.div>

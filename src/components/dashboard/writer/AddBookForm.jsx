@@ -70,10 +70,10 @@ function BookImageUploader({ onUploadComplete, onUploadError, onUploadBegin, ima
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onClick={() => !isUploading && fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-lg p-8 transition-all duration-200 flex flex-col items-center justify-center gap-2 cursor-pointer select-none
+            className={`${mode === 'dark' ? 'bg-background' : 'bg-background'} border-2 border-dashed rounded-lg p-8 transition-all duration-200 flex flex-col items-center justify-center gap-2 cursor-pointer select-none
                 ${isDragOver
-                    ? mode === 'dark' ? 'border-theme-primary bg-theme-primary/10 scale-[1.01]' : 'border-theme-primary bg-theme-primary/10 scale-[1.01]'
-                    : mode === 'dark' ? 'border-border-dark hover:border-theme-primary bg-foreground hover:bg-foreground/80' : 'border-border-light hover:border-theme-primary bg-background hover:bg-background/80'
+                    ? mode === 'dark' ? 'border-theme-primary  scale-[1.01]' : 'border-theme-primary  scale-[1.01]'
+                    : mode === 'dark' ? 'border-border-dark hover:border-theme-primary ' : 'border-border-light hover:border-theme-primary '
                 }
                 ${isUploading ? 'pointer-events-none opacity-70' : ''}
             `}
@@ -350,8 +350,8 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
     }
 
     return (
-        <div className={`min-h-screen ${pageBgClass} py-8 px-4 md:px-8`}>
-            <div className="max-w-4xl mx-auto">
+        <div className={`min-h-screen ${pageBgClass}  px-4 md:px-8`}>
+            <div className="max-w-4xl mx-auto bg-foreground py-8 px-8">
                 {/* Header */}
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold mb-2">{isUpdateMode ? 'Update Book' : 'Add New Book'}</h1>
@@ -386,7 +386,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                     )}
 
                     {/* Basic Information Section */}
-                    <div className={`border rounded-lg p-6 ${cardBorderClass}`}>
+                    <div className={`border rounded-lg p-6 bg-foreground ${cardBorderClass}`}>
                         <h2 className="text-2xl font-semibold mb-6">Basic Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Title */}
@@ -400,7 +400,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     value={formData.title}
                                     onChange={handleChange}
                                     placeholder="Enter book title"
-                                    className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
+                                    className={`w-full px-4 py-2 rounded-lg bg-background border ${inputStyle}`}
                                     required
                                 />
                             </div>
@@ -416,7 +416,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     value={formData.writerName}
                                     onChange={handleChange}
                                     placeholder="Writer name"
-                                    className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
+                                    className={`w-full px-4 py-2 rounded-lg bg-background border ${inputStyle}`}
                                 />
                             </div>
 
@@ -431,7 +431,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     value={formData.yearOfPublishing}
                                     onChange={handleChange}
                                     placeholder={new Date().getFullYear()}
-                                    className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
+                                    className={`w-full px-4 py-2 rounded-lg bg-background border ${inputStyle}`}
                                     required
                                 />
                             </div>
@@ -447,7 +447,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     value={formData.totalPages}
                                     onChange={handleChange}
                                     placeholder="Number of pages"
-                                    className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
+                                    className={`w-full px-4 py-2 rounded-lg bg-background border ${inputStyle}`}
                                     required
                                 />
                             </div>
@@ -455,7 +455,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                     </div>
 
                     {/* Description & Content Section */}
-                    <div className={`border rounded-lg p-6 ${cardBorderClass}`}>
+                    <div className={`border rounded-lg p-6 bg-foreground ${cardBorderClass}`}>
                         <h2 className="text-2xl font-semibold mb-6">Content</h2>
                         <div className="space-y-6">
                             {/* Description */}
@@ -469,7 +469,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     onChange={handleChange}
                                     placeholder="Brief description of the book"
                                     rows="4"
-                                    className={`w-full px-4 py-2 rounded-lg border resize-none ${inputStyle}`}
+                                    className={`w-full px-4 py-2 rounded-lg bg-background border resize-none ${inputStyle}`}
                                     required
                                 />
                             </div>
@@ -485,7 +485,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     onChange={handleChange}
                                     placeholder="Full content or excerpt of the book"
                                     rows="6"
-                                    className={`w-full px-4 py-2 rounded-lg border resize-none ${inputStyle}`}
+                                    className={`w-full px-4 py-2 rounded-lg bg-background border resize-none ${inputStyle}`}
                                     required
                                 />
                             </div>
@@ -493,7 +493,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                     </div>
 
                     {/* Genres Section */}
-                    <div className={`border rounded-lg p-6 ${cardBorderClass}`}>
+                    <div className={`border rounded-lg p-6 bg-foreground ${cardBorderClass}`}>
                         <h2 className="text-2xl font-semibold mb-6">Genres <span className="text-red-500">*</span></h2>
                         <div className="space-y-4">
                             {/* Genre Input */}
@@ -503,7 +503,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     value={genreInput}
                                     onChange={(e) => setGenreInput(e.target.value)}
                                     placeholder="Type a genre and press add"
-                                    className={`flex-1 px-4 py-2 rounded-lg border ${inputStyle}`}
+                                    className={`flex-1 px-4 py-2 rounded-lg bg-background border ${inputStyle}`}
                                     onKeyPress={(e) => {
                                         if (e.key === 'Enter') {
                                             e.preventDefault()
@@ -546,7 +546,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                     </div>
 
                     {/* Pricing & Availability Section */}
-                    <div className={`border rounded-lg p-6 ${cardBorderClass}`}>
+                    <div className={`border bg-foreground rounded-lg p-6 ${cardBorderClass}`}>
                         <h2 className="text-2xl font-semibold mb-6">Pricing & Availability</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Price */}
@@ -561,7 +561,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     onChange={handleChange}
                                     placeholder="0.00"
                                     step="0.01"
-                                    className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
+                                    className={`w-full px-4 py-2 rounded-lg bg-background border ${inputStyle}`}
                                     required
                                 />
                             </div>
@@ -577,7 +577,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     value={formData.stock}
                                     onChange={handleChange}
                                     placeholder="Number of copies"
-                                    className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
+                                    className={`w-full px-4 py-2 rounded-lg bg-background border ${inputStyle}`}
                                     required
                                 />
                             </div>
@@ -591,7 +591,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     name="availabilityStatus"
                                     value={formData.availabilityStatus}
                                     onChange={handleChange}
-                                    className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
+                                    className={`w-full px-4 py-2 rounded-lg bg-background border ${inputStyle}`}
                                 >
                                     {availabilityStatuses.map(status => (
                                         <option key={status.key} value={status.key}>
@@ -610,7 +610,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                                     name="visibility"
                                     value={formData.visibility}
                                     onChange={handleChange}
-                                    className={`w-full px-4 py-2 rounded-lg border ${inputStyle}`}
+                                    className={`w-full px-4 py-2 rounded-lg bg-background border ${inputStyle}`}
                                 >
                                     {visibilityOptions.map(option => (
                                         <option key={option.key} value={option.key}>
@@ -627,7 +627,7 @@ const AddBookForm = ({ addBook, updateBook, book, bookContent }) => {
                         <button
                             type="button"
                             onClick={() => router.back()}
-                            className={`px-8 py-3 rounded-lg font-semibold transition ${mode === 'dark' ? 'bg-foreground border border-border-dark text-text-primary hover:bg-foreground/80' : 'bg-background border border-border-light text-text-primary hover:bg-background/80'}`}
+                            className={`px-8 py-3 rounded-lg font-semibold transition ${mode === 'dark' ? 'bg-foreground border border-border-dark text-text-primary hover:bg-foreground/80' : 'bg-foreground border border-border-light text-text-primary hover:bg-background/80'}`}
                         >
                             Cancel
                         </button>

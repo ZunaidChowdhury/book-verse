@@ -127,7 +127,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`sticky top-0 z-50 w-full border-b  ${isDark ? 'bg-theme-background/8 border-white/5' : 'bg-foreground border-black/5'}  backdrop-blur-xl transition-all duration-300`}>
+      <header className={`sticky top-0 z-50 w-full border-b  ${isDark ? 'bg-[#111836]/80 border-white/5' : 'bg-foreground/80 border-black/5'}  backdrop-blur-xl transition-all duration-300`}>
         <div className="mx-auto max-w-[1400px] px-4 tablet:px-6 desktop:px-8">
           <div className="flex h-20 items-center justify-between gap-4">
 

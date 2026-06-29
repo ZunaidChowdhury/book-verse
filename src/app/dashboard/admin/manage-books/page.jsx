@@ -11,6 +11,8 @@ import Link from 'next/link';
 
 import { Button, Modal } from "@heroui/react";
 
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
+
 export default function ManageBooksPage() {
     const { isDark } = useSelector((state) => state.theme);
     const [books, setBooks] = useState([]);
@@ -91,12 +93,8 @@ export default function ManageBooksPage() {
 
     if (loading) {
         return (
-            <div className={`min-h-screen bg-background p-4 sm:p-6 lg:p-8`}>
-                <div className="text-center py-12">
-                    <p className={`text-lg text-text-secondary`}>
-                        Loading books...
-                    </p>
-                </div>
+            <div className={`my-30`}>
+                <MyCustomSpinner text='Loading books...' />
             </div>
         );
     }

@@ -9,6 +9,8 @@ import Link from 'next/link';
 
 import { Button, Modal } from "@heroui/react";
 
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
+
 export default function ManageUsersPage() {
     const { isDark } = useSelector((state) => state.theme);
     const [users, setUsers] = useState([]);
@@ -85,12 +87,8 @@ export default function ManageUsersPage() {
 
     if (loading) {
         return (
-            <div className={`min-h-screen ${isDark ? 'bg-black' : 'bg-white'} p-4 sm:p-6 lg:p-8`}>
-                <div className="text-center py-12">
-                    <p className={`text-lg ${isDark ? 'text-text-secondary' : 'text-text-secondary'}`}>
-                        Loading users...
-                    </p>
-                </div>
+            <div className={`my-30`}>
+                <MyCustomSpinner text='Loading users...' />
             </div>
         );
     }
@@ -129,8 +127,8 @@ export default function ManageUsersPage() {
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
                         className={`px-4 py-2 rounded-lg border transition-all text-sm sm:text-base ${isDark
-                                ? 'bg-foreground border-border-dark text-text-primary'
-                                : 'bg-foreground border-border-light text-text-primary'
+                            ? 'bg-foreground border-border-dark text-text-primary'
+                            : 'bg-foreground border-border-light text-text-primary'
                             }`}
                     >
                         <option value="name-az">Name: A-Z</option>
@@ -184,8 +182,8 @@ export default function ManageUsersPage() {
                                                         value={selectedRole[user._id] || user.role}
                                                         onChange={(e) => setSelectedRole(prev => ({ ...prev, [user._id]: e.target.value }))}
                                                         className={`px-2 py-1 rounded text-sm border ${isDark
-                                                                ? 'bg-black/50 border-border-dark text-text-primary'
-                                                                : 'bg-white border-border-light text-text-primary'
+                                                            ? 'bg-black/50 border-border-dark text-text-primary'
+                                                            : 'bg-white border-border-light text-text-primary'
                                                             }`}
                                                     >
                                                         <option value="reader">Reader</option>
@@ -194,10 +192,10 @@ export default function ManageUsersPage() {
                                                     </select>
                                                 ) : (
                                                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.role === 'admin'
-                                                            ? 'bg-green-500 text-white'
-                                                            : user.role === 'writer'
-                                                                ? 'bg-yellow-500 text-black'
-                                                                : 'bg-blue-500 text-white'
+                                                        ? 'bg-green-500 text-white'
+                                                        : user.role === 'writer'
+                                                            ? 'bg-yellow-500 text-black'
+                                                            : 'bg-blue-500 text-white'
                                                         }`}>
                                                         {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                                                     </span>
@@ -215,8 +213,8 @@ export default function ManageUsersPage() {
                                                         <button
                                                             onClick={() => setEditingId(null)}
                                                             className={`cursor-pointer px-3 py-1 rounded text-sm ${isDark
-                                                                    ? 'bg-foreground border border-border-dark text-text-primary'
-                                                                    : 'bg-gray-100 border border-border-light text-text-primary'
+                                                                ? 'bg-foreground border border-border-dark text-text-primary'
+                                                                : 'bg-gray-100 border border-border-light text-text-primary'
                                                                 }`}
                                                         >
                                                             Cancel
@@ -253,8 +251,8 @@ export default function ManageUsersPage() {
                                 <div
                                     key={user._id}
                                     className={`p-4 rounded-lg border transition-all ${isDark
-                                            ? 'bg-foreground border-border-dark'
-                                            : 'bg-foreground border-border-light'
+                                        ? 'bg-foreground border-border-dark'
+                                        : 'bg-foreground border-border-light'
                                         }`}
                                 >
                                     <div className="flex justify-between items-start mb-4">
@@ -275,8 +273,8 @@ export default function ManageUsersPage() {
                                             value={selectedRole[user._id] || user.role}
                                             onChange={(e) => setSelectedRole(prev => ({ ...prev, [user._id]: e.target.value }))}
                                             className={`w-full px-2 py-1 rounded border text-sm ${isDark
-                                                    ? 'bg-black/50 border-border-dark text-text-primary'
-                                                    : 'bg-white border-border-light text-text-primary'
+                                                ? 'bg-black/50 border-border-dark text-text-primary'
+                                                : 'bg-white border-border-light text-text-primary'
                                                 }`}
                                         >
                                             <option value="reader">Reader</option>

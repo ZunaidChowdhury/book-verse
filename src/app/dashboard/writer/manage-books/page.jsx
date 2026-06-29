@@ -9,6 +9,7 @@ import { deleteBook, updateBook } from '@/lib/actions/books'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { Button, Modal } from "@heroui/react";
+import MyCustomSpinner from '@/components/spinner/MyCustomSpinner'
 
 export default function ManageBooksPage() {
     const { isDark } = useSelector((state) => state.theme)
@@ -76,19 +77,15 @@ export default function ManageBooksPage() {
 
     if (loading) {
         return (
-            <div className={`min-h-screen bg-background p-4 sm:p-6 lg:p-8`}>
-                <div className="text-center py-12">
-                    <p className={`text-lg text-text-secondary`}>
-                        Loading books...
-                    </p>
-                </div>
+            <div className={`my-30`}>
+                <MyCustomSpinner />
             </div>
         )
     }
 
     return (
-        <div className={`min-h-screen bg-background transition-colors p-4 sm:p-6 lg:p-8`}>
-            <div className="max-w-7xl mx-auto">
+        <div className={`min-h-screen bg-background transition-colors `}>
+            <div className="p-4 sm:p-6 lg:p-8">
                 {/* Header */}
                 <div className="flex justify-between items-center mb-8">
                     <div>
