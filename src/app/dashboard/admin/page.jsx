@@ -70,7 +70,7 @@ export default function AdminDashboardPage() {
 
     const stats = [
         {
-            label: 'Total Users',
+            label: 'Total Readers',
             value: analytics?.totalUsers || 0,
             icon: Users,
             color: 'bg-blue-100/20 text-blue-600'
